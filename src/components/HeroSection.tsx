@@ -25,37 +25,34 @@ export default function HeroSection() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Nova função para interceptar o envio
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    try {
-      // Usamos a URL com /ajax/ para enviar em segundo plano
-      const response = await fetch("https://formsubmit.co/ajax/expansao@helpmultas.com", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-        },
-        body: JSON.stringify({
-          ...formData,
-          _subject: "Novo Candidato a Franqueado",
-          _captcha: "false"
-        }),
-      });
+    // Criamos um formulário HTML em memória para fazer o POST tradicional
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = "https://formsubmit.co/expansao@helpmultas.com";
 
-      if (response.ok) {
-        // Redirecionamento forçado pelo SEU código, sem depender do FormSubmit
-        window.location.href = "https://franquias.helpmultas.com.br/obrigado";
-      } else {
-        alert("Ocorreu um erro ao enviar. Por favor, tente novamente.");
-      }
-    } catch (error) {
-      console.error("Erro no envio:", error);
-      alert("Ocorreu um erro na conexão. Por favor, tente novamente.");
-    } finally {
-      setIsSubmitting(false);
-    }
+    // Injetamos os dados do formData + as configurações do FormSubmit
+    const data: Record<string, string> = {
+      ...formData,
+      _subject: "Novo Candidato a Franqueado",
+      _captcha: "false",
+      _next: "https://franquias.helpmultas.com.br/obrigado", // O FormSubmit vai redirecionar para cá
+    };
+
+    Object.keys(data).forEach((key) => {
+      const input = document.createElement("input");
+      input.type = "hidden";
+      input.name = key;
+      input.value = data[key];
+      form.appendChild(input);
+    });
+
+    // Anexa ao corpo da página, envia e remove
+    document.body.appendChild(form);
+    form.submit();
   };
 
   function AnimatedStat({ value, suffix, label }: {
@@ -130,17 +127,17 @@ export default function HeroSection() {
             </div>
 
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-1 mb-10">
-            {[
-              { value: 80, suffix: "+", label: "Franquias no Brasil" },
-              { value: 100, suffix: "K+", label: "Motoristas Atendidos" },
-              { value: 10, suffix: "", label: "Anos de Mercado" },
-              { value: 60, suffix: "", label: "Dias para o Retorno" },
-            ].map((stat) => (
-              <div key={stat.label} className="rounded-xl">
-                <AnimatedStat {...stat} />
-              </div>
-            ))}
-          </div>
+              {[
+                { value: 80, suffix: "+", label: "Franquias no Brasil" },
+                { value: 100, suffix: "K+", label: "Motoristas Atendidos" },
+                { value: 10, suffix: "", label: "Anos de Mercado" },
+                { value: 60, suffix: "", label: "Dias para o Retorno" },
+              ].map((stat) => (
+                <div key={stat.label} className="rounded-xl">
+                  <AnimatedStat {...stat} />
+                </div>
+              ))}
+            </div>
 
             {/* Scroll indicator */}
             <a href="#modelo" className="hidden lg:flex items-center gap-2 text-white/40 text-sm hover:text-white transition-colors">
