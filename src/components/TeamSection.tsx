@@ -37,6 +37,7 @@ export default function TeamSection() {
 
           {/* Text Side */}
           <div className={`flex-1 transition-all duration-1000 ${contentInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+            <span className="gold-line" />
             <span className="font-body font-semibold text-[oklch(0.8371_0.1715_85.23)] text-sm uppercase tracking-widest mb-4 block">
               Nosso Capital Humano
             </span>
