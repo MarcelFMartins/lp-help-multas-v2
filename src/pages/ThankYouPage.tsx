@@ -20,7 +20,7 @@ export default function ThankYouPage() {
       }}
     >
       {/* Overlay com blur para manter consistência */}
-      <div className="absolute inset-0 bg-[#243746]/60 backdrop-blur-[8px]" />
+      <div className="absolute inset-0 bg-[oklch(0.1998_0.0403_258.29)]/60 backdrop-blur-[8px]" />
 
       <div className="relative z-10 container mx-auto px-6 text-center">
         
