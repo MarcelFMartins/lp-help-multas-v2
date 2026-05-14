@@ -76,6 +76,7 @@ function MotivationRow({
         transform: inView ? "translateY(0)" : "translateY(24px)",
         transition: `opacity 0.6s ease ${index * 120}ms, transform 0.6s ease ${index * 120}ms`,
       }}
+      id = "oportunidade"
     >
       {/* Top border */}
       <div className="absolute top-0 left-0 right-0 h-px bg-black/10 group-hover:bg-transparent transition-colors duration-300" />

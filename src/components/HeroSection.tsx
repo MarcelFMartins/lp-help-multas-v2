@@ -114,7 +114,7 @@ export default function HeroSection() {
             {/* Logo */}
             <div className="mb-8">
               <span className="font-display text-2xl font-bold text-white">
-                help<span className="text-gold">multas</span>
+                Help<span className="text-gold"> Multas</span>
               </span>
             </div>
 
