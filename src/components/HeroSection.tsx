@@ -22,7 +22,7 @@ export default function HeroSection() {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   // Novo estado para controlar o botão durante o envio
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,7 +40,14 @@ export default function HeroSection() {
           access_key: "1f63b8b2-e797-4e97-8308-b9b8509f6449",
 
           // 2. SEUS DADOS DO FORMULÁRIO:
-          ...formData,
+          body: JSON.stringify({
+            nome: formData.nome,
+            email: formData.email,
+            whatsapp: formData.whatsapp,
+            cidade: formData.cidade,
+            uf: formData.uf,
+            capital: formData.capital
+          }),
 
           // 3. CONFIGURAÇÕES ADICIONAIS DO WEB3FORMS:
           from_name: "Landing Page Franquias", // Nome que aparecerá como remetente
