@@ -1,10 +1,19 @@
-/*
- * Footer — Completo, Escalável e Minimalista (Responsividade Corrigida)
- * Design: Navy dark, Menu fluido, Parceiros com logos minimalistas adaptáveis e ícones sociais
- */
+import type { ReactNode } from "react";
+
+
+interface FooterLink {
+  label: string;
+  href: string;
+  icon?: ReactNode;
+}
+
+interface FooterColumn {
+  title: string;
+  links: FooterLink[];
+}
 
 export default function Footer() {
-  const menuColumns = [
+  const menuColumns: FooterColumn[] = [
     {
       title: "Menu",
       links: [
@@ -74,10 +83,9 @@ export default function Footer() {
     <footer className="bg-[oklch(0.1998_0.0403_258.29)] text-white/70 font-body text-sm pt-12 pb-8 border-t border-white/5">
       <div className="container mx-auto px-4 max-w-7xl">
 
-        {/* Grid Principal */}
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10 xl:gap-16 pb-12">
 
-          {/* Coluna do Logo e Branding */}
           <div className="sm:col-span-2 lg:col-span-2 flex flex-col gap-4">
             <a href="#inicio" className="font-display text-2xl font-bold text-white tracking-tight">
               Help<span className="text-gold"> Multas</span>
@@ -88,7 +96,6 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Links de Navegação */}
           {menuColumns.map((col, idx) => (
             <div key={idx} className="sm:col-span-1 lg:col-span-1 flex flex-col gap-3">
               <h4 className="text-white font-semibold font-display text-xs uppercase tracking-wider">
@@ -101,7 +108,6 @@ export default function Footer() {
                       href={link.href}
                       className="inline-flex items-center gap-2 text-xs text-white/60 hover:text-gold transition-colors duration-200 group"
                     >
-                      {/* Se houver ícone no objeto, ele renderiza aqui ao lado do texto */}
                       {link.icon && <span className="text-white/40 group-hover:text-gold transition-colors duration-200">{link.icon}</span>}
                       <span>{link.label}</span>
                     </a>
@@ -112,17 +118,14 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* Divisor Central */}
         <div className="border-t border-white/5 my-6"></div>
 
-        {/* Seção de Patrocinadores / Parceiros */}
         <div className="flex flex-col items-center justify-between gap-6 py-2 md:flex-row text-center md:text-left">
           <span className="text-[10px] uppercase tracking-widest text-white/30 font-semibold">
             Parceiros Oficiais
           </span>
 
           <div className="flex flex-wrap items-center justify-center gap-6 md:gap-10 opacity-30 hover:opacity-60 transition-opacity duration-300">
-            {/* Porsche Motorsport */}
             <a href="https://racing.porsche.com/" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center">
               <img
                 src="image/porsche motorsport.png"
@@ -130,7 +133,6 @@ export default function Footer() {
                 className="h-5 md:h-6 w-auto object-contain brightness-0 invert"
               />
             </a>
-            {/* Giants */}
             <a href="https://www.aceleradorempresarial.com.br/giants-alunos/" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center">
               <img
                 src="image/download.svg"
@@ -138,7 +140,6 @@ export default function Footer() {
                 className="h-4 md:h-5 w-auto object-contain brightness-0 invert"
               />
             </a>
-            {/* Grupo Acelerador */}
             <a href="https://www.aceleradorempresarial.com.br/" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center">
               <img
                 src="image/grupo_acelerador_icon_png.png"
@@ -149,10 +150,9 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Divisor Inferior */}
+
         <div className="border-t border-white/5 my-6"></div>
 
-        {/* Rodapé do Rodapé: Copyright */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-2 text-center md:text-left">
           <p className="text-[11px] text-white/40 leading-relaxed max-w-md md:max-w-none">
             © 2026 Help Multas Franquias. Todos os direitos reservados. <br className="block sm:hidden" /> CNPJ: 26.545.757/0001-54
