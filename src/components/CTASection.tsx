@@ -23,26 +23,36 @@ export default function CTASection() {
   // Novo estado adicionado
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Nova função de envio adicionada
+  // Novo estado para controlar o botão durante o envio
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("https://formsubmit.co/ajax/expansao@helpmultas.com", {
+      const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Accept": "application/json",
         },
         body: JSON.stringify({
+          // 1. INSIRA SUA CHAVE AQUI:
+          access_key: "1f63b8b2-e797-4e97-8308-b9b8509f6449",
+
+          // 2. SEUS DADOS DO FORMULÁRIO:
           ...formData,
-          _subject: "Novo Lead - Franqueado (CTA Final)", // Diferenciei o assunto para você saber de qual form veio
-          _captcha: "false"
+
+          // 3. CONFIGURAÇÕES ADICIONAIS DO WEB3FORMS:
+          from_name: "Landing Page Franquias", // Nome que aparecerá como remetente
+          subject: "Novo Candidato a Franqueado", // Assunto do e-mail
         }),
       });
 
-      if (response.ok) {
+      const result = await response.json();
+
+      // O Web3Forms retorna um JSON com a propriedade "success" igual a true
+      if (response.ok && result.success) {
+        // Redirecionamento controlado pelo seu código
         window.location.href = "https://franquias.helpmultas.com.br/obrigado";
       } else {
         alert("Ocorreu um erro ao enviar. Por favor, tente novamente.");

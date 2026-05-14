@@ -21,38 +21,48 @@ export default function HeroSection() {
     capital: "",
   });
 
-  // Novo estado para controlar o botão durante o envio
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // Nova função para interceptar o envio
-  const handleSubmit = (e: React.FormEvent) => {
+  
+  // Novo estado para controlar o botão durante o envio
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Criamos um formulário HTML em memória para fazer o POST tradicional
-    const form = document.createElement("form");
-    form.method = "POST";
-    form.action = "https://formsubmit.co/expansao@helpmultas.com";
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        },
+        body: JSON.stringify({
+          // 1. INSIRA SUA CHAVE AQUI:
+          access_key: "1f63b8b2-e797-4e97-8308-b9b8509f6449",
 
-    // Injetamos os dados do formData + as configurações do FormSubmit
-    const data: Record<string, string> = {
-      ...formData,
-      _subject: "Novo Candidato a Franqueado",
-      _captcha: "false",
-      _next: "https://franquias.helpmultas.com.br/obrigado", // O FormSubmit vai redirecionar para cá
-    };
+          // 2. SEUS DADOS DO FORMULÁRIO:
+          ...formData,
 
-    Object.keys(data).forEach((key) => {
-      const input = document.createElement("input");
-      input.type = "hidden";
-      input.name = key;
-      input.value = data[key];
-      form.appendChild(input);
-    });
+          // 3. CONFIGURAÇÕES ADICIONAIS DO WEB3FORMS:
+          from_name: "Landing Page Franquias", // Nome que aparecerá como remetente
+          subject: "Novo Candidato a Franqueado", // Assunto do e-mail
+        }),
+      });
 
-    // Anexa ao corpo da página, envia e remove
-    document.body.appendChild(form);
-    form.submit();
+      const result = await response.json();
+
+      // O Web3Forms retorna um JSON com a propriedade "success" igual a true
+      if (response.ok && result.success) {
+        // Redirecionamento controlado pelo seu código
+        window.location.href = "https://franquias.helpmultas.com.br/obrigado";
+      } else {
+        alert("Ocorreu um erro ao enviar. Por favor, tente novamente.");
+      }
+    } catch (error) {
+      console.error("Erro no envio:", error);
+      alert("Ocorreu um erro na conexão. Por favor, tente novamente.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   function AnimatedStat({ value, suffix, label }: {
