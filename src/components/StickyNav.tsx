@@ -28,9 +28,9 @@ export default function StickyNav() {
           help<span className="text-gold">multas</span>
         </a>
         <div className="hidden md:flex items-center gap-6">
-          <a href="#modelo" className="font-body text-sm text-white/70 hover:text-white transition-colors">O Modelo</a>
           <a href="#depoimentos" className="font-body text-sm text-white/70 hover:text-white transition-colors">Depoimentos</a>
-          <a href="#faq" className="font-body text-sm text-white/70 hover:text-white transition-colors">FAQ</a>
+          <a href="#modelo" className="font-body text-sm text-white/70 hover:text-white transition-colors">O Modelo</a>
+          <a href="#equipe" className="font-body text-sm text-white/70 hover:text-white transition-colors">Nosso Time</a>
         </div>
         <a
           href="#inicio"
