@@ -133,8 +133,8 @@ export default function HeroSection() {
             {[
               { value: 80, suffix: "+", label: "Franquias no Brasil" },
               { value: 100, suffix: "K+", label: "Motoristas Atendidos" },
-              { value: 10, label: "Anos de Mercado" },
-              { value: 60, label: "Dias para o Retorno" },
+              { value: 10, suffix: "", label: "Anos de Mercado" },
+              { value: 60, suffix: "", label: "Dias para o Retorno" },
             ].map((stat) => (
               <div key={stat.label} className="rounded-xl">
                 <AnimatedStat {...stat} />
