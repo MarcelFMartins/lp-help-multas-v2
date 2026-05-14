@@ -64,7 +64,7 @@ export default function GrowthSection() {
           <p className="font-body font-semibold text-gold text-sm uppercase tracking-widest mb-4">
             Análise de Mercado — Dados Reais
           </p>
-          <h2 className="font-display text-5xl lg:text-6xl font-black text-[oklch(0.1998_0.0403_258.29)] leading-tight mb-8">
+          <h2 className="font-display text-4xl lg:text-6xl font-black text-[oklch(0.1998_0.0403_258.29)] leading-tight mb-8">
             CRESCIMENTO <em className="text-gold not-italic">DO MERCADO</em> EM NÚMEROS
           </h2>
           <p className="font-body text-[oklch(0.1998_0.0403_258.29)] text-xl max-w-3xl mx-auto leading-relaxed">
