@@ -11,7 +11,7 @@ export default function TeamSection() {
 
   return (
     <section id="equipe" className="py-24 bg-white">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 mb-10">
         <div 
           ref={contentRef as React.RefObject<HTMLDivElement>}
           className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20"
