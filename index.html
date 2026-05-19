@@ -21,7 +21,7 @@
     !function (f, b, e, v, n, t, s) {
       if (f.fbq) return; n = f.fbq = function () {
         n.callMethod ?
-        n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+          n.callMethod.apply(n, arguments) : n.queue.push(arguments)
       };
       if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
       n.queue = []; t = b.createElement(e); t.async = !0;
@@ -40,6 +40,70 @@
 
 <body>
   <div id="root"></div>
+
+  <script>
+    (function () {
+      const COOKIE_MAX_AGE = 60 * 60 * 24 * 90;
+
+      function getCookie(name) {
+        const match = document.cookie.match(
+          new RegExp("(^| )" + name + "=([^;]+)")
+        );
+
+        return match ? decodeURIComponent(match[2]) : null;
+      }
+
+      function setCookie(name, value, maxAge) {
+        document.cookie = [
+          `${name}=${encodeURIComponent(value)}`,
+          "path=/",
+          `max-age=${maxAge}`,
+          "SameSite=Lax",
+        ].join("; ");
+      }
+
+      const params = new URLSearchParams(window.location.search);
+
+      const fbclid = params.get("fbclid");
+
+      // Usuário não veio do Facebook
+      if (!fbclid) return;
+
+      // Cria o _fbc no padrão Meta
+      const fbc = `fb.1.${Date.now()}.${fbclid}`;
+
+      // Salva cookie
+      setCookie("_fbc", fbc, COOKIE_MAX_AGE);
+
+      // Backup
+      localStorage.setItem("_fbc", fbc);
+      localStorage.setItem("fbclid", fbclid);
+
+      // Salva _fbp se existir
+      const fbp = getCookie("_fbp");
+
+      if (fbp) {
+        localStorage.setItem("_fbp", fbp);
+      }
+
+      // Disponibiliza global
+      window.getMetaTrackingData = function () {
+        return {
+          fbp:
+            getCookie("_fbp") ||
+            localStorage.getItem("_fbp"),
+
+          fbc:
+            getCookie("_fbc") ||
+            localStorage.getItem("_fbc"),
+
+          fbclid:
+            localStorage.getItem("fbclid"),
+        };
+      };
+    })();
+  </script>
+
   <script type="module" src="/src/main.tsx"></script>
 </body>
 

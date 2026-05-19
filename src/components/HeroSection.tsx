@@ -26,47 +26,116 @@ export default function HeroSection() {
   // Novo estado para controlar o botão durante o envio
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-        },
-        body: JSON.stringify({
-          // 1. INSIRA SUA CHAVE AQUI:
-          access_key: "1f63b8b2-e797-4e97-8308-b9b8509f6449",
+      // TRACKING META
+      const meta = window.getMetaTrackingData();
 
-          // 2. SEUS DADOS DO FORMULÁRIO:
+      /*
+        ==================================
+        PAYLOAD PADRÃO
+        ==================================
+      */
+
+      const payload = {
+        nome: formData.nome,
+        email: formData.email,
+        whatsapp: formData.whatsapp,
+        cidade: formData.cidade,
+        uf: formData.uf,
+        capital: formData.capital,
+
+        fbp: meta?.fbp || "",
+        fbc: meta?.fbc || "",
+        fbclid: meta?.fbclid || "",
+      };
+
+      /*
+        ==================================
+        1. WEB3FORMS
+        ==================================
+      */
+
+      const web3Response = await fetch(
+        "https://api.web3forms.com/submit",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+
           body: JSON.stringify({
-            nome: formData.nome,
-            email: formData.email,
-            whatsapp: formData.whatsapp,
-            cidade: formData.cidade,
-            uf: formData.uf,
-            capital: formData.capital
+            access_key: "1f63b8b2-e797-4e97-8308-b9b8509f6449",
+
+            ...payload,
+
+            from_name: "Landing Page Franquias",
+            subject: "Novo Candidato a Franqueado",
           }),
+        }
+      );
 
-          // 3. CONFIGURAÇÕES ADICIONAIS DO WEB3FORMS:
-          from_name: "Landing Page Franquias", // Nome que aparecerá como remetente
-          subject: "Novo Candidato a Franqueado", // Assunto do e-mail
-        }),
-      });
+      const web3Result = await web3Response.json();
 
-      const result = await response.json();
-
-      // O Web3Forms retorna um JSON com a propriedade "success" igual a true
-      if (response.ok && result.success) {
-        // Redirecionamento controlado pelo seu código
-        window.location.href = "https://franquias.helpmultas.com.br/obrigado";
-      } else {
-        alert("Ocorreu um erro ao enviar. Por favor, tente novamente.");
+      // ERRO WEB3FORMS
+      if (!web3Response.ok || !web3Result.success) {
+        throw new Error("Erro Web3Forms");
       }
+
+      /*
+        ==================================
+        2. CRM
+        ==================================
+      */
+
+      const crmPayload = {
+        fullName: formData.nome,
+        phone: formData.whatsapp,
+        email: formData.email,
+
+        // META
+        fbp: meta?.fbp || "",
+        fbc: meta?.fbc || "",
+        fbclid: meta?.fbclid || "",
+      };
+
+      const crmResponse = await fetch(
+        "https://crm.helprecurso.com.br/leads/create-by-api-key",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key":
+              "KsPHxXtwBQ5SfhJd7au0R_IcnmbfhJd7spj5FwbYe8Kt3iEAYi",
+          },
+
+          body: JSON.stringify(crmPayload),
+        }
+      );
+
+      // ERRO CRM
+      if (!crmResponse.ok) {
+        throw new Error("Erro CRM");
+      }
+
+      /*
+        ==================================
+        3. REDIRECT
+        ==================================
+      */
+
+      window.location.href =
+        "https://franquias.helpmultas.com.br/obrigado";
+
     } catch (error) {
-      console.error("Erro no envio:", error);
-      alert("Ocorreu um erro na conexão. Por favor, tente novamente.");
+      console.error(error);
+
+      alert("Erro ao enviar formulário.");
     } finally {
       setIsSubmitting(false);
     }
