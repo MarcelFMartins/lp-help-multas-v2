@@ -10,22 +10,18 @@ const motivations = [
   {
     title: "Liberdade Financeira",
     description: "Construa uma nova fonte de renda com suporte e estrutura pronta.",
-    icon: "💰"
   },
   {
     title: "Mercado em Expansão",
     description: "Atue em um segmento que cresce com o aumento das fiscalizações.",
-    icon: "📈"
   },
   {
     title: "Negócio Simplificado",
     description: "Você vende e nossa equipe técnica cuida da operação especializada.",
-    icon: "🛡️"
   },
   {
     title: "Crescimento Profissional",
     description: "Desenvolva liderança, gestão e visão empreendedora.",
-    icon: "💼"
   }
 ];
 
@@ -56,7 +52,6 @@ export default function FranchiseeMotivationSection() {
               key={index}
               className="p-8 rounded-2xl border border-gray-100 hover:border-[oklch(0.8371_0.1715_85.23)] transition-all duration-300 group bg-[oklch(0.98_0.01_75)]"
             >
-              <span className="text-4xl mb-6 block">{item.icon}</span>
               <h3 className="font-display text-xl font-bold text-[oklch(0.1998_0.0403_258.29)] mb-4 group-hover:text-[oklch(0.8371_0.1715_85.23)] transition-colors">
                 {item.title}
               </h3>
@@ -74,9 +69,6 @@ export default function FranchiseeMotivationSection() {
             <p className="font-body text-white/70">
               Muitos donos de autoescolas e despachantes nos procuram para proteger o que construíram e se transformar diante das novas leis. Nós somos o seu porto seguro.
             </p>
-          </div>
-          <div className="shrink-0">
-            <span className="text-5xl">🤝</span>
           </div>
         </div>
       </div>

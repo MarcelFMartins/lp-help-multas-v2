@@ -18,17 +18,20 @@ export default function StickyNav() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        visible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${visible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
+        }`}
       style={{ background: "oklch(0.1998 0.0403 258.29)", borderBottom: "1px solid rgba(255,255,255,0.08)" }}
     >
       {/* px-4 adicionado para evitar que os elementos colem na borda da tela */}
       <div className="container mx-auto px-4 py-3 flex items-center justify-between gap-4">
-        <a href="#inicio" className="font-display text-lg font-bold text-white shrink-0">
-          Help<span className="text-gold"> Multas</span>
+        <a href="#inicio" className="shrink-0">
+          <img
+            src="/image/H amarelo.png"
+            alt="Help Multas"
+            className="h-10 w-auto"
+          />
         </a>
-        
+
         <div className="hidden md:flex items-center gap-6">
           <a href="#depoimentos" className="font-body text-sm text-white/70 hover:text-gold transition-colors">Depoimentos</a>
           <a href="#modelo" className="font-body text-sm text-white/70 hover:text-gold transition-colors">O Modelo</a>

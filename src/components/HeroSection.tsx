@@ -112,10 +112,12 @@ export default function HeroSection() {
           {/* Left: Copy */}
           <div className="text-white">
             {/* Logo */}
-            <div className="mb-8">
-              <span className="font-display text-2xl font-bold text-white">
-                Help<span className="text-gold"> Multas</span>
-              </span>
+            <div className="mb-3">
+              <img
+                src="/image/LogotipoHelpinho.png"
+                alt="Help Multas"
+                className="h-12 w-auto"
+              />
             </div>
 
             {/* Gold line */}
@@ -128,17 +130,17 @@ export default function HeroSection() {
 
             {/* Main headline */}
             <h1 className="font-display text-3xl lg:text-6xl xl:text-6xl font-black leading-[1.05] mb-3">
-              EXISTE UMA DEMANDA GIGANTE DE MULTAS ESPERANDO <span className="text-gold">EMPREENDEDORES</span>
+              BILHÕES EM MULTAS TODOS OS ANOS. <span className="text-gold">SEU NEGÓCIO ESTÁ AQUI.</span>
             </h1>
 
             {/* Sub-headline */}
             <p className="font-body text-lg text-white/80 leading-relaxed mb-4 max-w-lg font-semibold">
-              Um modelo de franquia onde você só vende — e especialistas fazem toda a operação técnica para você.
+              Não tem expertise? Sem problema. Você só vende. A gente defende. Você lucra.
             </p>
 
             {/* Highlight box */}
             <div className="bg-gradient-to-r from-gold/20 to-gold/10 rounded-xl p-4 mb-8 border border-gold/30">
-              <p className="font-body text-sm text-gold/90 mb-2 font-semibold">💰 Potencial de faturamento:</p>
+              <p className="font-body text-sm text-gold/90 mb-2 font-semibold">Potencial de faturamento:</p>
               <p className="font-display text-3xl font-bold text-gold mb-2">Até R$ 500 Mil por ano</p>
               <p className="font-body text-sm text-white/80 font-semibold">Investimento a partir de R$ 30 mil</p>
             </div>
@@ -148,7 +150,7 @@ export default function HeroSection() {
                 { value: 80, suffix: "+", label: "Franquias no Brasil" },
                 { value: 100, suffix: "K+", label: "Motoristas Atendidos" },
                 { value: 10, suffix: "", label: "Anos de Mercado" },
-                { value: 60, suffix: "", label: "Dias para o Retorno" },
+                { value: 27, suffix: "", label: "Estados Atendidos" },
               ].map((stat) => (
                 <div key={stat.label} className="rounded-xl">
                   <AnimatedStat {...stat} />

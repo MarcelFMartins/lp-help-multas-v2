@@ -1,147 +1,212 @@
 import { useInView } from "../hooks/useInView";
 
-
-const ENTREPRENEUR_IMG = "/image/robber.jpg.jpeg";
-
 const yourTasks = [
-  { icon: "💼", task: "Gestão da sua unidade" },
-  { icon: "🤝", task: "Prospecção e fechamento de vendas" },
-  { icon: "📱", task: "Atendimento comercial ao cliente" },
-  { icon: "💻", task: "Inserção de dados no sistema" },
-  { icon: "🔄", task: "Relacionamento e pós-venda" },
-  { icon: "💰", task: "Recebimento do lucro" },
+  "Gestão da unidade",
+  "Prospecção e vendas",
+  "Atendimento comercial",
+  "Cadastro no sistema",
+  "Relacionamento com clientes",
+  "Gestão dos resultados",
 ];
 
 const ourTasks = [
-  { icon: "🔍", task: "Análise da multa e do processo" },
-  { icon: "📋", task: "Elaboração da defesa jurídica" },
-  { icon: "🏛️", task: "Protocolo junto aos órgãos de trânsito" },
-  { icon: "⚙️", task: "Sistema próprio de gestão" },
-  { icon: "🎓", task: "Treinamento constante" },
-  { icon: "📞", task: "Suporte técnico e comercial" },
+  "Análise técnica dos processos",
+  "Elaboração das defesas",
+  "Protocolos junto aos órgãos",
+  "Sistema próprio de gestão",
+  "Treinamento contínuo",
+  "Suporte técnico e comercial",
+];
+
+const processSteps = [
+  {
+    number: "01",
+    title: "Captação",
+    description:
+      "O cliente procura sua unidade para resolver a infração.",
+  },
+  {
+    number: "02",
+    title: "Venda",
+    description:
+      "Você realiza o fechamento comercial do serviço.",
+  },
+  {
+    number: "03",
+    title: "Cadastro",
+    description:
+      "As informações são inseridas no sistema da franqueadora.",
+  },
+  {
+    number: "04",
+    title: "Análise",
+    description:
+      "Nossa equipe jurídica avalia toda a documentação.",
+  },
+  {
+    number: "05",
+    title: "Execução",
+    description:
+      "A defesa é elaborada e protocolada pela Help Multas.",
+  },
 ];
 
 export default function ModelSection() {
   const { ref: titleRef, inView: titleInView } = useInView();
-  const { ref: cardsRef, inView: cardsInView } = useInView();
+  const { ref: contentRef, inView: contentInView } = useInView();
 
   return (
-    <section id="modelo" className="py-24 bg-[oklch(0.98_0.005_75)]">
-      <div className="container mx-auto">
-
-        {/* Section header */}
+    <section
+      id="modelo"
+      className="py-24 bg-[oklch(0.98_0.005_75)] overflow-hidden"
+    >
+      <div className="container mx-auto px-4">
+        {/* Header */}
         <div
           ref={titleRef as React.RefObject<HTMLDivElement>}
-          className={`text-center mb-16 transition-all duration-700 ${titleInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+          className={`max-w-4xl mx-auto text-center mb-20 transition-all duration-700 ${
+            titleInView
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-8"
+          }`}
         >
-          <span className="gold-line mx-auto" />
-          <p className="font-body font-semibold text-gold text-sm uppercase tracking-widest mb-3">
-            O Modelo
+          <span className="gold-line mx-auto mb-6" />
+
+          <p className="font-body text-sm uppercase tracking-[0.3em] text-gold font-semibold mb-4">
+            Modelo Operacional
           </p>
-          <h2 className="font-display text-4xl lg:text-5xl font-black text-[oklch(0.1998_0.0403_258.29)] leading-tight max-w-3xl mx-auto">
-            VOCÊ NÃO PRECISA SER ADVOGADO.{" "}
-            <em className="text-gold not-italic">NÓS FAZEMOS POR VOCÊ.</em>
+
+          <h2 className="font-display text-4xl lg:text-6xl font-black text-[oklch(0.1998_0.0403_258.29)] leading-[1.1]">
+            VOCÊ VENDE.
+            <br />
+            <span className="text-gold">
+              NÓS EXECUTAMOS TODA A OPERAÇÃO.
+            </span>
           </h2>
-          <p className="font-body text-[oklch(0.1998_0.0403_258.29)] text-lg mt-4 max-w-2xl mx-auto">
-            O modelo Done-For-You da HelpMultas divide as responsabilidades de forma inteligente:
-            você cuida do relacionamento e das vendas, nós cuidamos de toda a parte jurídica.
+
+          <p className="font-body text-lg text-[oklch(0.1998_0.0403_258.29)]/80 mt-6 leading-relaxed">
+            A franqueadora cuida da estrutura técnica e jurídica enquanto você
+            foca em crescimento comercial, relacionamento e expansão da unidade.
           </p>
         </div>
 
-        {/* Main content: image + responsibilities */}
-        <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
+        {/* Cards */}
+        <div
+          ref={contentRef as React.RefObject<HTMLDivElement>}
+          className={`grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto transition-all duration-700 ${
+            contentInView
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-10"
+          }`}
+        >
+          {/* Sua atuação */}
+          <div className="bg-white rounded-[32px] border border-black/5 p-10 shadow-sm">
+            <div className="mb-8">
+              <p className="font-body text-sm uppercase tracking-[0.2em] text-gold mb-3 font-bold">
+                Sua atuação
+              </p>
 
-          {/* Left: Entrepreneur image */}
-          <div
-            className={`transition-all duration-700 delay-200 ${cardsInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"}`}
-            ref={cardsRef as React.RefObject<HTMLDivElement>}
-          >
-            <div className="relative">
-              <div className="absolute -inset-4 rounded-2xl opacity-20" style={{ background: "oklch(0.8371 0.1715 85.23)" }} />
-              <img
-                src={ENTREPRENEUR_IMG}
-                alt="Franqueado HelpMultas"
-                className="relative rounded-2xl w-full object-cover shadow-2xl"
-                style={{ maxHeight: "500px", objectPosition: "top" }}
-              />
-              {/* Floating badge */}
-              <div className="absolute -bottom-4 -right-4 bg-[oklch(0.1998_0.0403_258.29)] text-white rounded-xl px-5 py-3 shadow-xl border border-white/10">
-                <span className="font-data text-2xl text-gold block">100%</span>
-                <span className="font-body text-xs text-white/70">Suporte técnico incluso</span>
-              </div>
+              <h3 className="font-display text-3xl lg:text-4xl font-black text-[oklch(0.1998_0.0403_258.29)] leading-tight">
+                Comercial e relacionamento
+              </h3>
+            </div>
+
+            <div className="space-y-5">
+              {yourTasks.map((task) => (
+                <div
+                  key={task}
+                  className="flex items-center gap-4 border-b border-black/5 pb-5"
+                >
+                  <div
+                    className="w-2.5 h-2.5 rounded-full shrink-0"
+                    style={{
+                      background: "oklch(0.8371 0.1715 85.23)",
+                    }}
+                  />
+
+                  <p className="font-body text-base lg:text-lg text-[oklch(0.1998_0.0403_258.29)] font-medium">
+                    {task}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* Right: Responsibilities split */}
-          <div className="space-y-6">
-            {/* Your tasks */}
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm" style={{ background: "oklch(0.8371 0.1715 85.23)" }}>
-                  👤
-                </div>
-                <h3 className="font-display text-xl font-bold text-[oklch(0.1998_0.0403_258.29)]">
-                  Sua Responsabilidade
-                </h3>
-              </div>
-              <div className="grid grid-cols-2 gap-2">
-                {yourTasks.map((item) => (
-                  <div key={item.task} className="flex items-start gap-2 text-base font-semibold">
-                    <span className="text-base mt-0.5 shrink-0">{item.icon}</span>
-                    <span className="font-body text-[oklch(0.1998_0.0403_258.29)] leading-tight">{item.task}</span>
-                  </div>
-                ))}
-              </div>
+          {/* Nossa atuação */}
+          <div
+            className="rounded-[32px] p-10 border border-white/10 shadow-xl"
+            style={{
+              background: "oklch(0.1998 0.0403 258.29)",
+            }}
+          >
+            <div className="mb-8">
+              <p className="font-body text-sm uppercase tracking-[0.2em] text-gold mb-3 font-bold">
+                Nossa atuação
+              </p>
+
+              <h3 className="font-display text-3xl lg:text-4xl font-black text-white leading-tight">
+                Jurídico e operação técnica
+              </h3>
             </div>
 
-            {/* Our tasks */}
-            <div className="rounded-2xl p-6 shadow-sm border border-white/10" style={{ background: "oklch(0.1998 0.0403 258.29)" }}>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm" style={{ background: "oklch(0.8371 0.1715 85.23)" }}>
-                  ⚖️
+            <div className="space-y-5">
+              {ourTasks.map((task) => (
+                <div
+                  key={task}
+                  className="flex items-center gap-4 border-b border-white/10 pb-5"
+                >
+                  <div
+                    className="w-2.5 h-2.5 rounded-full shrink-0"
+                    style={{
+                      background: "oklch(0.8371 0.1715 85.23)",
+                    }}
+                  />
+
+                  <p className="font-body text-base lg:text-lg text-white/80 font-medium">
+                    {task}
+                  </p>
                 </div>
-                <h3 className="font-display text-xl font-bold text-white">
-                  Nossa Responsabilidade
-                </h3>
-              </div>
-              <div className="grid grid-cols-2 gap-2">
-                {ourTasks.map((item) => (
-                  <div key={item.task} className="flex items-start gap-2 text-base font-semibold">
-                    <span className="text-base mt-0.5 shrink-0">{item.icon}</span>
-                    <span className="font-body text-white/70 leading-tight">{item.task}</span>
-                  </div>
-                ))}
-              </div>
+              ))}
             </div>
           </div>
         </div>
 
-        {/* How it works timeline */}
-        <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-          <h3 className="font-display text-2xl font-bold text-[oklch(0.1998_0.0403_258.29)] text-center mb-8">
-            Como funciona na prática
-          </h3>
-          <div className="grid md:grid-cols-5 gap-4">
-            {[
-              { step: "01", title: "Cliente te contata", desc: "Motorista com multa busca sua unidade" },
-              { step: "02", title: "Você realiza a venda", desc: "Venda do recurso ou da suspensão" },
-              { step: "03", title: "Você cadastra", desc: "Insere os dados no sistema HelpMultas" },
-              { step: "04", title: "Analisamos", desc: "Nossa equipe jurídica analisa o caso" },
-              { step: "05", title: "Defendemos", desc: "Elaboramos e protocolamos a defesa" },
-            ].map((step, i) => (
-              <div key={step.step} className="relative flex flex-col items-center text-center">
-                {/* Connector line */}
-                {i < 4 && (
-                  <div className="hidden md:block absolute top-5 left-[60%] w-full h-0.5 bg-gray-200 z-0" />
-                )}
+        {/* Processo */}
+        <div className="mt-24">
+          <div className="text-center mb-14">
+            <p className="font-body text-sm uppercase tracking-[0.3em] text-gold font-semibold mb-3">
+              Fluxo operacional
+            </p>
+
+            <h3 className="font-display text-4xl font-black text-[oklch(0.1998_0.0403_258.29)]">
+              COMO FUNCIONA NA PRÁTICA
+            </h3>
+          </div>
+
+          <div className="grid md:grid-cols-5 gap-6">
+            {processSteps.map((step) => (
+              <div
+                key={step.number}
+                className="relative bg-white rounded-[24px] p-8 border border-black/5 shadow-sm"
+              >
+                <span className="font-data text-5xl text-gold/30 absolute top-5 right-5">
+                  {step.number}
+                </span>
+
                 <div
-                  className="relative z-10 w-10 h-10 rounded-full flex items-center justify-center font-data text-sm mb-3 shrink-0"
-                  style={{ background: "oklch(0.8371 0.1715 85.23)", color: "ooklch(0.1998 0.0403 258.29)" }}
-                >
-                  {step.step}
-                </div>
-                <h4 className="font-display text-sm font-bold text-[oklch(0.1998_0.0403_258.29)] mb-1">{step.title}</h4>
-                <p className="font-body text-xs text-[oklch(0.1998_0.0403_258.29)] leading-tight">{step.desc}</p>
+                  className="w-12 h-1 rounded-full mb-6"
+                  style={{
+                    background: "oklch(0.8371 0.1715 85.23)",
+                  }}
+                />
+
+                <h4 className="font-display text-2xl font-bold text-[oklch(0.1998_0.0403_258.29)] mb-3">
+                  {step.title}
+                </h4>
+
+                <p className="font-body text-sm leading-relaxed text-[oklch(0.1998_0.0403_258.29)]/70">
+                  {step.description}
+                </p>
               </div>
             ))}
           </div>

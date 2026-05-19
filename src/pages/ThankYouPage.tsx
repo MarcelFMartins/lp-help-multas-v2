@@ -5,11 +5,20 @@
  * Colors: White text on dark navy bg, gold accents
  */
 
+import { useEffect } from 'react';
 import { CheckCircle, UserPlus, AlertCircle } from "lucide-react";
 
 const HERO_BG = "/image/fundo.webp";
 
 export default function ThankYouPage() {
+
+  useEffect(() => {
+    if (window.fbq) {
+      window.fbq('track', 'Purchase');
+    }
+  }, []);
+
+
   return (
     <section
       className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"

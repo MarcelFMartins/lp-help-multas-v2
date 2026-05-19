@@ -62,7 +62,7 @@ export default function MarketSection() {
             POR ANO. ALGUÉM PRECISA DEFENDER ESSES MOTORISTAS.
           </h2>
           <p className="font-body text-white/70 text-lg mt-6 max-w-2xl mx-auto">
-            Esse alguém pode ser você — com suporte técnico completo da HelpMultas,
+            Esse alguém pode ser você, com suporte técnico completo da HelpMultas,
             sem precisar ser advogado.
           </p>
         </div>
@@ -84,26 +84,22 @@ export default function MarketSection() {
         <div className="grid md:grid-cols-3 gap-6">
           {[
             {
-              icon: "🚗",
               title: "Mercado Bilionário",
               text: "O Brasil arrecada bilhões em multas de trânsito por ano. A maioria dos motoristas não sabe que pode contestar.",
             },
             {
-              icon: "⚖️",
               title: "Defesa Acessível",
               text: "Apenas uma fração dos motoristas multados busca defesa administrativa. Essa é a janela de oportunidade.",
             },
             {
-              icon: "📈",
               title: "Demanda Crescente",
-              text: "Com o aumento da fiscalização eletrônica, o número de multas cresce ano a ano — e a demanda por defesa também.",
+              text: "Com o aumento da fiscalização eletrônica, o número de multas cresce ano a ano, e a demanda por defesa também.",
             },
           ].map((card) => (
             <div
               key={card.title}
               className="bg-[oklch(0.1998_0.0403_258.29)] rounded-xl border border-white/10 p-6 hover:border-gold/40 transition-all duration-300 group"
             >
-              <span className="text-3xl mb-4 block">{card.icon}</span>
               <h3 className="font-display text-xl font-bold text-white mb-2 group-hover:text-gold transition-colors">
                 {card.title}
               </h3>

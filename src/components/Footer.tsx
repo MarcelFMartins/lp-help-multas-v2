@@ -86,13 +86,17 @@ export default function Footer() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10 xl:gap-16 pb-12">
 
-          <div className="sm:col-span-2 lg:col-span-2 flex flex-col gap-4">
-            <a href="#inicio" className="font-display text-2xl font-bold text-white tracking-tight">
-              Help<span className="text-gold"> Multas</span>
+          <div className="sm:col-span-2 lg:col-span-2 flex flex-col gap-1">
+            <a href="#inicio">
+              <img
+                src="/image/LogotipoHelpinho.png"
+                alt="Help Multas"
+                className="h-14"
+              />
             </a>
             <p className="text-xs text-white/55 max-w-sm leading-relaxed">
-              Líder em recursos de multas e processos administrativos de trânsito.
-              Garantindo o seu direito de dirigir de forma justa, rápida e descomplicada.
+              Milhões de multas por ano. Cada uma é uma oportunidade sua.
+              Modelo franqueado que transforma clientes em renda.
             </p>
           </div>
 
