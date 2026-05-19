@@ -111,7 +111,7 @@ export default function HeroSection() {
           headers: {
             "Content-Type": "application/json",
             "x-api-key":
-              "KsPHxXtwBQ5SfhJd7au0R_IcnmbfhJd7spj5FwbYe8Kt3iEAYi",
+              "93wkn371eaEbl6P41RlNWhM1xrFGSXdRVjDf3AGC",
           },
 
           body: JSON.stringify(crmPayload),
