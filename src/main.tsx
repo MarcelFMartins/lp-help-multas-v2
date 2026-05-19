@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
 
-// 🔥 META PIXEL - Carrega PageView na página index
 declare global {
   interface Window {
     fbq: any;
