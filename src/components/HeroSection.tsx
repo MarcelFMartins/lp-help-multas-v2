@@ -299,7 +299,7 @@ export default function HeroSection() {
                   className="w-full px-4 py-3 rounded-lg border border-gray-200 font-body text-sm focus:outline-none focus:ring-2 focus:ring-[oklch(0.8371_0.1715_85.23)] focus:border-transparent transition-all text-gray-500"
                 >
                   <option value="">Capital disponível para investimento</option>
-                  <option value="10.000">Mais de R$ 10 mil</option>
+                  <option value="20.000">Mais de R$ 20 mil</option>
                   <option value="30.000">Mais de R$ 30 mil</option>
                   <option value="50.000">Mais de R$ 50 mil</option>
                   <option value="100.000">Mais de R$ 100 mil</option>

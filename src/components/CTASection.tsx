@@ -20,46 +20,106 @@ export default function CTASection() {
     uf: "",
     capital: "",
   });
-  // Novo estado adicionado
+
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Novo estado para controlar o botão durante o envio
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-        },
-        body: JSON.stringify({
-          // 1. INSIRA SUA CHAVE AQUI:
-          access_key: "1f63b8b2-e797-4e97-8308-b9b8509f6449",
+      const meta = window.getMetaTrackingData();
+      const tracking = window.getTrackingData();
 
-          // 2. SEUS DADOS DO FORMULÁRIO:
-          ...formData,
+      const payload = {
+        nome: formData.nome,
+        email: formData.email,
+        whatsapp: formData.whatsapp,
+        cidade: formData.cidade,
+        uf: formData.uf,
+        capital: formData.capital,
 
-          // 3. CONFIGURAÇÕES ADICIONAIS DO WEB3FORMS:
-          from_name: "Landing Page Franquias", // Nome que aparecerá como remetente
-          subject: "Novo Candidato a Franqueado", // Assunto do e-mail
-        }),
-      });
+        fbp: meta?.fbp || "",
+        fbc: meta?.fbc || "",
+        fbclid: meta?.fbclid || "",
+      };
 
-      const result = await response.json();
+      const web3Response = await fetch(
+        "https://api.web3forms.com/submit",
+        {
+          method: "POST",
 
-      // O Web3Forms retorna um JSON com a propriedade "success" igual a true
-      if (response.ok && result.success) {
-        // Redirecionamento controlado pelo seu código
-        window.location.href = "https://franquias.helpmultas.com.br/obrigado";
-      } else {
-        alert("Ocorreu um erro ao enviar. Por favor, tente novamente.");
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+
+          body: JSON.stringify({
+            access_key: "1f63b8b2-e797-4e97-8308-b9b8509f6449",
+
+            ...payload,
+
+            from_name: "Landing Page Franquias",
+            subject: "Novo Candidato a Franqueado",
+          }),
+        }
+      );
+
+      const web3Result = await web3Response.json();
+
+      if (!web3Response.ok || !web3Result.success) {
+        throw new Error("Erro Web3Forms");
       }
+
+      try {
+        const crmPayload = {
+          fullName: formData.nome,
+          phone: formData.whatsapp,
+          email: formData.email,
+
+          fbp: meta?.fbp || "",
+          fbc: meta?.fbc || "",
+          fbclid: meta?.fbclid || "",
+
+          utmSource: tracking?.utm_source || "",
+          utmMedium: tracking?.utm_medium || "",
+          utmCampaign: tracking?.utm_campaign || "",
+          utmContent: tracking?.utm_content || "",
+          utmTerm: tracking?.utm_term || "",
+          utmId: tracking?.utm_id || "",
+        };
+
+        const crmResponse = await fetch(
+          "https://crm.helprecurso.com.br/leads/create-by-api-key",
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type": "application/json",
+              "x-api-key":
+                "93wkn371eaEbl6P41RlNWhM1xrFGSXdRVjDf3AGC",
+            },
+
+            body: JSON.stringify(crmPayload),
+          }
+        );
+
+        if (!crmResponse.ok) {
+          console.error("Erro CRM");
+        }
+
+      } catch (crmError) {
+        console.error("Erro CRM:", crmError);
+      }
+
+      window.location.href =
+        "https://franquias.helpmultas.com.br/obrigado";
+
     } catch (error) {
-      console.error("Erro no envio:", error);
-      alert("Ocorreu um erro na conexão. Por favor, tente novamente.");
+      console.error(error);
+
+      alert("Erro ao enviar formulário.");
     } finally {
       setIsSubmitting(false);
     }
@@ -190,7 +250,7 @@ export default function CTASection() {
                 className="w-full px-4 py-3 rounded-lg border border-gray-200 font-body text-sm focus:outline-none focus:ring-2 focus:ring-[oklch(0.8371_0.1715_85.23)] focus:border-transparent transition-all text-gray-500"
               >
                 <option value="">Capital disponível para investimento</option>
-                <option value="10.000">Mais de R$ 10 mil</option>
+                <option value="20.000">Mais de R$ 20 mil</option>
                 <option value="30.000">Mais de R$ 30 mil</option>
                 <option value="50.000">Mais de R$ 50 mil</option>
                 <option value="100.000">Mais de R$ 100 mil</option>
