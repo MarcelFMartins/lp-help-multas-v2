@@ -29,8 +29,23 @@ export default function HeroSection() {
     setIsSubmitting(true);
 
     try {
-      const meta = window.getMetaTrackingData();
-      const tracking = window.getTrackingData();
+      /*
+        =========================================
+        TRACKING
+        =========================================
+      */
+
+      const meta =
+        window.getMetaTrackingData?.() || {};
+
+      const tracking =
+        window.getTrackingData?.() || {};
+
+      /*
+        =========================================
+        PAYLOAD WEB3FORMS
+        =========================================
+      */
 
       const payload = {
         nome: formData.nome,
@@ -40,10 +55,38 @@ export default function HeroSection() {
         uf: formData.uf,
         capital: formData.capital,
 
+        // META
         fbp: meta?.fbp || "",
         fbc: meta?.fbc || "",
         fbclid: meta?.fbclid || "",
+
+        // UTMS
+        utm_source:
+          tracking?.utm_source || "",
+
+        utm_medium:
+          tracking?.utm_medium || "",
+
+        utm_campaign:
+          tracking?.utm_campaign || "",
+
+        utm_content:
+          tracking?.utm_content || "",
+
+        utm_term:
+          tracking?.utm_term || "",
+
+        utm_id:
+          tracking?.utm_id || "",
       };
+
+      console.log("WEB3 PAYLOAD:", payload);
+
+      /*
+        =========================================
+        1. WEB3FORMS (OBRIGATÓRIO)
+        =========================================
+      */
 
       const web3Response = await fetch(
         "https://api.web3forms.com/submit",
@@ -56,21 +99,43 @@ export default function HeroSection() {
           },
 
           body: JSON.stringify({
-            access_key: "1f63b8b2-e797-4e97-8308-b9b8509f6449",
+            access_key:
+              "1f63b8b2-e797-4e97-8308-b9b8509f6449",
 
             ...payload,
 
-            from_name: "Landing Page Franquias",
-            subject: "Novo Candidato a Franqueado",
+            from_name:
+              "Landing Page Franquias",
+
+            subject:
+              "Novo Candidato a Franqueado",
           }),
         }
       );
 
-      const web3Result = await web3Response.json();
+      const web3Result =
+        await web3Response.json();
 
-      if (!web3Response.ok || !web3Result.success) {
-        throw new Error("Erro Web3Forms");
+      console.log(
+        "WEB3 RESPONSE:",
+        web3Result
+      );
+
+      // WEB3FORMS É OBRIGATÓRIO
+      if (
+        !web3Response.ok ||
+        !web3Result.success
+      ) {
+        throw new Error(
+          "Erro ao enviar formulário"
+        );
       }
+
+      /*
+        =========================================
+        2. CRM (OPCIONAL)
+        =========================================
+      */
 
       try {
         const crmPayload = {
@@ -78,17 +143,35 @@ export default function HeroSection() {
           phone: formData.whatsapp,
           email: formData.email,
 
+          // META
           fbp: meta?.fbp || "",
           fbc: meta?.fbc || "",
           fbclid: meta?.fbclid || "",
 
-          utmSource: tracking?.utm_source || "",
-          utmMedium: tracking?.utm_medium || "",
-          utmCampaign: tracking?.utm_campaign || "",
-          utmContent: tracking?.utm_content || "",
-          utmTerm: tracking?.utm_term || "",
-          utmId: tracking?.utm_id || "",
+          // UTMS
+          utmSource:
+            tracking?.utm_source || "",
+
+          utmMedium:
+            tracking?.utm_medium || "",
+
+          utmCampaign:
+            tracking?.utm_campaign || "",
+
+          utmContent:
+            tracking?.utm_content || "",
+
+          utmTerm:
+            tracking?.utm_term || "",
+
+          utmId:
+            tracking?.utm_id || "",
         };
+
+        console.log(
+          "CRM PAYLOAD:",
+          crmPayload
+        );
 
         const crmResponse = await fetch(
           "https://crm.helprecurso.com.br/leads/create-by-api-key",
@@ -96,30 +179,60 @@ export default function HeroSection() {
             method: "POST",
 
             headers: {
-              "Content-Type": "application/json",
+              "Content-Type":
+                "application/json",
+
               "x-api-key":
                 "93wkn371eaEbl6P41RlNWhM1xrFGSXdRVjDf3AGC",
             },
 
-            body: JSON.stringify(crmPayload),
+            body: JSON.stringify(
+              crmPayload
+            ),
           }
         );
 
+        console.log(
+          "CRM STATUS:",
+          crmResponse.status
+        );
+
+        // NÃO QUEBRA O FLUXO
         if (!crmResponse.ok) {
-          console.error("Erro CRM");
+          console.error(
+            "Erro CRM:",
+            crmResponse.status
+          );
         }
 
       } catch (crmError) {
-        console.error("Erro CRM:", crmError);
+        // CRM NÃO PODE QUEBRAR O FORM
+        console.error(
+          "CRM ERROR:",
+          crmError
+        );
       }
+
+      /*
+        =========================================
+        3. REDIRECT
+        =========================================
+      */
 
       window.location.href =
         "https://franquias.helpmultas.com.br/obrigado";
 
     } catch (error) {
-      console.error(error);
+      console.error(
+        "ERRO COMPLETO:",
+        error
+      );
 
-      alert("Erro ao enviar formulário.");
+      alert(
+        error instanceof Error
+          ? error.message
+          : "Erro ao enviar formulário."
+      );
     } finally {
       setIsSubmitting(false);
     }
