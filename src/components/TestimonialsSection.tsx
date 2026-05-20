@@ -9,7 +9,7 @@ const testimonials = [
     quote:
       "Comecei sozinha e em poucos meses já estava faturando acima das minhas expectativas. O suporte da Help é incrível.",
     highlight: "Começou sozinha e deu certo",
-    videoThumb: "/image/KELLY.png",
+    videoThumb: "/image/KELLY.webp",
     videoUrl: "https://www.youtube.com/embed/44PoELQxMwI?autoplay=1",
   },
   {
@@ -18,7 +18,7 @@ const testimonials = [
     quote:
       "Em 1 ano de operação já ultrapassei R$ 1 milhão em faturamento. Nunca imaginei que seria possível com esse modelo.",
     highlight: "R$ 1 milhão em 1 ano",
-    videoThumb: "/image/DANI.png",
+    videoThumb: "/image/DANI.webp",
     videoUrl: "https://www.youtube.com/embed/_ZKqEShdv1A?autoplay=1",
   },
   {
@@ -27,7 +27,7 @@ const testimonials = [
     quote:
       "A verdade sobre a Help Multas é que o modelo realmente funciona. Você tem todo o suporte que precisa para começar e crescer.",
     highlight: "Modelo que realmente funciona",
-    videoThumb: "/image/Rapha.png",
+    videoThumb: "/image/Rapha.webp",
     videoUrl: "https://www.youtube.com/embed/GhF9Byl44qg?autoplay=1",
   },
 ];

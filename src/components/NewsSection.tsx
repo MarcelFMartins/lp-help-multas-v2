@@ -29,7 +29,7 @@ export default function NewsSection() {
       domain: "g1.globo.com",
       date: "2025",
       image:
-        "/image/noticia01.png",
+        "/image/noticia01.webp",
       description:
         "O excesso de velocidade foi a infração mais flagrada nas estradas federais. Sete em cada dez multas foram por dirigir acima do limite máximo da via.",
       category: "Dados Oficiais",
@@ -44,7 +44,7 @@ export default function NewsSection() {
       domain: "tnh1.com.br",
       date: "2025",
       image:
-        "/image/noticia02.png",
+        "/image/noticia02.webp",
       description:
         "Após mudanças na legislação de trânsito, multas dispararam 40% em 2025. Rodovias federais registraram números históricos.",
       category: "Tendência",
@@ -59,7 +59,7 @@ export default function NewsSection() {
       domain: "g1.globo.com",
       date: "2023",
       image:
-        "/image/noticia03.png",
+        "/image/noticia03.webp",
       description:
         "A Companhia de Engenharia de Tráfego arrecadou R$ 1,6 bilhão em multas em 2023.",
       category: "Financeiro",
@@ -74,7 +74,7 @@ export default function NewsSection() {
       domain: "g1.globo.com",
       date: "2024",
       image:
-        "/image/noticia04.png",
+        "/image/noticia04.webp",
       description:
         "Levantamento mostra que excesso de velocidade representa 40% de todas as multas aplicadas.",
       category: "Análise",
@@ -89,7 +89,7 @@ export default function NewsSection() {
       domain: "g1.globo.com",
       date: "2024",
       image:
-        "/image/noticia05.png",
+        "/image/noticia05.webp",
       description:
         "O Brasil registrou o maior número de infrações em rodovias federais desde 2007.",
       category: "Recorde",
@@ -104,7 +104,7 @@ export default function NewsSection() {
       domain: "conjur.com.br",
       date: "2024",
       image:
-        "/image/noticia06.png",
+        "/image/noticia06.webp",
       description:
         "Superior Tribunal de Justiça reforça direito de motoristas contestarem multas por vícios processuais.",
       category: "Jurídico",
