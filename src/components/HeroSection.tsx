@@ -25,6 +25,7 @@ export default function HeroSection() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     setIsSubmitting(true);
 
     try {
@@ -38,6 +39,7 @@ export default function HeroSection() {
         cidade: formData.cidade,
         uf: formData.uf,
         capital: formData.capital,
+
         fbp: meta?.fbp || "",
         fbc: meta?.fbc || "",
         fbclid: meta?.fbclid || "",
@@ -70,45 +72,46 @@ export default function HeroSection() {
         throw new Error("Erro Web3Forms");
       }
 
-      const crmPayload = {
-        fullName: formData.nome,
-        phone: formData.whatsapp,
-        email: formData.email,
-        fbp: meta?.fbp || "",
-        fbc: meta?.fbc || "",
-        fbclid: meta?.fbclid || "",
-        utmSource: tracking?.utm_source || "",
-        utmMedium: tracking?.utm_medium || "",
-        utmCampaign: tracking?.utm_campaign || "",
-        utmContent: tracking?.utm_content || "",
-        utmTerm: tracking?.utm_term || "",
-        utmId: tracking?.utm_id || "",
-      };
+      try {
+        const crmPayload = {
+          fullName: formData.nome,
+          phone: formData.whatsapp,
+          email: formData.email,
 
-      const crmResponse = await fetch(
-        "https://crm.helprecurso.com.br/leads/create-by-api-key",
-        {
-          method: "POST",
+          fbp: meta?.fbp || "",
+          fbc: meta?.fbc || "",
+          fbclid: meta?.fbclid || "",
 
-          headers: {
-            "Content-Type": "application/json",
-            "x-api-key":
-              "93wkn371eaEbl6P41RlNWhM1xrFGSXdRVjDf3AGC",
-          },
+          utmSource: tracking?.utm_source || "",
+          utmMedium: tracking?.utm_medium || "",
+          utmCampaign: tracking?.utm_campaign || "",
+          utmContent: tracking?.utm_content || "",
+          utmTerm: tracking?.utm_term || "",
+          utmId: tracking?.utm_id || "",
+        };
 
-          body: JSON.stringify(crmPayload),
+        const crmResponse = await fetch(
+          "https://crm.helprecurso.com.br/leads/create-by-api-key",
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type": "application/json",
+              "x-api-key":
+                "93wkn371eaEbl6P41RlNWhM1xrFGSXdRVjDf3AGC",
+            },
+
+            body: JSON.stringify(crmPayload),
+          }
+        );
+
+        if (!crmResponse.ok) {
+          console.error("Erro CRM");
         }
-      );
 
-      if (!crmResponse.ok) {
-        throw new Error("Erro CRM");
+      } catch (crmError) {
+        console.error("Erro CRM:", crmError);
       }
-
-      /*
-        ==================================
-        3. REDIRECT
-        ==================================
-      */
 
       window.location.href =
         "https://franquias.helpmultas.com.br/obrigado";
