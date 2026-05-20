@@ -50,7 +50,9 @@
           new RegExp("(^| )" + name + "=([^;]+)")
         );
 
-        return match ? decodeURIComponent(match[2]) : null;
+        return match
+          ? decodeURIComponent(match[2])
+          : "";
       }
 
       function setCookie(name, value, maxAge) {
@@ -62,78 +64,131 @@
         ].join("; ");
       }
 
-      const params = new URLSearchParams(window.location.search);
+      const params = new URLSearchParams(
+        window.location.search
+      );
 
-      const fbclid = params.get("fbclid");
+      const fbclid =
+        params.get("fbclid") || "";
 
-      if (!fbclid) return;
+      if (fbclid) {
+        const fbc =
+          `fb.1.${Date.now()}.${fbclid}`;
 
-      const fbc = `fb.1.${Date.now()}.${fbclid}`;
+        setCookie(
+          "_fbc",
+          fbc,
+          COOKIE_MAX_AGE
+        );
 
-      setCookie("_fbc", fbc, COOKIE_MAX_AGE);
+        localStorage.setItem(
+          "_fbc",
+          fbc
+        );
 
-      localStorage.setItem("_fbc", fbc);
-      localStorage.setItem("fbclid", fbclid);
+        localStorage.setItem(
+          "fbclid",
+          fbclid
+        );
+      }
 
       const fbp = getCookie("_fbp");
 
       if (fbp) {
-        localStorage.setItem("_fbp", fbp);
+        localStorage.setItem(
+          "_fbp",
+          fbp
+        );
       }
 
-      window.getMetaTrackingData = function () {
-        return {
-          fbp:
-            getCookie("_fbp") ||
-            localStorage.getItem("_fbp"),
+      window.getMetaTrackingData =
+        function () {
+          return {
+            fbp:
+              getCookie("_fbp") ||
+              localStorage.getItem("_fbp") ||
+              "",
 
-          fbc:
-            getCookie("_fbc") ||
-            localStorage.getItem("_fbc"),
+            fbc:
+              getCookie("_fbc") ||
+              localStorage.getItem("_fbc") ||
+              "",
 
-          fbclid:
-            localStorage.getItem("fbclid"),
+            fbclid:
+              localStorage.getItem(
+                "fbclid"
+              ) || "",
+          };
         };
-      };
 
       const utms = {
-        utm_source: params.get("utm_source") || "",
-        utm_medium: params.get("utm_medium") || "",
-        utm_campaign: params.get("utm_campaign") || "",
-        utm_content: params.get("utm_content") || "",
-        utm_term: params.get("utm_term") || "",
-        utm_id: params.get("utm_id") || "",
+        utm_source:
+          params.get("utm_source") || "",
+
+        utm_medium:
+          params.get("utm_medium") || "",
+
+        utm_campaign:
+          params.get("utm_campaign") || "",
+
+        utm_content:
+          params.get("utm_content") || "",
+
+        utm_term:
+          params.get("utm_term") || "",
+
+        utm_id:
+          params.get("utm_id") || "",
       };
 
-      Object.entries(utms).forEach(([key, value]) => {
-        if (value) {
-          localStorage.setItem(key, value);
+      Object.entries(utms).forEach(
+        ([key, value]) => {
+          if (value) {
+            localStorage.setItem(
+              key,
+              value
+            );
+          }
         }
-      });
+      );
 
-      window.getTrackingData = function () {
-        return {
-          utm_source:
-            localStorage.getItem("utm_source") || "",
+      window.getTrackingData =
+        function () {
+          return {
+            utm_source:
+              localStorage.getItem(
+                "utm_source"
+              ) || "",
 
-          utm_medium:
-            localStorage.getItem("utm_medium") || "",
+            utm_medium:
+              localStorage.getItem(
+                "utm_medium"
+              ) || "",
 
-          utm_campaign:
-            localStorage.getItem("utm_campaign") || "",
+            utm_campaign:
+              localStorage.getItem(
+                "utm_campaign"
+              ) || "",
 
-          utm_content:
-            localStorage.getItem("utm_content") || "",
+            utm_content:
+              localStorage.getItem(
+                "utm_content"
+              ) || "",
 
-          utm_term:
-            localStorage.getItem("utm_term") || "",
+            utm_term:
+              localStorage.getItem(
+                "utm_term"
+              ) || "",
 
-          utm_id:
-            localStorage.getItem("utm_id") || "",
+            utm_id:
+              localStorage.getItem(
+                "utm_id"
+              ) || "",
+          };
         };
-      };
     })();
   </script>
+
 
   <script type="module" src="/src/main.tsx"></script>
 </body>
