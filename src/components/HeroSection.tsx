@@ -77,11 +77,12 @@ export default function HeroSection() {
         fbp: meta?.fbp || "",
         fbc: meta?.fbc || "",
         fbclid: meta?.fbclid || "",
-        utm_source: tracking?.utm_source || "",
-        utm_medium: tracking?.utm_medium || "",
-        utm_campaign: tracking?.utm_campaign || "",
-        utm_content: tracking?.utm_content || "",
-        utm_term: tracking?.utm_term || "",
+        utmSource: tracking?.utm_source || "",
+        utmMedium: tracking?.utm_medium || "",
+        utmCampaign: tracking?.utm_campaign || "",
+        utmContent: tracking?.utm_content || "",
+        utmTerm: tracking?.utm_term || "",
+        utmId: tracking?.utm_id || "",
       };
 
       const crmResponse = await fetch(

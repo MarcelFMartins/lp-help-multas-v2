@@ -102,6 +102,7 @@
         utm_campaign: params.get("utm_campaign") || "",
         utm_content: params.get("utm_content") || "",
         utm_term: params.get("utm_term") || "",
+        utm_id: params.get("utm_id") || "",
       };
 
       Object.entries(utms).forEach(([key, value]) => {
@@ -126,6 +127,9 @@
 
           utm_term:
             localStorage.getItem("utm_term") || "",
+
+          utm_id:
+            localStorage.getItem("utm_id") || "",
         };
       };
     })();

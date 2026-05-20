@@ -13,6 +13,7 @@ declare global {
       utm_campaign: string | null;
       utm_content: string | null;
       utm_term: string | null;
+      utm_id: string | null;
     };
   }
 }
