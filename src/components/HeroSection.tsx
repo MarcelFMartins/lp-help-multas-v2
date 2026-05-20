@@ -23,21 +23,13 @@ export default function HeroSection() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Novo estado para controlar o botão durante o envio
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     setIsSubmitting(true);
 
     try {
-      // TRACKING META
       const meta = window.getMetaTrackingData();
-
-      /*
-        ==================================
-        PAYLOAD PADRÃO
-        ==================================
-      */
+      const tracking = window.getTrackingData();
 
       const payload = {
         nome: formData.nome,
@@ -46,17 +38,10 @@ export default function HeroSection() {
         cidade: formData.cidade,
         uf: formData.uf,
         capital: formData.capital,
-
         fbp: meta?.fbp || "",
         fbc: meta?.fbc || "",
         fbclid: meta?.fbclid || "",
       };
-
-      /*
-        ==================================
-        1. WEB3FORMS
-        ==================================
-      */
 
       const web3Response = await fetch(
         "https://api.web3forms.com/submit",
@@ -81,26 +66,22 @@ export default function HeroSection() {
 
       const web3Result = await web3Response.json();
 
-      // ERRO WEB3FORMS
       if (!web3Response.ok || !web3Result.success) {
         throw new Error("Erro Web3Forms");
       }
-
-      /*
-        ==================================
-        2. CRM
-        ==================================
-      */
 
       const crmPayload = {
         fullName: formData.nome,
         phone: formData.whatsapp,
         email: formData.email,
-
-        // META
         fbp: meta?.fbp || "",
         fbc: meta?.fbc || "",
         fbclid: meta?.fbclid || "",
+        utm_source: tracking?.utm_source || "",
+        utm_medium: tracking?.utm_medium || "",
+        utm_campaign: tracking?.utm_campaign || "",
+        utm_content: tracking?.utm_content || "",
+        utm_term: tracking?.utm_term || "",
       };
 
       const crmResponse = await fetch(
@@ -118,7 +99,6 @@ export default function HeroSection() {
         }
       );
 
-      // ERRO CRM
       if (!crmResponse.ok) {
         throw new Error("Erro CRM");
       }

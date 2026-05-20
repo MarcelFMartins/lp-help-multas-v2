@@ -66,27 +66,21 @@
 
       const fbclid = params.get("fbclid");
 
-      // Usuário não veio do Facebook
       if (!fbclid) return;
 
-      // Cria o _fbc no padrão Meta
       const fbc = `fb.1.${Date.now()}.${fbclid}`;
 
-      // Salva cookie
       setCookie("_fbc", fbc, COOKIE_MAX_AGE);
 
-      // Backup
       localStorage.setItem("_fbc", fbc);
       localStorage.setItem("fbclid", fbclid);
 
-      // Salva _fbp se existir
       const fbp = getCookie("_fbp");
 
       if (fbp) {
         localStorage.setItem("_fbp", fbp);
       }
 
-      // Disponibiliza global
       window.getMetaTrackingData = function () {
         return {
           fbp:
@@ -99,6 +93,39 @@
 
           fbclid:
             localStorage.getItem("fbclid"),
+        };
+      };
+
+      const utms = {
+        utm_source: params.get("utm_source") || "",
+        utm_medium: params.get("utm_medium") || "",
+        utm_campaign: params.get("utm_campaign") || "",
+        utm_content: params.get("utm_content") || "",
+        utm_term: params.get("utm_term") || "",
+      };
+
+      Object.entries(utms).forEach(([key, value]) => {
+        if (value) {
+          localStorage.setItem(key, value);
+        }
+      });
+
+      window.getTrackingData = function () {
+        return {
+          utm_source:
+            localStorage.getItem("utm_source") || "",
+
+          utm_medium:
+            localStorage.getItem("utm_medium") || "",
+
+          utm_campaign:
+            localStorage.getItem("utm_campaign") || "",
+
+          utm_content:
+            localStorage.getItem("utm_content") || "",
+
+          utm_term:
+            localStorage.getItem("utm_term") || "",
         };
       };
     })();
