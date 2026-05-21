@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Play, X } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
+import { Img } from "./Img";
 
 const testimonials = [
   {
@@ -10,6 +11,7 @@ const testimonials = [
       "Comecei sozinha e em poucos meses já estava faturando acima das minhas expectativas. O suporte da Help é incrível.",
     highlight: "Começou sozinha e deu certo",
     videoThumb: "/image/KELLY.webp",
+    videoThumbFallback: "/image/KELLY.png",
     videoUrl: "https://www.youtube.com/embed/44PoELQxMwI?autoplay=1",
   },
   {
@@ -19,6 +21,7 @@ const testimonials = [
       "Em 1 ano de operação já ultrapassei R$ 1 milhão em faturamento. Nunca imaginei que seria possível com esse modelo.",
     highlight: "R$ 1 milhão em 1 ano",
     videoThumb: "/image/DANI.webp",
+    videoThumbFallback: "/image/DANI.png",
     videoUrl: "https://www.youtube.com/embed/_ZKqEShdv1A?autoplay=1",
   },
   {
@@ -28,6 +31,7 @@ const testimonials = [
       "A verdade sobre a Help Multas é que o modelo realmente funciona. Você tem todo o suporte que precisa para começar e crescer.",
     highlight: "Modelo que realmente funciona",
     videoThumb: "/image/Rapha.webp",
+    videoThumbFallback: "/image/Rapha.png",
     videoUrl: "https://www.youtube.com/embed/GhF9Byl44qg?autoplay=1",
   },
 ];
@@ -108,8 +112,9 @@ export default function TestimonialsSection() {
                   ) : (
                     <>
                       {/* Thumbnail */}
-                      <img
-                        src={t.videoThumb}
+                      <Img
+                        webp={t.videoThumb}
+                        fallback={t.videoThumbFallback}
                         alt={t.name}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                       />

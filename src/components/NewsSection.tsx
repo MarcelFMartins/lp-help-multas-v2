@@ -201,10 +201,11 @@ export default function NewsSection() {
                   ) : (
                     <>
                       {/* Image */}
-                      <div className="relative overflow-hidden h-52">
+                        <div className="relative overflow-hidden h-52">
                         <img
                           src={item.image}
                           alt={item.title}
+                          loading="lazy"
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                         />
 

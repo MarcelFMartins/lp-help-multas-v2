@@ -5,6 +5,7 @@
  */
 
 import { useInView } from "../hooks/useInView";
+import { Img } from "./Img";
 
 export default function TeamSection() {
   const { ref: contentRef, inView: contentInView } = useInView();
@@ -23,9 +24,10 @@ export default function TeamSection() {
               <div className="absolute -top-4 -left-4 w-24 h-24 bg-[oklch(0.8371_0.1715_85.23)] rounded-2xl -z-10" />
               
               <div className="rounded-3xl overflow-hidden shadow-2xl border-2 border-gray-100">
-                <img 
-                  src="/image/equipe_help.webp" 
-                  alt="Equipe Help Multas" 
+                <Img
+                  webp="/image/equipe_help.webp"
+                  fallback="/image/logotipo.png"
+                  alt="Equipe Help Multas"
                   className="w-full h-auto object-cover"
                 />
               </div>

@@ -26,7 +26,7 @@ export default function StickyNav() {
       <div className="container mx-auto px-4 py-3 flex items-center justify-between gap-4">
         <a href="#inicio" className="shrink-0">
           <img
-            src="/image/H amarelo.png"
+            src="/image/helpinho 3d.png"
             alt="Help Multas"
             className="h-10 w-auto"
           />

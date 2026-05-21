@@ -16,6 +16,7 @@
 import { useState } from "react";
 import { Play, X } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
+import { Img } from "@/components/Img";
 
 const HERO_BG = "/image/fundo.webp";
 
@@ -54,9 +55,9 @@ const news = [
 ];
 
 const testimonials = [
-    { name: "Kelly Volmann", location: "Criciúma — SC", highlight: "Começou sozinha e deu certo", thumb: "/image/KELLY.webp", videoUrl: "https://www.youtube.com/embed/44PoELQxMwI?autoplay=1", quote: "Comecei sozinha e em poucos meses já estava faturando acima das minhas expectativas. O suporte da Help é incrível." },
-    { name: "Dani Correa", location: "Joinville — SC", highlight: "R$ 1 milhão em 1 ano", thumb: "/image/DANI.webp", videoUrl: "https://www.youtube.com/embed/_ZKqEShdv1A?autoplay=1", quote: "Em 1 ano de operação já ultrapassei R$ 1 milhão em faturamento. Nunca imaginei que seria possível com esse modelo." },
-    { name: "Raphael Moraes", location: "Joinville — SC", highlight: "Modelo que realmente funciona", thumb: "/image/Rapha.webp", videoUrl: "https://www.youtube.com/embed/GhF9Byl44qg?autoplay=1", quote: "A verdade sobre a Help Multas é que o modelo realmente funciona. Você tem todo o suporte necessário para começer e crescer." },
+    { name: "Kelly Volmann", location: "Criciúma — SC", highlight: "Começou sozinha e deu certo", thumb: "/image/KELLY.webp", thumbFallback: "/image/KELLY.png", videoUrl: "https://www.youtube.com/embed/44PoELQxMwI?autoplay=1", quote: "Comecei sozinha e em poucos meses já estava faturando acima das minhas expectativas. O suporte da Help é incrível." },
+    { name: "Dani Correa", location: "Joinville — SC", highlight: "R$ 1 milhão em 1 ano", thumb: "/image/DANI.webp", thumbFallback: "/image/DANI.png", videoUrl: "https://www.youtube.com/embed/_ZKqEShdv1A?autoplay=1", quote: "Em 1 ano de operação já ultrapassei R$ 1 milhão em faturamento. Nunca imaginei que seria possível com esse modelo." },
+    { name: "Raphael Moraes", location: "Joinville — SC", highlight: "Modelo que realmente funciona", thumb: "/image/Rapha.webp", thumbFallback: "/image/Rapha.png", videoUrl: "https://www.youtube.com/embed/GhF9Byl44qg?autoplay=1", quote: "A verdade sobre a Help Multas é que o modelo realmente funciona. Você tem todo o suporte necessário para começer e crescer." },
 ];
 
 /* ─── HELPERS ─── */
@@ -321,8 +322,9 @@ export default function ThankYouPage() {
                                             </>
                                         ) : (
                                             <>
-                                                <img
-                                                    src={t.thumb}
+                                                <Img
+                                                    webp={t.thumb}
+                                                    fallback={t.thumbFallback}
                                                     alt={t.name}
                                                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                                                 />
@@ -371,7 +373,7 @@ export default function ThankYouPage() {
                             <div className="relative">
                                 <div className="absolute -top-4 -left-4 w-20 h-20 bg-gold rounded-2xl -z-10" />
                                 <div className="rounded-3xl overflow-hidden shadow-2xl border-2 border-white/10">
-                                    <img src="/image/equipe_help.webp" alt="Equipe Help Multas" className="w-full h-auto object-cover" />
+                                    <Img webp="/image/equipe_help.webp" fallback="/image/logotipo.png" alt="Equipe Help Multas" className="w-full h-auto object-cover" />
                                 </div>
                                 <div className="absolute -bottom-4 -right-4 w-28 h-28 bg-[#D4A017] rounded-full -z-10 opacity-10" />
                             </div>

@@ -132,21 +132,21 @@ export default function Footer() {
           <div className="flex flex-wrap items-center justify-center gap-6 md:gap-10 opacity-30 hover:opacity-60 transition-opacity duration-300">
             <a href="https://racing.porsche.com/" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center">
               <img
-                src="image/porsche motorsport.png"
+                src="/image/porsche motorsport.png"
                 alt="Porsche Motorsport"
                 className="h-5 md:h-6 w-auto object-contain brightness-0 invert"
               />
             </a>
             <a href="https://www.aceleradorempresarial.com.br/giants-alunos/" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center">
               <img
-                src="image/download.svg"
+                src="/image/download.svg"
                 alt="Giants"
                 className="h-4 md:h-5 w-auto object-contain brightness-0 invert"
               />
             </a>
             <a href="https://www.aceleradorempresarial.com.br/" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center">
               <img
-                src="image/grupo_acelerador_icon_png.png"
+                src="/image/grupo_acelerador_icon_png.png"
                 alt="Grupo Acelerador"
                 className="h-6 md:h-7 w-auto object-contain brightness-0 invert"
               />
