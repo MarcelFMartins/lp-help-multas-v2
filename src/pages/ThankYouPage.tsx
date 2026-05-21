@@ -23,15 +23,13 @@ export default function ThankYouPage() {
       <div className="absolute inset-0 bg-[oklch(0.1998_0.0403_258.29)]/60 backdrop-blur-[8px]" />
 
       <div className="relative z-10 container mx-auto px-6 text-center">
-        
+
         {/* Logo */}
-        <div className="mb-12 mt-5 animate-fade-up" style={{ animationDelay: "0.1s" }}>
-          <a href="https://franquias.helpmultas.com.br">
-            <span className="font-display text-3xl font-bold text-white">
-              help<span className="text-gold">multas</span>
-            </span>
-          </a>
-        </div>
+        <center>
+          <div className="mb-10 animate-fade-up" style={{ animationDelay: "0.1s" }}>
+            <img src="/image/H amarelo.png" alt="Help Multas" className="h-14 w-auto" />
+          </div>
+        </center>
 
         {/* Success Icon */}
         <div className="flex justify-center mb-8 animate-fade-up" style={{ animationDelay: "0.2s" }}>
@@ -42,7 +40,7 @@ export default function ThankYouPage() {
 
         {/* Main Content */}
         <div className="max-w-2xl mx-auto">
-          
+
           <h1 className="font-display text-4xl lg:text-6xl font-black text-white leading-tight mb-6 animate-fade-up" style={{ animationDelay: "0.3s" }}>
             MUITO <span className="text-gold">OBRIGADO!</span>
           </h1>

@@ -6,6 +6,7 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import Home from "@/pages/Home";
 import ThankYouPage from "@/pages/ThankYouPage";
+import PreReuniao from "@/pages/PreReunião";
 
 
 function Router() {
@@ -14,6 +15,8 @@ function Router() {
       <Route path="/" component={Home} />
 
       <Route path="/obrigado" component={ThankYouPage} />
+
+      <Route path="/prereuniao" component={PreReuniao} />
       
       <Route path="/404" component={NotFound} />
 

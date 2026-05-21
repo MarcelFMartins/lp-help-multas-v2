@@ -52,7 +52,7 @@ export default function TeamSection() {
             <div className="flex items-center gap-4 p-4 rounded-xl bg-[oklch(0.1998_0.0403_258.29)]/5 border-l-4 border-[oklch(0.8371_0.1715_85.23)]">
               <span className="text-2xl">🚀</span>
               <p className="font-body font-medium text-[oklch(0.1998_0.0403_258.29)]">
-                Mais de 100 colaboradores focados no seu resultado.
+                Mais de 40 colaboradores focados no seu resultado.
               </p>
             </div>
           </div>
