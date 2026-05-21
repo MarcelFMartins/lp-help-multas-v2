@@ -1,16 +1,6 @@
 /*
  * ThankYouPage — Página pós-formulário expandida
  * Layout de seções:
- *   1. IMAGEM  — Hero (fundo.webp) · confirmação agendamento
- *   2. AZUL    — Vídeo Help Experience
- *   3. BRANCO  — Autoridade & Reconhecimento (6 cards)
- *   4. AZUL    — Notícias da mídia
- *   5. BRANCO  — Depoimentos (3 vídeos)
- *   6. AZUL    — Equipe
- *   7. BRANCO  — CTA final + footer
- *
- * Colors: Navy #0e1e35 · Gold #D4A017 · White #fff · Offwhite #F8F6F0
- * Typography: Fraunces (display) · Plus Jakarta Sans (body)
  */
 
 import { useState } from "react";
@@ -100,7 +90,7 @@ export default function ThankYouPage() {
                 <div className="relative z-10 flex flex-col items-center max-w-2xl mx-auto">
                     {/* Logo */}
                     <div className="mb-10 animate-fade-up" style={{ animationDelay: "0.1s" }}>
-                        <img src="/image/H amarelo.png" alt="Help Multas" className="h-14 w-auto" />
+                        <img src="/image/helpinho 3d.png" alt="Help Multas" className="h-14 w-auto" />
                     </div>
 
                     {/* Badge */}
