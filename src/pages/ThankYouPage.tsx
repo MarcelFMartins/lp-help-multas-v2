@@ -27,7 +27,7 @@ export default function ThankYouPage() {
         {/* Logo */}
         <center>
           <div className="mb-10 animate-fade-up" style={{ animationDelay: "0.1s" }}>
-            <img src="/image/helpinho 3d.png" alt="Help Multas" className="h-14 w-auto" />
+            <img src="/image/helpinho 3d.png" alt="Help Multas" className="h-14 w-auto mt-10" />
           </div>
         </center>
 
