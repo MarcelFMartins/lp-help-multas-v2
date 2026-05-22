@@ -12,12 +12,65 @@ const HERO_BG = "/image/fundo.webp";
 
 /* ─── DATA ─── */
 const recognitions = [
-    { title: "+80 Unidades no Brasil", desc: "Uma rede nacional consolidada, com franqueados ativos de norte a sul do país. Presença em todas as regiões, suporte local em cada uma." },
-    { title: "Especialistas em Dir. de Trânsito", desc: "Mais de uma década transformando motoristas em clientes satisfeitos. Domínio técnico que nenhum concorrente replica." },
-    { title: "Destaque na Grande Mídia", desc: "G1 Globo, TNH1 e outros grandes veículos cobriram o crescimento do mercado em que somos protagonistas." },
-    { title: "Help Experience", desc: "Criamos o maior evento de direito de trânsito do Brasil. Reunimos franqueados, especialistas e parceiros todo ano." },
-    { title: "+40 Colaboradores", desc: "Um time dedicado exclusivamente ao sucesso de cada franqueado. Suporte técnico, comercial, jurídico e marketing." },
-    { title: "Mercado Recorrente e Crescente", desc: "+40% de crescimento em multas em 2025. Cada nova lei fortalece nossa demanda — independente do momento econômico." },
+    {
+        title: (
+            <>
+                <span className="text-gold">+80 Unidades</span> no Brasil
+            </>
+        ),
+        desc:
+            "Uma rede nacional consolidada, com franqueados ativos de norte a sul do país. Presença em todas as regiões, suporte local em cada uma.",
+    },
+
+    {
+        title: (
+            <>
+                Especialistas em <span className="text-gold">Dir. de Trânsito</span>
+            </>
+        ),
+        desc:
+            "Mais de uma década transformando motoristas em clientes satisfeitos. Domínio técnico que nenhum concorrente replica.",
+    },
+
+    {
+        title: (
+            <>
+                <span className="text-gold">Destaque</span> na Grande Mídia
+            </>
+        ),
+        desc:
+            "G1 Globo, TNH1 e outros grandes veículos cobriram o crescimento do mercado em que somos protagonistas.",
+    },
+
+    {
+        title: (
+            <>
+                Help <span className="text-gold">Experience</span>
+            </>
+        ),
+        desc:
+            "Criamos o maior evento de direito de trânsito do Brasil. Reunimos franqueados, especialistas e parceiros todo ano.",
+    },
+
+    {
+        title: (
+            <>
+                +40 <span className="text-gold">Colaboradores</span>
+            </>
+        ),
+        desc:
+            "Um time dedicado exclusivamente ao sucesso de cada franqueado. Suporte técnico, comercial, jurídico e marketing.",
+    },
+
+    {
+        title: (
+            <>
+                Mercado <span className="text-gold">Recorrente e Crescente</span>
+            </>
+        ),
+        desc:
+            "+40% de crescimento em multas em 2025. Cada nova lei fortalece nossa demanda — independente do momento econômico.",
+    },
 ];
 
 const news = [
@@ -184,7 +237,7 @@ export default function ThankYouPage() {
                     >
                         {recognitions.map((r, i) => (
                             <div
-                                key={r.title}
+                                key={i}
                                 className={`bg-[oklch(0.1998_0.0403_258.29)] border border-gold rounded-2xl p-8 shadow-sm
                     hover:shadow-md transition-all duration-300
                   ${recogInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}
