@@ -143,7 +143,7 @@ export default function ThankYouPage() {
                         <div className="relative w-full aspect-video rounded-3xl overflow-hidden shadow-2xl border-4 border-[#D4A017]/20">
                             <iframe
                                 className="absolute inset-0 w-full h-full"
-                                src="https://www.youtube.com/embed/dqmeOfJlEcQ"
+                                src="https://www.youtube.com/embed/RdGHF504cE8"
                                 title="Help Experience 2024"
                                 frameBorder="0"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
