@@ -191,7 +191,7 @@ export default function ThankYouPage() {
                 `}
                                 style={{ transitionDelay: `${(i % 3) * 90 + 80}ms`, transition: "opacity .7s ease, transform .7s ease, border-color .3s, box-shadow .3s" }}
                             >
-                                <h3 className="font-display text-lg font-black text-gold mb-3 leading-snug">{r.title}</h3>
+                                <h3 className="font-display text-lg font-black text-white mb-3 leading-snug">{r.title}</h3>
                                 <p className="font-body text-sm text-white leading-relaxed">{r.desc}</p>
                             </div>
                         ))}

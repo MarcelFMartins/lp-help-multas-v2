@@ -6,10 +6,32 @@
 import { useEffect, useState } from "react";
 import { useInView } from "@/hooks/useInView";
 import { ExternalLink } from "lucide-react";
+import { Play } from "lucide-react";
+import { useRef } from "react";
 
 export default function NewsSection() {
   const { ref: titleRef, inView: titleInView } = useInView();
   const { ref: newsRef, inView: newsInView } = useInView();
+
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const handlePlay = () => {
+    if (videoRef.current) {
+      videoRef.current.play();
+      setIsPlaying(true);
+    }
+  };
+
+  const handleEnded = () => {
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+      videoRef.current.load(); // força voltar para o poster
+    }
+
+    setIsPlaying(false);
+  };
 
   const [loading, setLoading] = useState(true);
 
@@ -121,8 +143,8 @@ export default function NewsSection() {
         <div
           ref={titleRef as React.RefObject<HTMLDivElement>}
           className={`max-w-3xl mx-auto text-center mb-16 transition-all duration-700 ${titleInView
-              ? "opacity-100 translate-y-0"
-              : "opacity-0 translate-y-8"
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 translate-y-8"
             }`}
         >
           <span className="gold-line mx-auto" />
@@ -159,8 +181,8 @@ export default function NewsSection() {
             >
               <div
                 className={`group transition-all duration-700 ${newsInView
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-8"
                   }`}
                 style={{
                   transitionDelay: `${idx * 80}ms`,
@@ -268,18 +290,42 @@ export default function NewsSection() {
             </a>
           ))}
         </div>
-        {/* ── Vídeo ── */}
         <div className="mt-20 max-w-4xl mx-auto">
-          <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+          <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl group">
+
             <video
+              ref={videoRef}
               controls
               playsInline
               preload="none"
               poster="/image/thumbRPC.png"
               className="w-full aspect-video object-cover"
+              onEnded={handleEnded}
             >
               <source src="/video-rpc.mp4" type="video/mp4" />
             </video>
+
+            {/* Overlay play */}
+            {!isPlaying && (
+              <div
+                onClick={handlePlay}
+                className="absolute inset-0 bg-black/40 flex items-center justify-center cursor-pointer transition-all duration-300 hover:bg-black/50"
+              >
+                <div
+                  className="w-14 h-14 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
+                  style={{
+                    background: "oklch(0.8371 0.1715 85.23)",
+                  }}
+                >
+                  <Play
+                    className="w-5 h-5 fill-current ml-1"
+                    style={{
+                      color: "oklch(0.3274 0.0363 242.96)",
+                    }}
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
           <p className="font-body text-[11px] text-white/30 mt-3">
