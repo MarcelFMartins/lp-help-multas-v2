@@ -120,11 +120,10 @@ export default function NewsSection() {
         {/* Header */}
         <div
           ref={titleRef as React.RefObject<HTMLDivElement>}
-          className={`max-w-3xl mx-auto text-center mb-16 transition-all duration-700 ${
-            titleInView
+          className={`max-w-3xl mx-auto text-center mb-16 transition-all duration-700 ${titleInView
               ? "opacity-100 translate-y-0"
               : "opacity-0 translate-y-8"
-          }`}
+            }`}
         >
           <span className="gold-line mx-auto" />
 
@@ -159,11 +158,10 @@ export default function NewsSection() {
               className="block"
             >
               <div
-                className={`group transition-all duration-700 ${
-                  newsInView
+                className={`group transition-all duration-700 ${newsInView
                     ? "opacity-100 translate-y-0"
                     : "opacity-0 translate-y-8"
-                }`}
+                  }`}
                 style={{
                   transitionDelay: `${idx * 80}ms`,
                 }}
@@ -201,7 +199,7 @@ export default function NewsSection() {
                   ) : (
                     <>
                       {/* Image */}
-                        <div className="relative overflow-hidden h-52">
+                      <div className="relative overflow-hidden h-52">
                         <img
                           src={item.image}
                           alt={item.title}
@@ -269,6 +267,24 @@ export default function NewsSection() {
               </div>
             </a>
           ))}
+        </div>
+        {/* ── Vídeo ── */}
+        <div className="mt-20 max-w-4xl mx-auto">
+          <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+            <video
+              controls
+              playsInline
+              preload="none"
+              poster="/image/thumbRPC.png"
+              className="w-full aspect-video object-cover"
+            >
+              <source src="/videos/video_apresentação_rpc.mov" type="video/mp4" />
+            </video>
+          </div>
+
+          <p className="font-body text-[11px] text-white/30 mt-3">
+            Fonte: RPC
+          </p>
         </div>
 
         {/* Bottom CTA */}

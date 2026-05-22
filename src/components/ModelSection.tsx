@@ -5,7 +5,7 @@ const yourTasks = [
   "Prospecção e vendas",
   "Atendimento comercial",
   "Cadastro no sistema",
-  "Relacionamento com clientes",
+  "Relacionamento com clientes (Pós Venda)",
   "Gestão dos resultados",
 ];
 
@@ -64,11 +64,10 @@ export default function ModelSection() {
         {/* Header */}
         <div
           ref={titleRef as React.RefObject<HTMLDivElement>}
-          className={`max-w-4xl mx-auto text-center mb-20 transition-all duration-700 ${
-            titleInView
-              ? "opacity-100 translate-y-0"
-              : "opacity-0 translate-y-8"
-          }`}
+          className={`max-w-4xl mx-auto text-center mb-20 transition-all duration-700 ${titleInView
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 translate-y-8"
+            }`}
         >
           <span className="gold-line mx-auto mb-6" />
 
@@ -93,11 +92,10 @@ export default function ModelSection() {
         {/* Cards */}
         <div
           ref={contentRef as React.RefObject<HTMLDivElement>}
-          className={`grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto transition-all duration-700 ${
-            contentInView
-              ? "opacity-100 translate-y-0"
-              : "opacity-0 translate-y-10"
-          }`}
+          className={`grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto transition-all duration-700 ${contentInView
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 translate-y-10"
+            }`}
         >
           {/* Sua atuação */}
           <div className="bg-white rounded-[32px] border border-black/5 p-10 shadow-sm">
@@ -171,6 +169,8 @@ export default function ModelSection() {
           </div>
         </div>
 
+
+
         {/* Processo */}
         <div className="mt-24">
           <div className="text-center mb-14">
@@ -189,7 +189,7 @@ export default function ModelSection() {
                 key={step.number}
                 className="relative bg-white rounded-[24px] p-8 border border-black/5 shadow-sm"
               >
-                <span className="font-data text-5xl text-gold/30 absolute top-5 right-5">
+                <span className="font-data text-5xl text-gold absolute top-5 right-5">
                   {step.number}
                 </span>
 

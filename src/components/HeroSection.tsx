@@ -251,7 +251,7 @@ export default function HeroSection() {
         ref={ref as React.RefObject<HTMLDivElement>}
         className="flex flex-col items-center text-center p-4"
       >
-        <span className="font-data text-6xl lg:text-4xl font-semibold text-gold leading-none">
+        <span className="font-body text-4xl lg:text-4xl font-bold text-gold leading-none">
           {count}{suffix}
         </span>
         <span className="font-display text-sm font-bold text-white mt-2">{label}</span>

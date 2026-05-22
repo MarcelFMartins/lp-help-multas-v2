@@ -4,10 +4,8 @@
  * Narrative: Explicar os drivers de crescimento com dados REAIS verificados
  * Fontes: Senatran, PRF, G1, SEGS, CET-SP
  */
- 
+
 import {
-  LineChart,
-  Line,
   BarChart,
   Bar,
   XAxis,
@@ -18,7 +16,7 @@ import {
   Cell,
 } from "recharts";
 import { useInView } from "../hooks/useInView";
- 
+
 /* ─── Color tokens ─── */
 const COLORS = {
   gold: "oklch(0.8371 0.1715 85.23)",
@@ -32,10 +30,15 @@ const COLORS = {
   tooltipBorder: "oklch(0.8371 0.1715 85.23)",
   white: "#fff",
 };
- 
+
 /* ─── Bar colors (gradient feel via distinct fills) ─── */
-const BAR_FILLS = [COLORS.gold, "oklch(0.75 0.14 85.23)", "oklch(0.65 0.12 85.23)"];
- 
+const BAR_FILLS = [
+  COLORS.gold,
+  "oklch(0.75 0.14 85.23)",
+  "oklch(0.65 0.12 85.23)",
+  "oklch(0.55 0.10 85.23)",
+];
+
 /* ─── Custom Tooltip ─── */
 function ChartTooltip({
   active,
@@ -85,26 +88,15 @@ function ChartTooltip({
     </div>
   );
 }
- 
-/* ─── Custom dot for line chart ─── */
-function GlowDot(props: any) {
-  const { cx, cy } = props;
-  return (
-    <g>
-      <circle cx={cx} cy={cy} r={12} fill={COLORS.gold} opacity={0.15} />
-      <circle cx={cx} cy={cy} r={7} fill={COLORS.gold} stroke={COLORS.white} strokeWidth={2.5} />
-    </g>
-  );
-}
- 
-/* ─── Custom label on line chart ─── */
-function LineLabel(props: any) {
-  const { x, y, value } = props;
+
+/* ─── Custom label on bar chart ─── */
+function BarLabel(props: any) {
+  const { x, y, width, value } = props;
   const formatted = `${(Number(value) / 1_000_000).toFixed(1).replace(".", ",")}M`;
   return (
     <text
-      x={x}
-      y={y - 22}
+      x={x + width / 2}
+      y={y - 10}
       textAnchor="middle"
       fill={COLORS.navy}
       fontSize={14}
@@ -115,9 +107,9 @@ function LineLabel(props: any) {
     </text>
   );
 }
- 
-/* ─── Custom label on bar chart ─── */
-function BarLabel(props: any) {
+
+/* ─── Custom label on infracoes bar chart ─── */
+function InfracoesBarLabel(props: any) {
   const { x, y, width, value } = props;
   return (
     <text
@@ -133,8 +125,8 @@ function BarLabel(props: any) {
     </text>
   );
 }
- 
-/* ─── Custom X-axis tick for bar chart (word-wrap) ─── */
+
+/* ─── Custom X-axis tick for infracoes bar chart (word-wrap) ─── */
 function BarXTick({ x, y, payload }: any) {
   const words: string[] = payload.value.split(" ");
   return (
@@ -156,7 +148,7 @@ function BarXTick({ x, y, payload }: any) {
     </g>
   );
 }
- 
+
 /* ─── Growth badge ─── */
 function GrowthBadge({ value, className = "" }: { value: string; className?: string }) {
   return (
@@ -174,14 +166,14 @@ function GrowthBadge({ value, className = "" }: { value: string; className?: str
     </span>
   );
 }
- 
+
 /* ═══════════════════════════════════════════════════
  *  MAIN COMPONENT
  * ═══════════════════════════════════════════════════ */
 export default function GrowthSection() {
   const { ref: titleRef, inView: titleInView } = useInView();
   const { ref: chartsRef, inView: chartsInView } = useInView();
- 
+
   /* Dados REAIS — Senatran, PRF, G1, SEGS Portal */
   const growthData = [
     { year: "2021", multas: 42_373_773 },
@@ -189,13 +181,13 @@ export default function GrowthSection() {
     { year: "2023", multas: 69_419_273 },
     { year: "2024", multas: 74_897_708 },
   ];
- 
+
   const infracoesData = [
     { tipo: "Excesso de velocidade", valor: 40 },
     { tipo: "Avanço de sinal", valor: 25 },
     { tipo: "Outras infrações", valor: 35 },
   ];
- 
+
   return (
     <section className="py-24 lg:py-32 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -218,7 +210,7 @@ export default function GrowthSection() {
             exponencial do mercado de multas.
           </p>
         </div>
- 
+
         {/* ── Charts ── */}
         <div
           ref={chartsRef as React.RefObject<HTMLDivElement>}
@@ -227,7 +219,7 @@ export default function GrowthSection() {
           }`}
         >
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-            {/* ─────── Gráfico 1: Crescimento de Multas ─────── */}
+            {/* ─────── Gráfico 1: Crescimento de Multas (BarChart) ─────── */}
             <div className="bg-gradient-to-br from-[oklch(0.98_0.005_75)] to-[oklch(0.95_0.008_75)] rounded-2xl p-5 sm:p-8 border border-[oklch(0.90_0.005_75)] shadow-lg">
               {/* Card header */}
               <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-6">
@@ -241,10 +233,14 @@ export default function GrowthSection() {
                 </div>
                 <GrowthBadge value="+76,8% em 4 anos" />
               </div>
- 
+
               {/* Chart */}
               <ResponsiveContainer width="100%" height={320}>
-                <LineChart data={growthData} margin={{ top: 36, right: 28, left: 28, bottom: 8 }}>
+                <BarChart
+                  data={growthData}
+                  margin={{ top: 36, right: 28, left: 28, bottom: 8 }}
+                  barCategoryGap="25%"
+                >
                   <CartesianGrid
                     strokeDasharray="4 4"
                     stroke={COLORS.gridLine}
@@ -256,9 +252,8 @@ export default function GrowthSection() {
                     tickLine={false}
                     tick={{ fill: COLORS.navyMuted, fontSize: 13, fontWeight: 700 }}
                     interval={0}
-                    padding={{ left: 20, right: 20 }}
                   />
-                  <YAxis hide domain={["dataMin - 8000000", "dataMax + 10000000"]} />
+                  <YAxis hide domain={[0, 90_000_000]} />
                   <Tooltip
                     content={
                       <ChartTooltip
@@ -267,24 +262,22 @@ export default function GrowthSection() {
                         }
                       />
                     }
-                    cursor={{ stroke: COLORS.gold, strokeWidth: 1, strokeDasharray: "4 4" }}
+                    cursor={{ fill: "oklch(0.90 0.005 75 / 0.35)", radius: 8 }}
                   />
-                  <Line
-                    type="monotone"
+                  <Bar
                     dataKey="multas"
-                    stroke={COLORS.gold}
-                    strokeWidth={3.5}
-                    dot={<GlowDot />}
-                    activeDot={{ r: 9, fill: COLORS.gold, stroke: COLORS.white, strokeWidth: 3 }}
-                    label={<LineLabel />}
+                    radius={[10, 10, 0, 0]}
+                    fill={COLORS.gold}
+                    label={<BarLabel />}
+                    animationDuration={800}
                   />
-                </LineChart>
+                </BarChart>
               </ResponsiveContainer>
- 
+
               {/* Mini legend */}
               <div className="mt-4 flex items-center gap-2 justify-center">
                 <span
-                  className="block w-8 h-[3px] rounded-full"
+                  className="block w-8 h-3 rounded-sm"
                   style={{ background: COLORS.gold }}
                 />
                 <span className="font-body text-xs text-[oklch(0.45_0.02_250)] font-medium">
@@ -292,7 +285,7 @@ export default function GrowthSection() {
                 </span>
               </div>
             </div>
- 
+
             {/* ─────── Gráfico 2: Tipos de Infrações ─────── */}
             <div className="bg-gradient-to-br from-[oklch(0.98_0.005_75)] to-[oklch(0.95_0.008_75)] rounded-2xl p-5 sm:p-8 border border-[oklch(0.90_0.005_75)] shadow-lg">
               {/* Card header */}
@@ -307,7 +300,7 @@ export default function GrowthSection() {
                 </div>
                 <GrowthBadge value="Top 3 infrações" />
               </div>
- 
+
               {/* Chart */}
               <ResponsiveContainer width="100%" height={320}>
                 <BarChart
@@ -338,7 +331,7 @@ export default function GrowthSection() {
                   <Bar
                     dataKey="valor"
                     radius={[10, 10, 0, 0]}
-                    label={<BarLabel />}
+                    label={<InfracoesBarLabel />}
                     animationDuration={800}
                   >
                     {infracoesData.map((_, i) => (
@@ -347,7 +340,7 @@ export default function GrowthSection() {
                   </Bar>
                 </BarChart>
               </ResponsiveContainer>
- 
+
               {/* Mini legend */}
               <div className="mt-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
                 {infracoesData.map((item, i) => (
@@ -365,7 +358,7 @@ export default function GrowthSection() {
             </div>
           </div>
         </div>
- 
+
         {/* ── Bottom insight ── */}
         <div className="mt-16 lg:mt-20 max-w-4xl mx-auto bg-gradient-to-r from-gold/10 to-gold/5 rounded-2xl p-8 sm:p-10 border border-gold/30">
           <div className="flex gap-5 sm:gap-6">

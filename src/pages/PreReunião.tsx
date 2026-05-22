@@ -113,15 +113,6 @@ export default function ThankYouPage() {
                         o que construímos e por que a Help Multas é a franquia de serviços mais sólida do Brasil.
                     </p>
 
-                    {/* WA button */}
-                    <div className="mt-8 animate-fade-up" style={{ animationDelay: "0.6s" }}>
-                        <a href="https://wa.me/554298673007"
-                            className="animate-[bounce_4s_infinite] inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-body font-bold text-sm uppercase tracking-wider bg-[#22c55e] text-white shadow-lg hover:opacity-90 hover:scale-[1.04] active:scale-[0.97] transition-all duration-200">
-                            <WaSvg cls="w-5 h-5" />
-                            Fale com nosso especialista
-                        </a>
-                    </div>
-
                     {/* scroll hint */}
                     <div className="mt-14 flex flex-col items-center gap-2 text-white/25 animate-fade-up"
                         style={{ animationDelay: "1s" }}>
@@ -170,14 +161,14 @@ export default function ThankYouPage() {
             {/* ══════════════════════════════════════════
           3. BRANCO — Autoridade & Reconhecimento
          ══════════════════════════════════════════ */}
-            <section className="py-24 px-6 bg-[#F8F6F0]">
+            <section className="py-24 px-6 bg-[oklch(0.1998_0.0403_258.29)]">
                 <div className="max-w-5xl mx-auto">
                     <div className={`transition-all duration-700 ${recogInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
                         <span className="gold-line" />
                         <p className="font-body font-semibold text-gold text-sm uppercase tracking-widest mb-4">
                             Autoridade e Reconhecimento
                         </p>
-                        <h2 className="font-display text-3xl lg:text-5xl font-black text-[oklch(0.1998_0.0403_258.29)] leading-tight mb-4">
+                        <h2 className="font-display text-3xl lg:text-5xl font-black text-white leading-tight mb-4">
                             POR QUE A HELP MULTAS{" "}
                             <span className="text-gold">É REFERÊNCIA?</span>
                         </h2>
@@ -194,71 +185,21 @@ export default function ThankYouPage() {
                         {recognitions.map((r, i) => (
                             <div
                                 key={r.title}
-                                className={`bg-white border border-gray-100 rounded-2xl p-8 shadow-sm
-                  hover:border-[#D4A017]/40 hover:shadow-md transition-all duration-300
+                                className={`bg-[oklch(0.1998_0.0403_258.29)] border border-gold rounded-2xl p-8 shadow-sm
+                    hover:shadow-md transition-all duration-300
                   ${recogInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}
                 `}
                                 style={{ transitionDelay: `${(i % 3) * 90 + 80}ms`, transition: "opacity .7s ease, transform .7s ease, border-color .3s, box-shadow .3s" }}
                             >
-                                <h3 className="font-display text-lg font-black text-[oklch(0.1998_0.0403_258.29)] mb-3 leading-snug">{r.title}</h3>
-                                <p className="font-body text-sm text-gray-500 leading-relaxed">{r.desc}</p>
+                                <h3 className="font-display text-lg font-black text-gold mb-3 leading-snug">{r.title}</h3>
+                                <p className="font-body text-sm text-white leading-relaxed">{r.desc}</p>
                             </div>
                         ))}
                     </div>
                 </div>
             </section>
 
-
-            {/* ══════════════════════════════════════════
-          4. AZUL — Notícias da mídia
-         ══════════════════════════════════════════ */}
-            <section className="py-24 px-6 bg-[oklch(0.1998_0.0403_258.29)]">
-                <div className="max-w-5xl mx-auto">
-                    <div className={`transition-all duration-700 ${newsInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-                        <span className="gold-line" />
-                        <p className="font-body font-semibold text-gold text-sm uppercase tracking-widest mb-4">
-                            Presença na mídia
-                        </p>
-                        <h2 className="font-display text-3xl lg:text-5xl font-black text-white leading-tight mb-4">
-                            O MERCADO QUE{" "}
-                            <span className="text-gold">NUNCA PARA</span>
-                        </h2>
-                        <p className="font-body text-lg text-white/55 leading-relaxed max-w-xl">
-                            Com mais de 10 milhões de multas emitidas em 2025, a grande imprensa brasileira
-                            confirma o que já sabemos: este mercado só cresce.
-                        </p>
-                    </div>
-
-                    <div
-                        ref={newsRef as React.RefObject<HTMLDivElement>}
-                        className="grid md:grid-cols-3 gap-5 mt-14"
-                    >
-                        {news.map((n, i) => (
-                            <a
-                                key={n.headline}
-                                href={n.link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className={`group bg-white/5 border border-white/8 rounded-2xl overflow-hidden no-underline
-                  hover:border-gold/40 hover:text-gold hover:-translate-y-1 transition-all duration-300
-                  ${newsInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}
-                `}
-                                style={{ transitionDelay: `${i * 100 + 100}ms`, transition: "opacity .7s ease, transform .35s ease, border-color .3s" }}
-                            >
-                                <img src={n.img} alt={n.headline} className="w-full h-44 object-cover block" />
-                                <div className="p-5">
-                                    <p className="font-body text-[#D4A017] text-[0.68rem] font-bold uppercase tracking-widest mb-2">{n.src}</p>
-                                    <h4 className="font-display font-bold text-white text-[0.97rem] leading-snug mb-2">{n.headline}</h4>
-                                    <p className="font-body text-white/50 text-sm leading-relaxed">{n.blurb}</p>
-                                </div>
-                            </a>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-
-            {/* ══════════════════════════════════════════
+{/* ══════════════════════════════════════════
           5. BRANCO — Depoimentos
          ══════════════════════════════════════════ */}
             <section className="py-24 px-6 bg-[#F8F6F0]">
@@ -348,6 +289,54 @@ export default function ThankYouPage() {
                 </div>
             </section>
 
+
+            {/* ══════════════════════════════════════════
+          4. AZUL — Notícias da mídia
+         ══════════════════════════════════════════ */}
+            <section className="py-24 px-6 bg-[oklch(0.1998_0.0403_258.29)]">
+                <div className="max-w-5xl mx-auto">
+                    <div className={`transition-all duration-700 ${newsInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+                        <span className="gold-line" />
+                        <p className="font-body font-semibold text-gold text-sm uppercase tracking-widest mb-4">
+                            Presença na mídia
+                        </p>
+                        <h2 className="font-display text-3xl lg:text-5xl font-black text-white leading-tight mb-4">
+                            O MERCADO QUE{" "}
+                            <span className="text-gold">NUNCA PARA</span>
+                        </h2>
+                        <p className="font-body text-lg text-white/55 leading-relaxed max-w-xl">
+                            Com mais de 10 milhões de multas emitidas em 2025, a grande imprensa brasileira
+                            confirma o que já sabemos: este mercado só cresce.
+                        </p>
+                    </div>
+
+                    <div
+                        ref={newsRef as React.RefObject<HTMLDivElement>}
+                        className="grid md:grid-cols-3 gap-5 mt-14"
+                    >
+                        {news.map((n, i) => (
+                            <a
+                                key={n.headline}
+                                href={n.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={`group bg-white/5 border border-white/8 rounded-2xl overflow-hidden no-underline
+                  hover:border-gold/40 hover:text-gold transition-all duration-300
+                  ${newsInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}
+                `}
+                                style={{ transitionDelay: `${i * 100 + 100}ms`, transition: "opacity .7s ease, transform .35s ease, border-color .3s" }}
+                            >
+                                <img src={n.img} alt={n.headline} className="w-full h-44 object-cover block" />
+                                <div className="p-5">
+                                    <p className="font-body text-[#D4A017] text-[0.68rem] font-bold uppercase tracking-widest mb-2">{n.src}</p>
+                                    <h4 className="font-display font-bold text-white text-[0.97rem] leading-snug mb-2">{n.headline}</h4>
+                                    <p className="font-body text-white/50 text-sm leading-relaxed">{n.blurb}</p>
+                                </div>
+                            </a>
+                        ))}
+                    </div>
+                </div>
+            </section>
 
             {/* ══════════════════════════════════════════
           6. AZUL — Equipe
