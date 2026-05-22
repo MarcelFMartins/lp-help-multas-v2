@@ -1,0 +1,88 @@
+# ============================================
+# robots.txt — franquias.helpmultas.com.br
+# Landing Page Help Multas Franquias
+# ============================================
+
+# ────────────────────────────────────────────
+# Regra geral: permite todos os buscadores
+# ────────────────────────────────────────────
+User-agent: *
+Allow: /
+
+# Bloqueia páginas de conversão (não devem aparecer no Google)
+Disallow: /obrigado
+Disallow: /prereuniao
+
+# ────────────────────────────────────────────
+# Rastreadores de IA — explicitamente permitidos
+# Garante que seu site apareça nas respostas
+# do ChatGPT, Gemini, Claude, Perplexity etc.
+# ────────────────────────────────────────────
+
+# OpenAI (ChatGPT)
+User-agent: GPTBot
+Allow: /
+Disallow: /obrigado
+Disallow: /prereuniao
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /obrigado
+Disallow: /prereuniao
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /obrigado
+Disallow: /prereuniao
+
+# Google Gemini / AI Overviews
+User-agent: Google-Extended
+Allow: /
+Disallow: /obrigado
+Disallow: /prereuniao
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+Disallow: /obrigado
+Disallow: /prereuniao
+
+# Anthropic (Claude)
+User-agent: ClaudeBot
+Allow: /
+Disallow: /obrigado
+Disallow: /prereuniao
+
+User-agent: anthropic-ai
+Allow: /
+Disallow: /obrigado
+Disallow: /prereuniao
+
+# Microsoft Bing / Copilot
+User-agent: bingbot
+Allow: /
+Disallow: /obrigado
+Disallow: /prereuniao
+
+# Apple Intelligence
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /obrigado
+Disallow: /prereuniao
+
+# Meta AI
+User-agent: Meta-ExternalAgent
+Allow: /
+Disallow: /obrigado
+Disallow: /prereuniao
+
+# Common Crawl (base de treino de várias IAs)
+User-agent: CCBot
+Allow: /
+Disallow: /obrigado
+Disallow: /prereuniao
+
+# ────────────────────────────────────────────
+# Sitemap
+# ────────────────────────────────────────────
+Sitemap: https://franquias.helpmultas.com.br/sitemap.xml
