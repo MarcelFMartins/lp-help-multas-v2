@@ -278,7 +278,7 @@ export default function NewsSection() {
               poster="/image/thumbRPC.png"
               className="w-full aspect-video object-cover"
             >
-              <source src="/videos/video_apresentação_rpc.mov" type="video/mp4" />
+              <source src="/video-rpc.mp4" type="video/mp4" />
             </video>
           </div>
 
