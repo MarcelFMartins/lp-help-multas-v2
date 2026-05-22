@@ -61,7 +61,7 @@ const WaSvg = ({ cls }: { cls: string }) => (
 export default function ThankYouPage() {
     const [activeVideo, setActiveVideo] = useState<number | null>(null);
 
-    const { ref: videoRef, inView: videoInView } = useInView();
+    const { ref: videoSectionRef, inView: videoInView } = useInView();
     const { ref: recogRef, inView: recogInView } = useInView();
     const { ref: newsRef, inView: newsInView } = useInView();
     const { ref: testRef, inView: testInView } = useInView();
@@ -129,7 +129,7 @@ export default function ThankYouPage() {
             <section className="py-24 px-6 bg-[oklch(0.1998_0.0403_258.29)] overflow-hidden">
                 <div className="max-w-5xl mx-auto">
                     <div
-                        ref={videoRef as React.RefObject<HTMLDivElement>}
+                        ref={videoSectionRef as React.RefObject<HTMLDivElement>}
                         className={`transition-all duration-1000 ${videoInView ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}
                     >
                         <div className="text-center mb-12">
@@ -199,7 +199,7 @@ export default function ThankYouPage() {
                 </div>
             </section>
 
-{/* ══════════════════════════════════════════
+            {/* ══════════════════════════════════════════
           5. BRANCO — Depoimentos
          ══════════════════════════════════════════ */}
             <section className="py-24 px-6 bg-[#F8F6F0]">
