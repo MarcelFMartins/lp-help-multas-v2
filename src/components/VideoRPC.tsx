@@ -11,7 +11,7 @@ export default function VideoSection() {
               poster="/image/fundo.webp"
               className="w-full aspect-video object-cover"
             >
-              <source src="/videos/video_apresentação_rpc.mp4" type="video/mp4" />
+              <source src="/video-rpc.mp4" type="video/mp4" />
             </video>
           </div>
           <p className="mt-2 text-left text-xs text-white/50 pl-1">
