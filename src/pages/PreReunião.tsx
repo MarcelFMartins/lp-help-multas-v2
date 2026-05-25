@@ -10,7 +10,6 @@ import { Img } from "@/components/Img";
 
 const HERO_BG = "/image/fundo.webp";
 
-/* ─── DATA ─── */
 const recognitions = [
     {
         title: (
@@ -125,7 +124,7 @@ export default function ThankYouPage() {
         <div className="overflow-x-hidden">
 
             {/* ══════════════════════════════════════════
-          1. IMAGEM — Hero
+          1. Hero
          ══════════════════════════════════════════ */}
             <section
                 className="relative min-h-screen flex flex-col items-center justify-center px-6 py-24 text-center overflow-hidden"
@@ -177,7 +176,7 @@ export default function ThankYouPage() {
 
 
             {/* ══════════════════════════════════════════
-          2. AZUL — Vídeo Help Experience
+          2. Vídeo Help Experience
          ══════════════════════════════════════════ */}
             <section className="py-24 px-6 bg-[oklch(0.1998_0.0403_258.29)] overflow-hidden">
                 <div className="max-w-5xl mx-auto">
@@ -212,16 +211,16 @@ export default function ThankYouPage() {
 
 
             {/* ══════════════════════════════════════════
-          3. BRANCO — Autoridade & Reconhecimento
+          3. Autoridade & Reconhecimento
          ══════════════════════════════════════════ */}
-            <section className="py-24 px-6 bg-[oklch(0.1998_0.0403_258.29)]">
+            <section className="py-24 px-6 bg-white">
                 <div className="max-w-5xl mx-auto">
                     <div className={`transition-all duration-700 ${recogInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
                         <span className="gold-line" />
                         <p className="font-body font-semibold text-gold text-sm uppercase tracking-widest mb-4">
                             Autoridade e Reconhecimento
                         </p>
-                        <h2 className="font-display text-3xl lg:text-5xl font-black text-white leading-tight mb-4">
+                        <h2 className="font-display text-3xl lg:text-5xl font-black text-[oklch(0.1998_0.0403_258.29)] leading-tight mb-4">
                             POR QUE A HELP MULTAS{" "}
                             <span className="text-gold">É REFERÊNCIA?</span>
                         </h2>
@@ -253,7 +252,7 @@ export default function ThankYouPage() {
             </section>
 
             {/* ══════════════════════════════════════════
-          5. BRANCO — Depoimentos
+          4. Depoimentos
          ══════════════════════════════════════════ */}
             <section className="py-24 px-6 bg-[#F8F6F0]">
                 <div className="max-w-5xl mx-auto">
@@ -344,7 +343,7 @@ export default function ThankYouPage() {
 
 
             {/* ══════════════════════════════════════════
-          4. AZUL — Notícias da mídia
+          5. Notícias da mídia
          ══════════════════════════════════════════ */}
             <section className="py-24 px-6 bg-[oklch(0.1998_0.0403_258.29)]">
                 <div className="max-w-5xl mx-auto">
@@ -392,7 +391,7 @@ export default function ThankYouPage() {
             </section>
 
             {/* ══════════════════════════════════════════
-          6. AZUL — Equipe
+          6. Equipe
          ══════════════════════════════════════════ */}
             <section className="py-24 px-6 bg-[oklch(0.1998_0.0403_258.29)]">
                 <div className="max-w-5xl mx-auto">
@@ -442,9 +441,9 @@ export default function ThankYouPage() {
 
 
             {/* ══════════════════════════════════════════
-          7. BRANCO — CTA Final + Footer
+          7. CTA Final + Footer
          ══════════════════════════════════════════ */}
-            <section className="py-24 px-6 bg-[#F8F6F0]">
+            <section className="py-24 px-6 bg-white">
                 <div
                     ref={ctaRef as React.RefObject<HTMLDivElement>}
                     className={`max-w-xl mx-auto text-center transition-all duration-700 ${ctaInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
