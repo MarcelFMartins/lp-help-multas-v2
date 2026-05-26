@@ -183,9 +183,9 @@ export default function GrowthSection() {
   ];
 
   const infracoesData = [
-    { tipo: "Excesso de velocidade", valor: 40 },
     { tipo: "Avanço de sinal", valor: 25 },
     { tipo: "Outras infrações", valor: 35 },
+    { tipo: "Excesso de velocidade", valor: 40 },
   ];
 
   return (
