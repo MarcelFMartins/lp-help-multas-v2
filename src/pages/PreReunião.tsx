@@ -114,6 +114,8 @@ export default function ThankYouPage() {
     const [activeVideo, setActiveVideo] = useState<number | null>(null);
 
     const { ref: videoSectionRef, inView: videoInView } = useInView();
+    const { ref: introRef, inView: introInView } = useInView();
+    const { ref: foundersRef, inView: foundersInView } = useInView();
     const { ref: recogRef, inView: recogInView } = useInView();
     const { ref: newsRef, inView: newsInView } = useInView();
     const { ref: testRef, inView: testInView } = useInView();
@@ -174,9 +176,262 @@ export default function ThankYouPage() {
                 </div>
             </section>
 
+            {/* ══════════════════════════════════════════
+  2. Apresentação
+══════════════════════════════════════════ */}
+            <section className="relative py-24 px-6 bg-[oklch(0.1998_0.0403_258.29)] overflow-hidden">
+                {/* Background decorativo */}
+                <div className="absolute inset-0 pointer-events-none">
+                    <div className="absolute -top-32 -left-32 w-96 h-96 bg-[#D4A017]/10 rounded-full blur-3xl" />
+                    <div className="absolute top-1/3 -right-40 w-[32rem] h-[32rem] bg-[#D4A017]/10 rounded-full blur-3xl" />
+                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(212,160,23,0.10),transparent_55%)]" />
+                </div>
+
+                <div
+                    ref={introRef as React.RefObject<HTMLDivElement>}
+                    className="relative z-10 max-w-6xl mx-auto"
+                >
+                    <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-16 items-center">
+
+                        {/* Texto institucional */}
+                        <div
+                            className={`transition-all duration-1000 ${introInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                                }`}
+                        >
+                            <span className="gold-line" />
+
+                            <p className="font-body font-semibold text-gold text-sm uppercase tracking-widest mb-4">
+                                conheça a help multas
+                            </p>
+
+                            <h2 className="font-display text-3xl lg:text-5xl font-black text-white leading-tight mb-6">
+                                UMA MARCA CONSTRUÍDA POR{" "}
+                                <span className="text-gold">ESPECIALISTAS</span>
+                            </h2>
+
+                            <p className="font-body text-lg text-white/65 leading-relaxed mb-6">
+                                A Help Multas nasceu para transformar um problema recorrente dos motoristas brasileiros
+                                em uma operação escalável, técnica e altamente necessária: a defesa administrativa
+                                contra multas, cassação e suspensão da CNH.
+                            </p>
+
+                            <p className="font-body text-lg text-white/65 leading-relaxed mb-8">
+                                À frente da marca estão Roberson e Jucelaine, CEO e CEOO da Help Multas, que representam a visão,
+                                a estrutura e o padrão de atendimento que sustentam a expansão nacional da franquia.
+                            </p>
+                        </div>
+
+                        {/* Imagens separadas */}
+                        <div
+                            className={`relative transition-all duration-1000 delay-150 ${introInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                                }`}
+                        >
+                            <div className="relative min-h-[520px] lg:min-h-[600px]">
+
+                                {/* Fachada / imagem da Help */}
+                                <div className="absolute top-0 right-0 w-[86%] sm:w-[78%] rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl">
+                                    <img
+                                        src="/image/fundo.webp"
+                                        alt="Unidade Help Multas"
+                                        className="w-full h-[300px] sm:h-[360px] object-cover"
+                                    />
+                                    <div className="absolute inset-0 bg-[oklch(0.1998_0.0403_258.29)]/35" />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.1998_0.0403_258.29)]/80 via-transparent to-transparent" />
+                                </div>
+
+                                {/* Card amarelo de apoio */}
+                                <div className="absolute top-10 left-0 hidden sm:block w-40 h-40 rounded-[2rem] bg-gold shadow-2xl" />
+
+                                {/* Foto Rober e Ju */}
+                                <div className="absolute left-0 bottom-0 w-[82%] sm:w-[68%] lg:w-[64%] rounded-[2rem] overflow-hidden border-4 border-[oklch(0.1998_0.0403_258.29)] shadow-2xl bg-[#2E2924]">
+                                    <img
+                                        src="/image/RoberEJu.jpg"
+                                        alt="Rober CEO e Ju da Help Multas"
+                                        className="w-full h-[430px] sm:h-[500px] object-cover object-top"
+                                    />
+                                    <div className="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-black/75 to-transparent">
+                                        <p className="font-body text-white font-bold text-sm">
+                                            Roberson e Jucelaine
+                                        </p>
+                                        <p className="font-body text-white/60 text-xs">
+                                            CEO e CEOO Help Multas
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Badge institucional */}
+                                <div className="absolute right-0 bottom-16 max-w-[230px] rounded-2xl bg-white p-5 shadow-2xl border border-white/20">
+                                    <p className="font-body text-[0.68rem] font-bold uppercase tracking-widest text-gold mb-2">
+                                        modelo consolidado
+                                    </p>
+                                    <p className="font-display text-lg font-black text-[oklch(0.1998_0.0403_258.29)] leading-tight">
+                                        Uma franquia preparada para crescer.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
             {/* ══════════════════════════════════════════
-          2. Vídeo Help Experience
+  2.1 Fundadores
+══════════════════════════════════════════ */}
+            <section className="relative py-24 px-6 bg-white overflow-hidden">
+                {/* Background decorativo suave */}
+                <div className="absolute inset-0 pointer-events-none">
+                    <div className="absolute -top-32 -right-32 w-96 h-96 bg-[#D4A017]/10 rounded-full blur-3xl" />
+                    <div className="absolute bottom-0 -left-40 w-[28rem] h-[28rem] bg-[oklch(0.1998_0.0403_258.29)]/5 rounded-full blur-3xl" />
+                </div>
+
+                <div
+                    ref={foundersRef as React.RefObject<HTMLDivElement>}
+                    className="relative z-10 max-w-6xl mx-auto"
+                >
+                    {/* Header */}
+                    <div
+                        className={`max-w-3xl mx-auto text-center transition-all duration-700 ${foundersInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                            }`}
+                    >
+                        <span className="gold-line mx-auto" />
+
+                        <p className="font-body font-semibold text-gold text-sm uppercase tracking-widest mb-4">
+                            quem está à frente da help
+                        </p>
+
+                        <h2 className="font-display text-3xl lg:text-5xl font-black text-[oklch(0.1998_0.0403_258.29)] leading-tight mb-5">
+                            CONHEÇA AS LIDERANÇAS POR TRÁS DA{" "}
+                            <span className="text-gold">EXPANSÃO</span>
+                        </h2>
+
+                        <p className="font-body text-lg text-gray-500 leading-relaxed">
+                            A Help Multas combina visão empresarial, operação estruturada e conhecimento técnico
+                            para sustentar uma rede nacional de franquias no mercado de direito de trânsito.
+                        </p>
+                    </div>
+
+                    {/* Cards */}
+                    <div className="grid lg:grid-cols-2 gap-8 lg:gap-10 mt-16">
+                        {/* Roberson */}
+                        <article
+                            className={`group bg-[oklch(0.1998_0.0403_258.29)] border border-gray-100 rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-700 ${foundersInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                                }`}
+                            style={{ transitionDelay: "100ms" }}
+                        >
+                            <div className="grid sm:grid-cols-[0.9fr_1.1fr] min-h-[520px]">
+                                <div className="relative overflow-hidden bg-[oklch(0.1998_0.0403_258.29)]">
+                                    <img
+                                        src="/image/rober.jpg"
+                                        alt="Roberson, CEO da Help Multas"
+                                        className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.1998_0.0403_258.29)]/40 via-transparent to-transparent" />
+                                </div>
+
+                                <div className="relative p-8 lg:p-10 flex flex-col justify-center">
+                                    <div className="absolute top-8 right-8 w-14 h-14 rounded-2xl bg-gold/15" />
+
+                                    <p className="font-body text-gold text-xs font-bold uppercase tracking-widest mb-3">
+                                        CEO da Help Multas
+                                    </p>
+
+                                    <h3 className="font-display text-3xl font-black text-white leading-tight mb-4">
+                                        Roberson
+                                    </h3>
+
+                                    <p className="font-body text-white/65 text-base leading-relaxed mb-6">
+                                        À frente da estratégia de expansão, Roberson conduz a Help Multas com foco em
+                                        crescimento, padronização operacional e fortalecimento da rede de franqueados.
+                                    </p>
+
+                                    <div className="space-y-3">
+                                        <div className="flex gap-3">
+                                            <span className="mt-2 w-2 h-2 rounded-full bg-gold shrink-0" />
+                                            <p className="font-body text-sm text-white/65 leading-relaxed">
+                                                Visão estratégica para expansão nacional da franquia.
+                                            </p>
+                                        </div>
+
+                                        <div className="flex gap-3">
+                                            <span className="mt-2 w-2 h-2 rounded-full bg-gold shrink-0" />
+                                            <p className="font-body text-sm text-white/65 leading-relaxed">
+                                                Construção de processos, gestão e posicionamento de mercado.
+                                            </p>
+                                        </div>
+
+                                        <div className="flex gap-3">
+                                            <span className="mt-2 w-2 h-2 rounded-full bg-gold shrink-0" />
+                                            <p className="font-body text-sm text-white/65 leading-relaxed">
+                                                Liderança voltada a performance e resultado para os franqueados.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+
+                        {/* Jucelaine */}
+                        <article
+                            className={`group bg-[oklch(0.1998_0.0403_258.29)] border border-gray-100 rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-700 ${foundersInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                                }`}
+                            style={{ transitionDelay: "100ms" }}
+                        >
+                            <div className="grid sm:grid-cols-[0.9fr_1.1fr] min-h-[520px]">
+                                <div className="relative overflow-hidden bg-[oklch(0.1998_0.0403_258.29)]">
+                                    <img
+                                        src="/image/ju.jpg"
+                                        alt="Jucelaine, CEOO da Help Multas"
+                                        className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.1998_0.0403_258.29)]/40 via-transparent to-transparent" />
+                                </div>
+
+                                <div className="relative p-8 lg:p-10 flex flex-col justify-center">
+                                    <div className="absolute top-8 right-8 w-14 h-14 rounded-2xl bg-gold/15" />
+
+                                    <p className="font-body text-gold text-xs font-bold uppercase tracking-widest mb-3">
+                                        CEOO da Help Multas
+                                    </p>
+
+                                    <h3 className="font-display text-3xl font-black text-white leading-tight mb-4">
+                                        Jucelaine
+                                    </h3>
+
+                                    <p className="font-body text-white/65 text-base leading-relaxed mb-6">
+                                        Jucelaine representa a força institucional da marca, contribuindo para a construção
+                                        de uma operação sólida, humana e preparada para entregar suporte em escala.
+                                    </p>
+
+                                    <div className="space-y-3">
+                                        <div className="flex gap-3">
+                                            <span className="mt-2 w-2 h-2 rounded-full bg-gold shrink-0" />
+                                            <p className="font-body text-sm text-white/65 leading-relaxed">
+                                                Atuação próxima à cultura, posicionamento e padrão da marca.
+                                            </p>
+                                        </div>
+
+                                        <div className="flex gap-3">
+                                            <span className="mt-2 w-2 h-2 rounded-full bg-gold shrink-0" />
+                                            <p className="font-body text-sm text-white/65 leading-relaxed">
+                                                Construção de processos, gestão e posicionamento de mercado.
+                                            </p>
+                                        </div>
+
+                                        <div className="flex gap-3">
+                                            <span className="mt-2 w-2 h-2 rounded-full bg-gold shrink-0" />
+                                            <p className="font-body text-sm text-white/65 leading-relaxed">
+                                                Liderança voltada a performance e resultado para os franqueados.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </section>
+            {/* ══════════════════════════════════════════
+          3. Vídeo Help Experience
          ══════════════════════════════════════════ */}
             <section className="py-24 px-6 bg-[oklch(0.1998_0.0403_258.29)] overflow-hidden">
                 <div className="max-w-5xl mx-auto">
@@ -211,7 +466,7 @@ export default function ThankYouPage() {
 
 
             {/* ══════════════════════════════════════════
-          3. Autoridade & Reconhecimento
+          4. Autoridade & Reconhecimento
          ══════════════════════════════════════════ */}
             <section className="py-24 px-6 bg-white">
                 <div className="max-w-5xl mx-auto">
@@ -252,7 +507,7 @@ export default function ThankYouPage() {
             </section>
 
             {/* ══════════════════════════════════════════
-          4. Depoimentos
+          5. Depoimentos
          ══════════════════════════════════════════ */}
             <section className="py-24 px-6 bg-[#F8F6F0]">
                 <div className="max-w-5xl mx-auto">
@@ -343,7 +598,7 @@ export default function ThankYouPage() {
 
 
             {/* ══════════════════════════════════════════
-          5. Notícias da mídia
+          6. Notícias da mídia
          ══════════════════════════════════════════ */}
             <section className="py-24 px-6 bg-[oklch(0.1998_0.0403_258.29)]">
                 <div className="max-w-5xl mx-auto">
@@ -391,7 +646,7 @@ export default function ThankYouPage() {
             </section>
 
             {/* ══════════════════════════════════════════
-          6. Equipe
+          7. Equipe
          ══════════════════════════════════════════ */}
             <section className="py-24 px-6 bg-[oklch(0.1998_0.0403_258.29)]">
                 <div className="max-w-5xl mx-auto">
@@ -441,7 +696,7 @@ export default function ThankYouPage() {
 
 
             {/* ══════════════════════════════════════════
-          7. CTA Final + Footer
+          8. CTA Final + Footer
          ══════════════════════════════════════════ */}
             <section className="py-24 px-6 bg-white">
                 <div
