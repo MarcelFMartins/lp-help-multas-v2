@@ -122,14 +122,22 @@ export default function ThankYouPage() {
     const { ref: teamRef, inView: teamInView } = useInView();
     const { ref: ctaRef, inView: ctaInView } = useInView();
 
+    const [isPlaying, setIsPlaying] = useState(false);
+
+    const youtubeId = "PmmQMLF96Vw";
+
+    const handlePlay = () => {
+        setIsPlaying(true);
+    };
+
     return (
         <div className="overflow-x-hidden">
 
             {/* ══════════════════════════════════════════
-          1. Hero
-         ══════════════════════════════════════════ */}
+      1. Hero
+     ══════════════════════════════════════════ */}
             <section
-                className="relative min-h-screen flex flex-col items-center justify-center px-6 py-24 text-center overflow-hidden"
+                className="relative min-h-screen flex flex-col items-center justify-center px-6 py-24 overflow-hidden"
                 style={{
                     backgroundImage: `url(${HERO_BG})`,
                     backgroundSize: "cover",
@@ -138,41 +146,148 @@ export default function ThankYouPage() {
             >
                 {/* overlay */}
                 <div className="absolute inset-0 bg-[oklch(0.1998_0.0403_258.29)]/75 backdrop-blur-[5px]" />
-                <div className="absolute inset-0 pointer-events-none"
-                    style={{ background: "radial-gradient(ellipse 70% 50% at 50% 0%, rgba(212,160,23,0.10), transparent)" }} />
+                <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={{
+                        background:
+                            "radial-gradient(ellipse 70% 50% at 50% 0%, rgba(212,160,23,0.10), transparent)",
+                    }}
+                />
 
-                <div className="relative z-10 flex flex-col items-center max-w-2xl mx-auto">
-                    {/* Logo */}
-                    <div className="mb-10 animate-fade-up" style={{ animationDelay: "0.1s" }}>
-                        <img src="/image/helpinho 3d.png" alt="Help Multas" className="h-14 w-auto" />
+                <div className="relative z-10 flex flex-col lg:flex-row items-center gap-10 xl:gap-16 max-w-6xl mx-auto w-full">
+
+                    {/* ── Coluna esquerda: texto ── */}
+                    <div className="flex flex-col items-center lg:items-start text-center lg:text-left flex-1 min-w-0">
+
+                        {/* Logo */}
+                        <div className="mb-10 animate-fade-up" style={{ animationDelay: "0.1s" }}>
+                            <img
+                                src="/image/helpinho 3d.png"
+                                alt="Help Multas"
+                                className="h-14 w-auto"
+                            />
+                        </div>
+
+                        {/* Badge */}
+                        <div
+                            className="inline-flex items-center gap-2 bg-[#D4A017]/10 border border-[#D4A017]/25 rounded-full px-4 py-1.5 mb-6 animate-fade-up"
+                            style={{ animationDelay: "0.25s" }}
+                        >
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#D4A017] animate-pulse" />
+                            <span className="font-body text-[#D4A017] text-xs font-bold uppercase tracking-widest">
+                                Reunião confirmada
+                            </span>
+                        </div>
+
+                        {/* Title */}
+                        <h1
+                            className="font-display text-4xl lg:text-5xl xl:text-6xl font-black text-white leading-tight tracking-tight mb-5 animate-fade-up"
+                            style={{ animationDelay: "0.3s" }}
+                        >
+                            PARABÉNS PELO{" "}
+                            <span className="text-gold">AGENDAMENTO!</span>
+                        </h1>
+
+                        <p
+                            className="font-body text-lg text-white/65 leading-relaxed mb-10 animate-fade-up max-w-xl"
+                            style={{ animationDelay: "0.4s" }}
+                        >
+                            Preparamos este material para você chegar à nossa conversa conhecendo quem somos,
+                            o que construímos e por que a Help Multas é a franquia de serviços mais sólida do Brasil.
+                        </p>
+
+                        {/* scroll hint */}
+                        <div
+                            className="flex flex-col items-center lg:items-start gap-2 text-white/25 animate-fade-up"
+                            style={{ animationDelay: "1s" }}
+                        >
+                            <span className="font-body text-xs uppercase tracking-widest">
+                                Role para conhecer
+                            </span>
+                            <div className="w-4 h-4 border-r-2 border-b-2 border-white/25 rotate-45 animate-bounce" />
+                        </div>
                     </div>
 
-                    {/* Badge */}
-                    <div className="inline-flex items-center gap-2 bg-[#D4A017]/10 border border-[#D4A017]/25 rounded-full px-4 py-1.5 mb-6 animate-fade-up"
-                        style={{ animationDelay: "0.25s" }}>
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#D4A017] animate-pulse" />
-                        <span className="font-body text-[#D4A017] text-xs font-bold uppercase tracking-widest">Reunião confirmada</span>
+                    {/* ── Coluna direita: vídeo ── */}
+                    <div
+                        className="w-full lg:w-[460px] xl:w-[520px] flex-shrink-0 animate-fade-up"
+                        style={{ animationDelay: "0.5s" }}
+                    >
+                        {/* card de vídeo */}
+                        <div className="rounded-2xl overflow-hidden border border-white/10 shadow-[0_32px_64px_rgba(0,0,0,0.5)] bg-black/40 backdrop-blur-sm">
+
+                            {/* vídeo */}
+                            <div className="relative aspect-video bg-black group">
+                                {!isPlaying ? (
+                                    <div
+                                        onClick={handlePlay}
+                                        className="absolute inset-0 cursor-pointer"
+                                    >
+                                        <img
+                                            src="/image/thumbprereuniao.png"
+                                            alt="Conheça a Help Multas"
+                                            className="w-full h-full object-cover"
+                                        />
+
+                                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center transition-all duration-300 hover:bg-black/50">
+                                            <div
+                                                className="w-14 h-14 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
+                                                style={{ background: "oklch(0.8371 0.1715 85.23)" }}
+                                            >
+                                                <Play
+                                                    className="w-5 h-5 fill-current ml-1"
+                                                    style={{ color: "oklch(0.3274 0.0363 242.96)" }}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <iframe
+                                        className="w-full h-full"
+                                        src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&rel=0`}
+                                        title="Conheça a Help Multas"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                        allowFullScreen
+                                    />
+                                )}
+                            </div>
+
+                            {/* rodapé do card */}
+                            <div className="flex items-center gap-3 px-4 py-3 border-t border-white/8">
+                                <div>
+                                    <p className="font-body text-xs font-semibold text-white/80 leading-none mb-0.5">
+                                        Conheça a Help Multas
+                                    </p>
+                                    <p className="font-body text-[11px] text-white/35 leading-none">
+                                        Apresentação institucional
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* selo de confiança abaixo do vídeo */}
+                        <div className="mt-4 flex items-center justify-center gap-6">
+                            <div className="flex items-center gap-1.5 text-white/30">
+                                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                                </svg>
+                                <span className="font-body text-[11px] uppercase tracking-widest">
+                                    Empresa verificada
+                                </span>
+                            </div>
+                            <span className="w-px h-3 bg-white/15" />
+                            <div className="flex items-center gap-1.5 text-white/30">
+                                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <path d="M12 6v6l4 2" />
+                                </svg>
+                                <span className="font-body text-[11px] uppercase tracking-widest">
+                                    +10 anos de mercado
+                                </span>
+                            </div>
+                        </div>
                     </div>
 
-                    {/* Title */}
-                    <h1 className="font-display text-4xl lg:text-6xl font-black text-white leading-tight tracking-tight mb-5 animate-fade-up"
-                        style={{ animationDelay: "0.3s" }}>
-                        PARABÉNS PELO{" "}
-                        <span className="text-gold">AGENDAMENTO!</span>
-                    </h1>
-
-                    <p className="font-body text-lg text-white/65 leading-relaxed mb-10 animate-fade-up"
-                        style={{ animationDelay: "0.4s" }}>
-                        Preparamos este material para você chegar à nossa conversa conhecendo quem somos,
-                        o que construímos e por que a Help Multas é a franquia de serviços mais sólida do Brasil.
-                    </p>
-
-                    {/* scroll hint */}
-                    <div className="mt-14 flex flex-col items-center gap-2 text-white/25 animate-fade-up"
-                        style={{ animationDelay: "1s" }}>
-                        <span className="font-body text-xs uppercase tracking-widest">Role para conhecer</span>
-                        <div className="w-4 h-4 border-r-2 border-b-2 border-white/25 rotate-45 animate-bounce" />
-                    </div>
                 </div>
             </section>
 
