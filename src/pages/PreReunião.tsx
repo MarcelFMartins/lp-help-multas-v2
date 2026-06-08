@@ -11,26 +11,26 @@ import { Img } from "@/components/Img";
 const HERO_BG = "/image/fundo.webp";
 
 const recognitions = [
-  {
-    stat: "+80",
-    title: "Unidades no Brasil",
-    desc: "Franqueados ativos de norte a sul, com suporte local em cada região.",
-  },
-  {
-    stat: "+10",
-    title: "Anos de especialização",
-    desc: "Domínio técnico em Dir. de Trânsito que nenhum concorrente replica.",
-  },
-  {
-    stat: "+40",
-    title: "Colaboradores",
-    desc: "Suporte técnico, comercial, jurídico e marketing para cada franqueado.",
-  },
-  {
-    stat: "+40%",
-    title: "Crescimento em 2025",
-    desc: "Mercado recorrente — cada nova lei fortalece nossa demanda.",
-  },
+    {
+        stat: "+80",
+        title: "Unidades no Brasil",
+        desc: "Franqueados ativos de norte a sul, com suporte local em cada região.",
+    },
+    {
+        stat: "+10",
+        title: "Anos de especialização",
+        desc: "Domínio técnico em Dir. de Trânsito que nenhum concorrente replica.",
+    },
+    {
+        stat: "+40",
+        title: "Colaboradores",
+        desc: "Suporte técnico, comercial, jurídico e marketing para cada franqueado.",
+    },
+    {
+        stat: "+40%",
+        title: "Crescimento em 2025",
+        desc: "Mercado recorrente — cada nova lei fortalece nossa demanda.",
+    },
 ];
 
 const news = [
@@ -84,6 +84,7 @@ export default function ThankYouPage() {
     const { ref: ctaRef, inView: ctaInView } = useInView();
 
     const [isPlaying, setIsPlaying] = useState(false);
+    const [isPlayingExperience, setIsPlayingExperience] = useState(false);
 
     const youtubeId = "PmmQMLF96Vw";
 
@@ -511,8 +512,8 @@ export default function ThankYouPage() {
                 </div>
             </section>
             {/* ══════════════════════════════════════════
-          3. Vídeo Help Experience
-         ══════════════════════════════════════════ */}
+      3. Vídeo Help Experience
+     ══════════════════════════════════════════ */}
             <section className="py-24 px-6 bg-[oklch(0.1998_0.0403_258.29)] overflow-hidden">
                 <div className="max-w-5xl mx-auto">
                     <div
@@ -527,19 +528,68 @@ export default function ThankYouPage() {
                             <div className="w-16 h-1 bg-gold mx-auto rounded-full" />
                         </div>
 
-                        <div className="relative w-full aspect-video rounded-3xl overflow-hidden shadow-2xl border-4 border-[#D4A017]/20">
-                            <iframe
-                                className="absolute inset-0 w-full h-full"
-                                src="https://www.youtube.com/embed/RdGHF504cE8"
-                                title="Help Experience 2024"
-                                frameBorder="0"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                allowFullScreen
-                            />
+                        <div className="relative rounded-3xl overflow-hidden border border-[#D4A017]/20 shadow-[0_40px_80px_rgba(0,0,0,0.7),0_0_60px_rgba(212,160,23,0.15)] bg-black/60">
+                            <div className="relative aspect-video bg-black group">
+                                {!isPlayingExperience ? (
+                                    <div
+                                        onClick={() => setIsPlayingExperience(true)}
+                                        className="absolute inset-0 cursor-pointer"
+                                    >
+                                        <img
+                                            src="/image/thumbhelpexperience.png"
+                                            alt="Help Experience 2024"
+                                            className="w-full h-full object-cover"
+                                        />
+
+                                        {/* overlay */}
+                                        <div className="absolute inset-0 bg-black/30 transition-all duration-300 hover:bg-black/45" />
+
+                                        {/* botão play */}
+                                        <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
+                                            <div
+                                                className="w-24 h-24 rounded-full flex items-center justify-center shadow-[0_0_40px_rgba(212,160,23,0.6)] transition-all duration-300 group-hover:scale-110 group-hover:shadow-[0_0_60px_rgba(212,160,23,0.8)]"
+                                                style={{ background: "oklch(0.8371 0.1715 85.23)" }}
+                                            >
+                                                <Play
+                                                    className="w-9 h-9 fill-current ml-2"
+                                                    style={{ color: "oklch(0.3274 0.0363 242.96)" }}
+                                                />
+                                            </div>
+                                            <span className="font-body text-white/80 text-sm font-semibold uppercase tracking-widest bg-black/40 px-4 py-1.5 rounded-full backdrop-blur-sm">
+                                                Assistir o evento
+                                            </span>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <iframe
+                                        className="w-full h-full"
+                                        src="https://www.youtube.com/embed/dqmeOfJlEcQ?autoplay=1&rel=0"
+                                        title="Help Experience 2024"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                        allowFullScreen
+                                    />
+                                )}
+                            </div>
+
+                            {/* rodapé do card */}
+                            <div className="flex items-center justify-between px-6 py-4 border-t border-white/8 bg-black/20">
+                                <div>
+                                    <p className="font-body text-sm font-semibold text-white/90 leading-none mb-1">
+                                        Help Experience 2024
+                                    </p>
+                                    <p className="font-body text-xs text-white/40 leading-none">
+                                        O maior evento de direito de trânsito do Brasil
+                                    </p>
+                                </div>
+                                <div className="flex items-center gap-1.5 text-white/35">
+                                    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                                        <polygon points="23 7 16 12 23 17 23 7" /><rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
+                                    </svg>
+                                    <span className="font-body text-[11px] uppercase tracking-widest">Sinta a energia</span>
+                                </div>
+                            </div>
                         </div>
-                        <p className="text-center mt-6 font-body text-white/45 italic text-sm">
-                            Sinta a energia do maior evento de direito de trânsito do Brasil.
-                        </p>
+
                     </div>
                 </div>
             </section>
