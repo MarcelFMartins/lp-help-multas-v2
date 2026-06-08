@@ -255,7 +255,7 @@ export default function ThankYouPage() {
                             <div className="flex items-center justify-between px-6 py-4 border-t border-white/8 bg-black/20">
                                 <div>
                                     <p className="font-body text-sm font-semibold text-white/90 leading-none mb-1">
-                                        Conheça a Help Multas
+                                        Sua Reunião foi Agendada!
                                     </p>
                                     <p className="font-body text-xs text-white/40 leading-none">
                                         Apresentação institucional · Assista antes da reunião
