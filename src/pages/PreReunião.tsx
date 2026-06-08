@@ -11,65 +11,26 @@ import { Img } from "@/components/Img";
 const HERO_BG = "/image/fundo.webp";
 
 const recognitions = [
-    {
-        title: (
-            <>
-                <span className="text-gold">+80 Unidades</span> no Brasil
-            </>
-        ),
-        desc:
-            "Uma rede nacional consolidada, com franqueados ativos de norte a sul do país. Presença em todas as regiões, suporte local em cada uma.",
-    },
-
-    {
-        title: (
-            <>
-                Especialistas em <span className="text-gold">Dir. de Trânsito</span>
-            </>
-        ),
-        desc:
-            "Mais de uma década transformando motoristas em clientes satisfeitos. Domínio técnico que nenhum concorrente replica.",
-    },
-
-    {
-        title: (
-            <>
-                <span className="text-gold">Destaque</span> na Grande Mídia
-            </>
-        ),
-        desc:
-            "G1 Globo, TNH1 e outros grandes veículos cobriram o crescimento do mercado em que somos protagonistas.",
-    },
-
-    {
-        title: (
-            <>
-                Help <span className="text-gold">Experience</span>
-            </>
-        ),
-        desc:
-            "Criamos o maior evento de direito de trânsito do Brasil. Reunimos franqueados, especialistas e parceiros todo ano.",
-    },
-
-    {
-        title: (
-            <>
-                +40 <span className="text-gold">Colaboradores</span>
-            </>
-        ),
-        desc:
-            "Um time dedicado exclusivamente ao sucesso de cada franqueado. Suporte técnico, comercial, jurídico e marketing.",
-    },
-
-    {
-        title: (
-            <>
-                Mercado <span className="text-gold">Recorrente e Crescente</span>
-            </>
-        ),
-        desc:
-            "+40% de crescimento em multas em 2025. Cada nova lei fortalece nossa demanda — independente do momento econômico.",
-    },
+  {
+    stat: "+80",
+    title: "Unidades no Brasil",
+    desc: "Franqueados ativos de norte a sul, com suporte local em cada região.",
+  },
+  {
+    stat: "+10",
+    title: "Anos de especialização",
+    desc: "Domínio técnico em Dir. de Trânsito que nenhum concorrente replica.",
+  },
+  {
+    stat: "+40",
+    title: "Colaboradores",
+    desc: "Suporte técnico, comercial, jurídico e marketing para cada franqueado.",
+  },
+  {
+    stat: "+40%",
+    title: "Crescimento em 2025",
+    desc: "Mercado recorrente — cada nova lei fortalece nossa demanda.",
+  },
 ];
 
 const news = [
@@ -585,10 +546,11 @@ export default function ThankYouPage() {
 
 
             {/* ══════════════════════════════════════════
-          4. Autoridade & Reconhecimento
-         ══════════════════════════════════════════ */}
+      4. Autoridade & Reconhecimento
+     ══════════════════════════════════════════ */}
             <section className="py-24 px-6 bg-white">
                 <div className="max-w-5xl mx-auto">
+
                     <div className={`transition-all duration-700 ${recogInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
                         <span className="gold-line" />
                         <p className="font-body font-semibold text-gold text-sm uppercase tracking-widest mb-4">
@@ -606,21 +568,81 @@ export default function ThankYouPage() {
 
                     <div
                         ref={recogRef as React.RefObject<HTMLDivElement>}
-                        className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-14"
+                        className={`grid grid-cols-1 lg:grid-cols-2 gap-3 mt-14 transition-all duration-700 ${recogInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
                     >
-                        {recognitions.map((r, i) => (
+
+                        {/* Coluna esquerda — lista de stats */}
+                        <div className="flex flex-col divide-y divide-white/5 bg-[oklch(0.1998_0.0403_258.29)] border border-gold/20 rounded-2xl overflow-hidden">
+                            {recognitions.map((r, i) => (
+                                <div
+                                    key={i}
+                                    className="flex items-center gap-5 px-6 py-5 hover:bg-gold/5 transition-colors duration-200"
+                                    style={{ transitionDelay: `${i * 80}ms` }}
+                                >
+                                    <span className="font-display text-3xl font-black text-gold tracking-tight min-w-[72px] leading-none">
+                                        {r.stat}
+                                    </span>
+                                    <div>
+                                        <p className="font-display text-sm font-black text-white mb-1">{r.title}</p>
+                                        <p className="font-body text-xs text-white/50 leading-relaxed">{r.desc}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Coluna direita */}
+                        <div className="flex flex-col gap-3">
+
+                            {/* Card Help Experience — com foto */}
                             <div
-                                key={i}
-                                className={`bg-[oklch(0.1998_0.0403_258.29)] border border-gold rounded-2xl p-8 shadow-sm
-                    hover:shadow-md transition-all duration-300
-                  ${recogInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}
-                `}
-                                style={{ transitionDelay: `${(i % 3) * 90 + 80}ms`, transition: "opacity .7s ease, transform .7s ease, border-color .3s, box-shadow .3s" }}
+                                className="relative flex-1 rounded-2xl overflow-hidden min-h-[260px] flex flex-col justify-end p-7"
+                                style={{
+                                    backgroundImage: 'url("/image/helpexperience.jpg")',
+                                    backgroundSize: "cover",
+                                    backgroundPosition: "center",
+                                }}
                             >
-                                <h3 className="font-display text-lg font-black text-white mb-3 leading-snug">{r.title}</h3>
-                                <p className="font-body text-sm text-white leading-relaxed">{r.desc}</p>
+                                {/* overlay */}
+                                <div
+                                    className="absolute inset-0"
+                                    style={{
+                                        background: "linear-gradient(to top, rgba(0,0,0,0.85) 40%, rgba(0,0,0,0.2) 100%)",
+                                    }}
+                                />
+                                <div className="relative z-10">
+                                    <p className="font-display text-4xl font-black text-white leading-none tracking-tight mb-2">
+                                        Help<br />Experience
+                                    </p>
+                                    <p className="font-display text-sm font-black text-white mb-1">
+                                        O maior evento de Dir. de Trânsito do Brasil
+                                    </p>
+                                    <p className="font-body text-xs text-white/60 leading-relaxed">
+                                        Franqueados, especialistas e parceiros reunidos todo ano em um único lugar.
+                                    </p>
+                                </div>
                             </div>
-                        ))}
+
+                            {/* Card Mídia */}
+                            <div className="bg-[oklch(0.1998_0.0403_258.29)] border border-gold/20 rounded-2xl p-6">
+                                <p className="font-body text-[10px] font-semibold uppercase tracking-widest text-gold mb-3">
+                                    Destaque na grande mídia
+                                </p>
+                                <div className="flex flex-wrap gap-2 mb-3">
+                                    {["G1 Globo", "TNH1", "+ outros"].map((v) => (
+                                        <span
+                                            key={v}
+                                            className="text-xs font-semibold text-gold border border-gold/30 bg-gold/10 rounded-md px-3 py-1"
+                                        >
+                                            {v}
+                                        </span>
+                                    ))}
+                                </div>
+                                <p className="font-body text-xs text-white/50 leading-relaxed">
+                                    Grandes veículos cobriram o crescimento do mercado em que somos protagonistas.
+                                </p>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </section>
