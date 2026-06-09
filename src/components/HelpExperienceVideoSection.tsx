@@ -28,8 +28,8 @@ export default function HelpExperienceVideoSection() {
           <div className="relative w-full max-w-6xl mx-auto aspect-video rounded-3xl overflow-hidden shadow-2xl border-4 border-[oklch(0.8371_0.1715_85.23)]/20">
             <iframe
               className="absolute top-0 left-0 w-full h-full"
-              src="https://www.youtube.com/embed/dqmeOfJlEcQ"
-              title="Help Experience 2024"
+              src="https://www.youtube.com/embed/7QaDuGApFig"
+              title="Help Day 2024"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen

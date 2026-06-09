@@ -993,8 +993,8 @@ export default function ThankYouPage() {
                                 ) : (
                                     <iframe
                                         className="w-full h-full"
-                                        src="https://www.youtube.com/embed/dqmeOfJlEcQ?autoplay=1&rel=0"
-                                        title="Help Experience 2024"
+                                        src="https://www.youtube.com/embed/7QaDuGApFig?autoplay=1&rel=0"
+                                        title="Help Day 2024"
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                         allowFullScreen
                                     />
@@ -1091,7 +1091,7 @@ export default function ThankYouPage() {
                                         O maior evento de Dir. de Trânsito do Brasil
                                     </p>
                                     <p className="font-body text-xs text-white/60 leading-relaxed">
-                                        Franqueados, especialistas e parceiros reunidos todo ano em um único lugar.
+                                        Franqueados, especialistas e parceiros reunidos em um único lugar.
                                     </p>
                                 </div>
                             </div>
