@@ -219,12 +219,12 @@ function LeadFormSection() {
                 {/* header */}
                 <div className="max-w-2xl mb-14">
                     <span className="gold-line" />
-                    <p className="font-body font-semibold text-[#D4A017] text-sm uppercase tracking-widest mb-4">
+                    <p className="font-body font-semibold text-gold text-sm uppercase tracking-widest mb-4">
                         materiais exclusivos
                     </p>
                     <h2 className="font-display text-3xl lg:text-5xl font-black text-white leading-tight mb-4">
                         ACESSE OS MATERIAIS DA{" "}
-                        <span className="text-[#D4A017]">FRANQUIA</span>
+                        <span className="text-gold">FRANQUIA</span>
                     </h2>
                     <p className="font-body text-lg text-white/55 leading-relaxed">
                         Preencha seus dados para liberar a Apresentação Institucional e o DRE do modelo de franquia.
@@ -244,12 +244,12 @@ function LeadFormSection() {
                             {/* logo + badge */}
                             <div className="flex items-center justify-between gap-4 mb-8 flex-wrap">
                                 <img src="/image/LogotipoHelpinho.png" alt="Help Multas" className="h-14 w-auto rounded-2xl" />
-                                <span className="inline-flex items-center bg-[#D4A017] text-[oklch(0.1998_0.0403_258.29)] text-[13px] font-bold px-4 py-2 rounded-full whitespace-nowrap">
+                                <span className="inline-flex items-center bg-gold text-[oklch(0.1998_0.0403_258.29)] text-[13px] font-bold px-4 py-2 rounded-full whitespace-nowrap">
                                     Expansão de Franquias
                                 </span>
                             </div>
 
-                            <p className="font-body font-extrabold text-[#D4A017] text-sm uppercase tracking-widest mb-3">
+                            <p className="font-body font-extrabold text-gold text-sm uppercase tracking-widest mb-3">
                                 Acesso exclusivo
                             </p>
                             <h3 className="font-display text-3xl lg:text-4xl font-black text-white leading-tight mb-5">
@@ -267,7 +267,7 @@ function LeadFormSection() {
                                     "Próximos passos com a equipe de expansão",
                                 ].map((item) => (
                                     <li key={item} className="flex items-start gap-3">
-                                        <span className="mt-0.5 w-[22px] h-[22px] shrink-0 rounded-full bg-[#D4A017] flex items-center justify-center text-[oklch(0.1998_0.0403_258.29)] text-[13px] font-black">
+                                        <span className="mt-0.5 w-[22px] h-[22px] shrink-0 rounded-full bg-gold flex items-center justify-center text-[oklch(0.1998_0.0403_258.29)] text-[13px] font-black">
                                             ✓
                                         </span>
                                         <span className="font-body text-[15px] text-white/90 leading-snug">{item}</span>
@@ -455,7 +455,7 @@ function LeadFormSection() {
                                 <button
                                     type="submit"
                                     disabled={loading}
-                                    className="flex-1 min-h-[52px] rounded-[14px] bg-[#D4A017] text-[oklch(0.1998_0.0403_258.29)] font-body font-black text-[15px] uppercase tracking-wide shadow-[0_14px_24px_rgba(212,160,23,0.28)] hover:bg-[#b88c12] hover:-translate-y-[1px] active:scale-[0.98] transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none"
+                                    className="flex-1 min-h-[52px] rounded-[14px] bg-gold text-[oklch(0.1998_0.0403_258.29)] font-body font-black text-[15px] uppercase tracking-wide shadow-[0_14px_24px_rgba(212,160,23,0.28)] hover:bg-gold/80 hover:-translate-y-[1px] active:scale-[0.98] transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none"
                                 >
                                     {loading ? "Enviando dados..." : "Liberar materiais"}
                                 </button>
@@ -471,7 +471,7 @@ function LeadFormSection() {
                         {/* download area */}
                         {showDownload && (
                             <div className="mt-7 p-7 rounded-[22px] bg-gradient-to-br from-[#D4A017]/10 to-[#D4A017]/5 border border-[#D4A017]/35 text-center">
-                                <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-[#D4A017] flex items-center justify-center text-[oklch(0.1998_0.0403_258.29)] text-2xl font-black">
+                                <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-gold flex items-center justify-center text-[oklch(0.1998_0.0403_258.29)] text-2xl font-black">
                                     ✓
                                 </div>
                                 <h3 className="font-display text-2xl font-black text-[oklch(0.1998_0.0403_258.29)] mb-2">Materiais liberados</h3>
