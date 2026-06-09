@@ -966,7 +966,7 @@ export default function ThankYouPage() {
                                         className="absolute inset-0 cursor-pointer"
                                     >
                                         <img
-                                            src="/image/thumbhelpexperience.png"
+                                            src="/image/thumbhelpday.png"
                                             alt="Help Experience 2024"
                                             className="w-full h-full object-cover"
                                         />
@@ -999,18 +999,6 @@ export default function ThankYouPage() {
                                         allowFullScreen
                                     />
                                 )}
-                            </div>
-
-                            {/* rodapé do card */}
-                            <div className="flex items-center justify-between px-6 py-4 border-t border-white/8 bg-black/20">
-                                <div>
-                                    <p className="font-body text-sm font-semibold text-white/90 leading-none mb-1">
-                                        Help Experience 2024
-                                    </p>
-                                    <p className="font-body text-xs text-white/40 leading-none">
-                                        O maior evento de direito de trânsito do Brasil
-                                    </p>
-                                </div>
                             </div>
                         </div>
 
