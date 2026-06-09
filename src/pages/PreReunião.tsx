@@ -3,12 +3,14 @@
  * Layout de seções:
  */
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Play, X } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
 import { Img } from "@/components/Img";
 
 const HERO_BG = "/image/fundo.webp";
+
+const N8N_WEBHOOK_URL = "https://n8n.helpmultas.com/webhook/forms";
 
 const recognitions = [
     {
@@ -63,12 +65,459 @@ const testimonials = [
     { name: "Raphael Moraes", location: "Joinville — SC", highlight: "Modelo que realmente funciona", thumb: "/image/Rapha.webp", thumbFallback: "/image/Rapha.png", videoUrl: "https://www.youtube.com/embed/GhF9Byl44qg?autoplay=1", quote: "A verdade sobre a Help Multas é que o modelo realmente funciona. Você tem todo o suporte necessário para começer e crescer." },
 ];
 
+const UF_OPTIONS = [
+    "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG",
+    "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO",
+];
+
 /* ─── HELPERS ─── */
 const WaSvg = ({ cls }: { cls: string }) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor" className={cls}>
         <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z" />
     </svg>
 );
+
+/* ─── FORMATTERS ─── */
+function onlyNumbers(v: string) { return v.replace(/\D/g, ""); }
+
+function formatCPF(v: string) {
+    const n = onlyNumbers(v).slice(0, 11);
+    if (n.length <= 3) return n;
+    if (n.length <= 6) return n.replace(/(\d{3})(\d+)/, "$1.$2");
+    if (n.length <= 9) return n.replace(/(\d{3})(\d{3})(\d+)/, "$1.$2.$3");
+    return n.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, "$1.$2.$3-$4");
+}
+
+function formatCEP(v: string) {
+    const n = onlyNumbers(v).slice(0, 8);
+    if (n.length <= 5) return n;
+    return n.replace(/(\d{5})(\d{1,3})/, "$1-$2");
+}
+
+function formatWhatsapp(v: string) {
+    const n = onlyNumbers(v).slice(0, 11);
+    if (n.length <= 2) return n;
+    if (n.length <= 6) return n.replace(/(\d{2})(\d+)/, "($1) $2");
+    if (n.length <= 10) return n.replace(/(\d{2})(\d{4})(\d+)/, "($1) $2-$3");
+    return n.replace(/(\d{2})(\d{5})(\d{1,4})/, "($1) $2-$3");
+}
+
+/* ─── LEAD FORM SECTION ─── */
+function LeadFormSection() {
+    const { ref: sectionRef, inView } = useInView();
+
+    const [fields, setFields] = useState({
+        nome: "", email: "", whatsapp: "", cpf: "",
+        nascimento: "", cidade: "", uf: "", cep: "", aceite: false,
+    });
+    const [ufOpen, setUfOpen] = useState(false);
+    const ufRef = useRef<HTMLDivElement>(null);
+
+    const [status, setStatus] = useState<{ type: "error" | "success"; text: string } | null>(null);
+    const [loading, setLoading] = useState(false);
+    const [showDownload, setShowDownload] = useState(false);
+
+    // Close UF dropdown on outside click
+    useEffect(() => {
+        function handler(e: MouseEvent) {
+            if (ufRef.current && !ufRef.current.contains(e.target as Node)) {
+                setUfOpen(false);
+            }
+        }
+        document.addEventListener("mousedown", handler);
+        return () => document.removeEventListener("mousedown", handler);
+    }, []);
+
+    function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+        const { name, value, type, checked } = e.target;
+        let formatted = value;
+        if (name === "cpf") formatted = formatCPF(value);
+        if (name === "cep") formatted = formatCEP(value);
+        if (name === "whatsapp") formatted = formatWhatsapp(value);
+        setFields(prev => ({ ...prev, [name]: type === "checkbox" ? checked : formatted }));
+    }
+
+    function validateFormatted() {
+        const cpf = onlyNumbers(fields.cpf);
+        const cep = onlyNumbers(fields.cep);
+        const wa = onlyNumbers(fields.whatsapp);
+        if (cpf.length !== 11) { setStatus({ type: "error", text: "CPF inválido. Digite os 11 números do CPF." }); return false; }
+        if (wa.length < 10 || wa.length > 11) { setStatus({ type: "error", text: "WhatsApp inválido. Digite DDD + número." }); return false; }
+        if (cep.length !== 8) { setStatus({ type: "error", text: "CEP inválido. Digite os 8 números do CEP." }); return false; }
+        return true;
+    }
+
+    async function handleSubmit(e: React.FormEvent) {
+        e.preventDefault();
+        setStatus(null);
+        setShowDownload(false);
+
+        const required = ["nome", "email", "whatsapp", "cpf", "nascimento", "cidade", "uf", "cep"];
+        for (const key of required) {
+            if (!fields[key as keyof typeof fields]) {
+                setStatus({ type: "error", text: "Preencha todos os campos obrigatórios antes de continuar." });
+                return;
+            }
+        }
+        if (!fields.aceite) {
+            setStatus({ type: "error", text: "Você precisa autorizar o contato para continuar." });
+            return;
+        }
+        if (!validateFormatted()) return;
+
+        const leadData = {
+            origem: "Landing Page - Franquia Help Multas",
+            data_envio: new Date().toISOString(),
+            lead: {
+                nome: fields.nome, email: fields.email, whatsapp: fields.whatsapp,
+                cpf: fields.cpf, nascimento: fields.nascimento,
+                cidade: fields.cidade, uf: fields.uf, cep: fields.cep,
+            },
+            acao_n8n: {
+                enviar_mensagem_para: "Carla",
+                objetivo: "Avisar Carla sobre novo lead de franquia para envio de documento complementar por e-mail",
+            },
+            mensagem_carla: `Novo lead interessado na franquia Help Multas:\n\nNome: ${fields.nome}\nE-mail: ${fields.email}\nWhatsApp: ${fields.whatsapp}\nCPF: ${fields.cpf}\nNascimento: ${fields.nascimento}\nCidade/UF: ${fields.cidade} - ${fields.uf}\nCEP: ${fields.cep}\n\nAção: enviar documento complementar no e-mail do lead.`,
+        };
+
+        setLoading(true);
+        try {
+            const response = await fetch(N8N_WEBHOOK_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(leadData),
+            });
+            if (!response.ok) throw new Error(`Erro HTTP ${response.status}`);
+            setStatus({ type: "success", text: "Dados enviados com sucesso. Os materiais foram liberados abaixo." });
+            setShowDownload(true);
+            setFields({ nome: "", email: "", whatsapp: "", cpf: "", nascimento: "", cidade: "", uf: "", cep: "", aceite: false });
+        } catch (err: unknown) {
+            const msg = err instanceof Error ? err.message : "Erro desconhecido";
+            setStatus({ type: "error", text: `Não foi possível enviar os dados. Detalhe: ${msg}` });
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    function handleReset() {
+        setFields({ nome: "", email: "", whatsapp: "", cpf: "", nascimento: "", cidade: "", uf: "", cep: "", aceite: false });
+        setStatus(null);
+        setShowDownload(false);
+    }
+
+    /* shared input class */
+    const inputCls = "w-full min-h-[50px] border border-[#D4A017]/25 rounded-[14px] px-4 bg-white/5 text-white text-[15px] outline-none placeholder-white/30 focus:border-[#D4A017] focus:ring-4 focus:ring-[#D4A017]/20 transition-all duration-200";
+    const labelCls = "text-[#D4A017] text-[13px] font-bold uppercase tracking-wide";
+
+    return (
+        <section className="relative py-24 px-6 bg-[oklch(0.1998_0.0403_258.29)] overflow-hidden">
+
+            <div
+                ref={sectionRef as React.RefObject<HTMLDivElement>}
+                className={`relative z-10 max-w-6xl mx-auto transition-all duration-1000 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+            >
+                {/* header */}
+                <div className="max-w-2xl mb-14">
+                    <span className="gold-line" />
+                    <p className="font-body font-semibold text-[#D4A017] text-sm uppercase tracking-widest mb-4">
+                        materiais exclusivos
+                    </p>
+                    <h2 className="font-display text-3xl lg:text-5xl font-black text-white leading-tight mb-4">
+                        ACESSE OS MATERIAIS DA{" "}
+                        <span className="text-[#D4A017]">FRANQUIA</span>
+                    </h2>
+                    <p className="font-body text-lg text-white/55 leading-relaxed">
+                        Preencha seus dados para liberar a Apresentação Institucional e o DRE do modelo de franquia.
+                    </p>
+                </div>
+
+                {/* card split */}
+                <div className="grid lg:grid-cols-[0.9fr_1.1fr] rounded-[28px] overflow-hidden border border-[#D4A017]/20 shadow-[0_32px_70px_rgba(0,0,0,0.45)]">
+
+                    {/* ── LEFT: brand side ── */}
+                    <div className="relative flex flex-col justify-between gap-8 p-10 bg-[oklch(0.16_0.034_258)] overflow-hidden">
+                        {/* decorative circles */}
+                        <div className="absolute w-64 h-64 -right-24 -top-24 bg-[#D4A017] rounded-full opacity-[0.12]" />
+                        <div className="absolute w-44 h-44 -left-16 bottom-14 bg-[#D4A017] rounded-full opacity-[0.08]" />
+
+                        <div className="relative z-10">
+                            {/* logo + badge */}
+                            <div className="flex items-center justify-between gap-4 mb-8 flex-wrap">
+                                <img src="/image/LogotipoHelpinho.png" alt="Help Multas" className="h-14 w-auto rounded-2xl" />
+                                <span className="inline-flex items-center bg-[#D4A017] text-[oklch(0.1998_0.0403_258.29)] text-[13px] font-bold px-4 py-2 rounded-full whitespace-nowrap">
+                                    Expansão de Franquias
+                                </span>
+                            </div>
+
+                            <p className="font-body font-extrabold text-[#D4A017] text-sm uppercase tracking-widest mb-3">
+                                Acesso exclusivo
+                            </p>
+                            <h3 className="font-display text-3xl lg:text-4xl font-black text-white leading-tight mb-5">
+                                Conheça o modelo de franquia da Help Multas
+                            </h3>
+                            <p className="font-body text-white/65 text-[17px] leading-relaxed mb-8">
+                                Preencha seus dados para acessar os materiais oficiais da franquia e avançar no processo de
+                                análise com nossa equipe de expansão.
+                            </p>
+
+                            <ul className="space-y-4">
+                                {[
+                                    "Apresentação institucional da franquia",
+                                    "DRE e informações financeiras do modelo",
+                                    "Próximos passos com a equipe de expansão",
+                                ].map((item) => (
+                                    <li key={item} className="flex items-start gap-3">
+                                        <span className="mt-0.5 w-[22px] h-[22px] shrink-0 rounded-full bg-[#D4A017] flex items-center justify-center text-[oklch(0.1998_0.0403_258.29)] text-[13px] font-black">
+                                            ✓
+                                        </span>
+                                        <span className="font-body text-[15px] text-white/90 leading-snug">{item}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+
+                    {/* ── RIGHT: form side ── */}
+                    <div className="bg-[oklch(0.22_0.038_258)] p-10">
+                        <div className="mb-7">
+                            <h2 className="font-display text-[28px] font-black text-white leading-tight mb-2">
+                                Olá! Que bom ter você aqui.
+                            </h2>
+                            <p className="font-body text-white/50 text-[15px] leading-relaxed">
+                                As informações preenchidas serão utilizadas exclusivamente para identificação do candidato,
+                                controle interno da franqueadora e envio dos materiais relacionados à expansão da Help Multas.
+                            </p>
+                        </div>
+
+                        <form onSubmit={handleSubmit} onReset={handleReset} noValidate className="flex flex-col gap-4">
+
+                            {/* nome */}
+                            <div className="flex flex-col gap-[7px]">
+                                <label className={labelCls} htmlFor="lf-nome">Nome completo</label>
+                                <input
+                                    id="lf-nome" name="nome" type="text"
+                                    placeholder="Digite seu nome completo"
+                                    value={fields.nome} onChange={handleChange}
+                                    className={inputCls} required
+                                />
+                            </div>
+
+                            {/* email */}
+                            <div className="flex flex-col gap-[7px]">
+                                <label className={labelCls} htmlFor="lf-email">E-mail</label>
+                                <input
+                                    id="lf-email" name="email" type="email"
+                                    placeholder="seuemail@exemplo.com"
+                                    value={fields.email} onChange={handleChange}
+                                    className={inputCls} required
+                                />
+                            </div>
+
+                            {/* whatsapp */}
+                            <div className="flex flex-col gap-[7px]">
+                                <label className={labelCls} htmlFor="lf-whatsapp">WhatsApp</label>
+                                <input
+                                    id="lf-whatsapp" name="whatsapp" type="tel"
+                                    placeholder="(00) 00000-0000"
+                                    value={fields.whatsapp} onChange={handleChange}
+                                    maxLength={15} inputMode="numeric" autoComplete="tel"
+                                    className={inputCls} required
+                                />
+                            </div>
+
+                            {/* cpf + nascimento */}
+                            <div className="grid grid-cols-2 gap-3">
+                                <div className="flex flex-col gap-[7px]">
+                                    <label className={labelCls} htmlFor="lf-cpf">CPF</label>
+                                    <input
+                                        id="lf-cpf" name="cpf" type="text"
+                                        placeholder="000.000.000-00"
+                                        value={fields.cpf} onChange={handleChange}
+                                        maxLength={14} inputMode="numeric" autoComplete="off"
+                                        className={inputCls} required
+                                    />
+                                </div>
+                                <div className="flex flex-col gap-[7px]">
+                                    <label className={labelCls} htmlFor="lf-nasc">Nascimento</label>
+                                    <input
+                                        id="lf-nasc" name="nascimento" type="date"
+                                        value={fields.nascimento} onChange={handleChange}
+                                        className={`${inputCls} [color-scheme:dark]`} required
+                                    />
+                                </div>
+                            </div>
+
+                            {/* cidade + uf */}
+                            <div className="grid gap-3" style={{ gridTemplateColumns: "1fr 110px" }}>
+                                <div className="flex flex-col gap-[7px]">
+                                    <label className={labelCls} htmlFor="lf-cidade">Cidade</label>
+                                    <input
+                                        id="lf-cidade" name="cidade" type="text"
+                                        placeholder="Sua cidade"
+                                        value={fields.cidade} onChange={handleChange}
+                                        className={inputCls} required
+                                    />
+                                </div>
+                                {/* custom UF select */}
+                                <div className="flex flex-col gap-[7px]" ref={ufRef}>
+                                    <label className={labelCls}>UF</label>
+                                    <div className="relative">
+                                        <button
+                                            type="button"
+                                            onClick={() => setUfOpen(o => !o)}
+                                            className={`w-full min-h-[50px] border rounded-[14px] px-4 pr-10 text-left text-[15px] outline-none transition-all duration-200 relative
+                                                ${fields.uf ? "text-white" : "text-white/30"}
+                                                ${ufOpen
+                                                    ? "border-[#D4A017] ring-4 ring-[#D4A017]/20 bg-white/5"
+                                                    : "border-[#D4A017]/25 bg-white/5 focus:border-[#D4A017] focus:ring-4 focus:ring-[#D4A017]/20"
+                                                }`}
+                                            aria-haspopup="listbox"
+                                            aria-expanded={ufOpen}
+                                        >
+                                            {fields.uf || "UF"}
+                                            <span className={`absolute right-4 top-1/2 w-2 h-2 border-r-2 border-b-2 border-white/60 transition-transform duration-200 ${ufOpen ? "-translate-y-1/3 rotate-[225deg]" : "-translate-y-2/3 rotate-45"}`} />
+                                        </button>
+
+                                        {ufOpen && (
+                                            <div
+                                                role="listbox"
+                                                className="absolute top-[calc(100%+6px)] left-0 right-0 z-30 max-h-56 overflow-y-auto overscroll-contain rounded-[14px] border border-[#D4A017]/30 bg-[oklch(0.18_0.034_258)] shadow-[0_18px_34px_rgba(0,0,0,0.4)] p-1.5 flex flex-col gap-0.5"
+                                            >
+                                                <button
+                                                    type="button"
+                                                    className="w-full text-left px-3 py-2.5 rounded-[10px] text-white/35 text-[15px] hover:bg-white/5"
+                                                    onClick={() => { setFields(p => ({ ...p, uf: "" })); setUfOpen(false); }}
+                                                >
+                                                    Selecione
+                                                </button>
+                                                {UF_OPTIONS.map(uf => (
+                                                    <button
+                                                        key={uf}
+                                                        type="button"
+                                                        role="option"
+                                                        aria-selected={fields.uf === uf}
+                                                        className={`w-full text-left px-3 py-2.5 rounded-[10px] text-[15px] transition-colors duration-150
+                                                            ${fields.uf === uf ? "bg-[#D4A017]/20 text-[#D4A017] font-bold" : "text-white hover:bg-white/8"}`}
+                                                        onClick={() => { setFields(p => ({ ...p, uf })); setUfOpen(false); }}
+                                                    >
+                                                        {uf}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* cep */}
+                            <div className="flex flex-col gap-[7px]">
+                                <label className={labelCls} htmlFor="lf-cep">CEP</label>
+                                <input
+                                    id="lf-cep" name="cep" type="text"
+                                    placeholder="00000-000"
+                                    value={fields.cep} onChange={handleChange}
+                                    maxLength={9} inputMode="numeric" autoComplete="postal-code"
+                                    className={inputCls} required
+                                />
+                            </div>
+
+                            {/* aceite */}
+                            <label className="flex items-start gap-3 mt-1 cursor-pointer select-none">
+                                <input
+                                    type="checkbox"
+                                    name="aceite"
+                                    checked={fields.aceite}
+                                    onChange={handleChange}
+                                    className="mt-[2px] w-[18px] h-[18px] min-w-[18px] accent-[#D4A017] cursor-pointer"
+                                />
+                                <span className="font-body text-[13px] text-white/55 leading-[1.5]">
+                                    Declaro que desejo receber os materiais da franquia Help Multas e autorizo o contato da equipe de expansão.
+                                </span>
+                            </label>
+
+                            {/* status message */}
+                            {status && (
+                                <div
+                                    className={`rounded-[14px] px-4 py-3 text-[14px] leading-[1.5] border font-body
+                                        ${status.type === "error"
+                                            ? "bg-red-500/10 text-red-300 border-red-500/30"
+                                            : "bg-emerald-500/10 text-emerald-300 border-emerald-500/30"
+                                        }`}
+                                    role="alert"
+                                    aria-live="polite"
+                                >
+                                    {status.text}
+                                </div>
+                            )}
+
+                            {/* actions */}
+                            <div className="flex gap-3 mt-1">
+                                <button
+                                    type="submit"
+                                    disabled={loading}
+                                    className="flex-1 min-h-[52px] rounded-[14px] bg-[#D4A017] text-[oklch(0.1998_0.0403_258.29)] font-body font-black text-[15px] uppercase tracking-wide shadow-[0_14px_24px_rgba(212,160,23,0.28)] hover:bg-[#b88c12] hover:-translate-y-[1px] active:scale-[0.98] transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none"
+                                >
+                                    {loading ? "Enviando dados..." : "Liberar materiais"}
+                                </button>
+                                <button
+                                    type="reset"
+                                    className="min-h-[52px] px-5 rounded-[14px] bg-white/8 text-white/70 font-body font-bold text-[15px] hover:bg-white/12 hover:-translate-y-[1px] transition-all duration-200"
+                                >
+                                    Limpar
+                                </button>
+                            </div>
+                        </form>
+
+                        {/* download area */}
+                        {showDownload && (
+                            <div className="mt-7 p-7 rounded-[22px] bg-gradient-to-br from-[#D4A017]/15 to-[oklch(0.1998_0.0403_258.29)]/30 border border-[#D4A017]/35 text-center">
+                                <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-[#D4A017] flex items-center justify-center text-[oklch(0.1998_0.0403_258.29)] text-2xl font-black">
+                                    ✓
+                                </div>
+                                <h3 className="font-display text-2xl font-black text-white mb-2">Materiais liberados</h3>
+                                <p className="font-body text-white/55 text-[14px] leading-relaxed mb-5">
+                                    Agora você pode baixar a Apresentação Institucional e o DRE da Franquia Help Multas.
+                                </p>
+                                <div className="grid grid-cols-2 gap-3 mb-4">
+                                    <a
+                                        href="materiais/APRESENTAÇÃO FRANQUIA - MODELOS LOJA HOME BASED.pdf"
+                                        download
+                                        className="min-h-[52px] flex items-center justify-center rounded-[14px] bg-[oklch(0.1998_0.0403_258.29)] text-white font-body font-black text-[14px] hover:bg-[oklch(0.16_0.034_258)] hover:-translate-y-[1px] transition-all duration-200 px-4 text-center"
+                                    >
+                                        Baixar Apresentação
+                                    </a>
+                                    <a
+                                        href="materiais/DRE MODELO HOME BASED.pdf"
+                                        download
+                                        className="min-h-[52px] flex items-center justify-center rounded-[14px] bg-[oklch(0.1998_0.0403_258.29)] text-white font-body font-black text-[14px] hover:bg-[oklch(0.16_0.034_258)] hover:-translate-y-[1px] transition-all duration-200 px-4 text-center"
+                                    >
+                                        Baixar DRE
+                                    </a>
+                                </div>
+                                <p className="font-body text-white/35 text-[12px]">
+                                    Nossa equipe também receberá seus dados para dar sequência ao processo.
+                                </p>
+                            </div>
+                        )}
+
+                        {/* footer */}
+                        <footer className="mt-7 pt-5 border-t border-white/8">
+                            <p className="font-body text-[12px] text-white/35 leading-relaxed">
+                                © Help Multas Franquia. Todos os direitos reservados.
+                            </p>
+                            <p className="font-body text-[12px] text-white/35 mt-1">
+                                Este formulário parece suspeito?{" "}
+                                <a href="mailto:contato@helpmultas.com.br" className="text-[#D4A017] font-bold hover:underline">
+                                    Entre em contato
+                                </a>
+                            </p>
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+}
 
 /* ══════════════════════════════════════════════ */
 export default function ThankYouPage() {
@@ -258,16 +707,14 @@ export default function ThankYouPage() {
             </section>
 
             {/* ══════════════════════════════════════════
+          8. Formulário de Acesso aos Materiais
+         ══════════════════════════════════════════ */}
+            <LeadFormSection />
+
+            {/* ══════════════════════════════════════════
   2. Apresentação
 ══════════════════════════════════════════ */}
             <section className="relative py-24 px-6 bg-[oklch(0.1998_0.0403_258.29)] overflow-hidden">
-                {/* Background decorativo */}
-                <div className="absolute inset-0 pointer-events-none">
-                    <div className="absolute -top-32 -left-32 w-96 h-96 bg-[#D4A017]/10 rounded-full blur-3xl" />
-                    <div className="absolute top-1/3 -right-40 w-[32rem] h-[32rem] bg-[#D4A017]/10 rounded-full blur-3xl" />
-                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(212,160,23,0.10),transparent_55%)]" />
-                </div>
-
                 <div
                     ref={introRef as React.RefObject<HTMLDivElement>}
                     className="relative z-10 max-w-6xl mx-auto"
@@ -885,9 +1332,8 @@ export default function ThankYouPage() {
                 </div>
             </section>
 
-
             {/* ══════════════════════════════════════════
-          8. CTA Final + Footer
+          9. CTA Final + Footer
          ══════════════════════════════════════════ */}
             <section className="py-24 px-6 bg-white">
                 <div
