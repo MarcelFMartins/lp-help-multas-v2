@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Play, X } from "lucide-react";
+import { useEffect, useState, type RefObject } from "react";
+import { ChevronLeft, ChevronRight, Play, X } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
 import { Img } from "./Img";
 
@@ -34,11 +34,74 @@ const testimonials = [
     videoThumbFallback: "/image/Rapha.png",
     videoUrl: "https://www.youtube.com/embed/GhF9Byl44qg?autoplay=1",
   },
+
+  // Adicione abaixo os outros 9 depoimentos seguindo o mesmo padrão:
+  // {
+  //   name: "Nome do franqueado",
+  //   location: "Cidade — UF",
+  //   quote: "Texto do depoimento.",
+  //   highlight: "Destaque curto",
+  //   videoThumb: "/image/ARQUIVO.webp",
+  //   videoThumbFallback: "/image/ARQUIVO.png",
+  //   videoUrl: "https://www.youtube.com/embed/ID_DO_VIDEO?autoplay=1",
+  // },
 ];
+
+const getItemsPerPage = () => {
+  if (typeof window === "undefined") return 3;
+  if (window.innerWidth < 768) return 1;
+  if (window.innerWidth < 1024) return 2;
+  return 3;
+};
 
 export default function TestimonialsSection() {
   const { ref: titleRef, inView: titleInView } = useInView();
   const [activeVideo, setActiveVideo] = useState<number | null>(null);
+  const [activePage, setActivePage] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(getItemsPerPage);
+
+  const totalPages = Math.ceil(testimonials.length / itemsPerPage);
+  const startIndex = activePage * itemsPerPage;
+  const visibleTestimonials = testimonials.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
+
+  useEffect(() => {
+    const handleResize = () => setItemsPerPage(getItemsPerPage());
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    const lastPage = Math.max(totalPages - 1, 0);
+
+    if (activePage > lastPage) {
+      setActivePage(lastPage);
+    }
+  }, [activePage, totalPages]);
+
+  const goToPage = (page: number) => {
+    setActiveVideo(null);
+    setActivePage(page);
+  };
+
+  const goToPreviousPage = () => {
+    setActiveVideo(null);
+    setActivePage((currentPage) =>
+      currentPage === 0 ? totalPages - 1 : currentPage - 1
+    );
+  };
+
+  const goToNextPage = () => {
+    setActiveVideo(null);
+    setActivePage((currentPage) =>
+      currentPage === totalPages - 1 ? 0 : currentPage + 1
+    );
+  };
 
   return (
     <section
@@ -48,12 +111,11 @@ export default function TestimonialsSection() {
       <div className="container mx-auto">
         {/* Header */}
         <div
-          ref={titleRef as React.RefObject<HTMLDivElement>}
-          className={`text-center mb-16 transition-all duration-700 ${
-            titleInView
+          ref={titleRef as RefObject<HTMLDivElement>}
+          className={`text-center mb-16 transition-all duration-700 ${titleInView
               ? "opacity-100 translate-y-0"
               : "opacity-0 translate-y-8"
-          }`}
+            }`}
         >
           <span className="gold-line mx-auto" />
           <p className="font-body font-semibold text-gold text-sm uppercase tracking-widest mb-3">
@@ -69,121 +131,193 @@ export default function TestimonialsSection() {
           </p>
         </div>
 
-        {/* Grid */}
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
-          {testimonials.map((t, i) => {
-            const isActive = activeVideo === i;
-
-            return (
-              <div
-                key={t.name}
-                className="group bg-oklch(0.1998_0.0403_258.29) rounded-2xl border border-white/10 overflow-hidden hover:border-gold/40 transition-all duration-300"
+        {/* Carousel */}
+        <div className="relative mb-12">
+          {totalPages > 1 && (
+            <div className="absolute -top-12 right-0 hidden md:flex items-center gap-3">
+              <button
+                type="button"
+                onClick={goToPreviousPage}
+                className="w-10 h-10 rounded-full border border-white/15 text-white hover:border-gold hover:text-gold transition-colors flex items-center justify-center"
+                aria-label="Depoimentos anteriores"
               >
-                {/* Video / Thumbnail */}
-                <div className="relative aspect-video overflow-hidden">
-                  {isActive ? (
-                    <>
-                      {/* Botão fechar */}
-                      <button
-                        onClick={() => setActiveVideo(null)}
-                        className="absolute top-3 right-3 z-10 bg-black/60 hover:bg-black/80 p-2 rounded-full"
-                      >
-                        <X className="w-4 h-4 text-white" />
-                      </button>
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button
+                type="button"
+                onClick={goToNextPage}
+                className="w-10 h-10 rounded-full border border-white/15 text-white hover:border-gold hover:text-gold transition-colors flex items-center justify-center"
+                aria-label="Próximos depoimentos"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+          )}
 
-                      {/* Vídeo */}
-                      {t.videoUrl.includes("youtube") ? (
-                        <iframe
-                          src={t.videoUrl}
-                          className="w-full h-full"
-                          title={t.name}
-                          allow="autoplay; encrypted-media"
-                          allowFullScreen
-                        />
-                      ) : (
-                        <video
-                          src={t.videoUrl}
-                          controls
-                          autoPlay
-                          className="w-full h-full object-cover"
-                        />
-                      )}
-                    </>
-                  ) : (
-                    <>
-                      {/* Thumbnail */}
-                      <Img
-                        webp={t.videoThumb}
-                        fallback={t.videoThumbFallback}
-                        alt={t.name}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {visibleTestimonials.map((t, i) => {
+              const testimonialIndex = startIndex + i;
+              const isActive = activeVideo === testimonialIndex;
 
-                      {/* Overlay play */}
-                      <div
-                        onClick={() => setActiveVideo(i)}
-                        className="absolute inset-0 bg-[oklch(oklch(0.1998_0.0403_258.29))]/50 flex items-center justify-center cursor-pointer"
-                      >
+              return (
+                <div
+                  key={`${t.name}-${testimonialIndex}`}
+                  className="group bg-[oklch(0.1998_0.0403_258.29)] rounded-2xl border border-white/10 overflow-hidden hover:border-gold/40 transition-all duration-300"
+                >
+                  {/* Video / Thumbnail */}
+                  <div className="relative aspect-video overflow-hidden">
+                    {isActive ? (
+                      <>
+                        {/* Botão fechar */}
+                        <button
+                          type="button"
+                          onClick={() => setActiveVideo(null)}
+                          className="absolute top-3 right-3 z-10 bg-black/60 hover:bg-black/80 p-2 rounded-full"
+                          aria-label="Fechar vídeo"
+                        >
+                          <X className="w-4 h-4 text-white" />
+                        </button>
+
+                        {/* Vídeo */}
+                        {t.videoUrl.includes("youtube") ? (
+                          <iframe
+                            src={t.videoUrl}
+                            className="w-full h-full"
+                            title={t.name}
+                            allow="autoplay; encrypted-media"
+                            allowFullScreen
+                          />
+                        ) : (
+                          <video
+                            src={t.videoUrl}
+                            controls
+                            autoPlay
+                            className="w-full h-full object-cover"
+                          />
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        {/* Thumbnail */}
+                        <Img
+                          webp={t.videoThumb}
+                          fallback={t.videoThumbFallback}
+                          alt={t.name}
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+
+                        {/* Overlay play */}
                         <div
-                          className="w-14 h-14 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
-                          style={{
-                            background: "oklch(0.8371 0.1715 85.23)",
+                          onClick={() => setActiveVideo(testimonialIndex)}
+                          className="absolute inset-0 bg-black/50 flex items-center justify-center cursor-pointer"
+                          role="button"
+                          tabIndex={0}
+                          onKeyDown={(event) => {
+                            if (event.key === "Enter" || event.key === " ") {
+                              setActiveVideo(testimonialIndex);
+                            }
                           }}
                         >
-                          <Play
-                            className="w-5 h-5 fill-current"
+                          <div
+                            className="w-14 h-14 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
                             style={{
+                              background: "oklch(0.8371 0.1715 85.23)",
+                            }}
+                          >
+                            <Play
+                              className="w-5 h-5 fill-current"
+                              style={{
+                                color: "oklch(0.3274 0.0363 242.96)",
+                              }}
+                            />
+                          </div>
+                        </div>
+
+                        {/* Badge */}
+                        <div className="absolute bottom-3 left-3 right-3">
+                          <span
+                            className="inline-block px-3 py-1 rounded-full font-body font-bold text-xs uppercase tracking-wide"
+                            style={{
+                              background: "oklch(0.8371 0.1715 85.23)",
                               color: "oklch(0.3274 0.0363 242.96)",
                             }}
-                          />
+                          >
+                            {t.highlight}
+                          </span>
                         </div>
+                      </>
+                    )}
+                  </div>
+
+                  {/* Texto */}
+                  <div className="p-5">
+                    <p className="font-body text-sm text-white/70 leading-relaxed mb-4 italic">
+                      &quot;{t.quote}&quot;
+                    </p>
+
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="w-8 h-8 rounded-full flex items-center justify-center font-display font-bold text-sm"
+                        style={{
+                          background: "oklch(0.8371 0.1715 85.23)",
+                          color: "oklch(0.3274 0.0363 242.96)",
+                        }}
+                      >
+                        {t.name[0]}
                       </div>
-
-                      {/* Badge */}
-                      <div className="absolute bottom-3 left-3 right-3">
-                        <span
-                          className="inline-block px-3 py-1 rounded-full font-body font-bold text-xs uppercase tracking-wide"
-                          style={{
-                            background: "oklch(0.8371 0.1715 85.23)",
-                            color: "oklch(0.3274 0.0363 242.96)",
-                          }}
-                        >
-                          {t.highlight}
-                        </span>
+                      <div>
+                        <p className="font-body font-semibold text-white text-sm">
+                          {t.name}
+                        </p>
+                        <p className="font-body text-xs text-white/50">
+                          {t.location}
+                        </p>
                       </div>
-                    </>
-                  )}
-                </div>
-
-                {/* Texto */}
-                <div className="p-5">
-                  <p className="font-body text-sm text-white/70 leading-relaxed mb-4 italic">
-                    "{t.quote}"
-                  </p>
-
-                  <div className="flex items-center gap-3">
-                    <div
-                      className="w-8 h-8 rounded-full flex items-center justify-center font-display font-bold text-sm"
-                      style={{
-                        background: "oklch(0.8371 0.1715 85.23)",
-                        color: "oklch(0.3274 0.0363 242.96)",
-                      }}
-                    >
-                      {t.name[0]}
-                    </div>
-                    <div>
-                      <p className="font-body font-semibold text-white text-sm">
-                        {t.name}
-                      </p>
-                      <p className="font-body text-xs text-white/50">
-                        {t.location}
-                      </p>
                     </div>
                   </div>
                 </div>
+              );
+            })}
+          </div>
+
+          {totalPages > 1 && (
+            <>
+              <div className="flex md:hidden items-center justify-center gap-3 mt-6">
+                <button
+                  type="button"
+                  onClick={goToPreviousPage}
+                  className="w-10 h-10 rounded-full border border-white/15 text-white hover:border-gold hover:text-gold transition-colors flex items-center justify-center"
+                  aria-label="Depoimentos anteriores"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={goToNextPage}
+                  className="w-10 h-10 rounded-full border border-white/15 text-white hover:border-gold hover:text-gold transition-colors flex items-center justify-center"
+                  aria-label="Próximos depoimentos"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
               </div>
-            );
-          })}
+
+              <div className="flex items-center justify-center gap-2 mt-6">
+                {Array.from({ length: totalPages }).map((_, page) => (
+                  <button
+                    key={page}
+                    type="button"
+                    onClick={() => goToPage(page)}
+                    className={`h-2 rounded-full transition-all duration-300 ${activePage === page
+                        ? "w-8 bg-gold"
+                        : "w-2 bg-white/20 hover:bg-white/40"
+                      }`}
+                    aria-label={`Ir para página ${page + 1} dos depoimentos`}
+                    aria-current={activePage === page ? "true" : undefined}
+                  />
+                ))}
+              </div>
+            </>
+          )}
         </div>
 
         {/* CTA */}
