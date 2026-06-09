@@ -669,24 +669,8 @@ export default function ThankYouPage() {
                                         Sua Reunião foi Agendada!
                                     </p>
                                     <p className="font-body text-xs text-white/40 leading-none">
-                                        Apresentação institucional · Assista antes da reunião
+                                        Assista antes da reunião
                                     </p>
-                                </div>
-                                <div className="flex items-center gap-5">
-                                    <div className="flex items-center gap-1.5 text-white/35">
-                                        <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                                        </svg>
-                                        <span className="font-body text-[11px] uppercase tracking-widest">Verificada</span>
-                                    </div>
-                                    <span className="w-px h-3 bg-white/15" />
-                                    <div className="flex items-center gap-1.5 text-white/35">
-                                        <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                                            <circle cx="12" cy="12" r="10" />
-                                            <path d="M12 6v6l4 2" />
-                                        </svg>
-                                        <span className="font-body text-[11px] uppercase tracking-widest">+10 anos</span>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1029,12 +1013,6 @@ export default function ThankYouPage() {
                                     <p className="font-body text-xs text-white/40 leading-none">
                                         O maior evento de direito de trânsito do Brasil
                                     </p>
-                                </div>
-                                <div className="flex items-center gap-1.5 text-white/35">
-                                    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                                        <polygon points="23 7 16 12 23 17 23 7" /><rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
-                                    </svg>
-                                    <span className="font-body text-[11px] uppercase tracking-widest">Sinta a energia</span>
                                 </div>
                             </div>
                         </div>
