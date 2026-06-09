@@ -502,12 +502,9 @@ function LeadFormSection() {
 
                         {/* footer */}
                         <footer className="mt-7 pt-5 border-t border-gray-100">
-                            <p className="font-body text-[12px] text-gray-400 leading-relaxed">
-                                © Help Multas Franquia. Todos os direitos reservados.
-                            </p>
                             <p className="font-body text-[12px] text-gray-400 mt-1">
                                 Este formulário parece suspeito?{" "}
-                                <a href="mailto:contato@helpmultas.com.br" className="text-[oklch(0.1998_0.0403_258.29)] font-bold hover:underline">
+                                <a target="_blank" href="https://wa.me/554298673007?text=Ol%C3%A1!%20Fique%20com%20Duvidas%20sobre%20o%20Formul%C3%A1rio%20da%20Pr%C3%A9%20Reuni%C3%A3o!!" className="text-[oklch(0.1998_0.0403_258.29)] font-bold hover:underline">
                                     Entre em contato
                                 </a>
                             </p>
