@@ -66,8 +66,8 @@ const testimonials = [
 ];
 
 const UF_OPTIONS = [
-    "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG",
-    "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO",
+    "AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG",
+    "PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO",
 ];
 
 /* ─── HELPERS ─── */
@@ -206,8 +206,8 @@ function LeadFormSection() {
     }
 
     /* shared input class */
-    const inputCls = "w-full min-h-[50px] border border-[#D4A017]/25 rounded-[14px] px-4 bg-white/5 text-white text-[15px] outline-none placeholder-white/30 focus:border-[#D4A017] focus:ring-4 focus:ring-[#D4A017]/20 transition-all duration-200";
-    const labelCls = "text-[#D4A017] text-[13px] font-bold uppercase tracking-wide";
+    const inputCls = "w-full min-h-[50px] border border-[#D9E1E8] rounded-[14px] px-4 bg-white text-[oklch(0.1998_0.0403_258.29)] text-[15px] outline-none placeholder-[#98a2b3] focus:border-[#D4A017] focus:ring-4 focus:ring-[#D4A017]/20 transition-all duration-200";
+    const labelCls = "text-[oklch(0.1998_0.0403_258.29)] text-[13px] font-bold uppercase tracking-wide";
 
     return (
         <section className="relative py-24 px-6 bg-[oklch(0.1998_0.0403_258.29)] overflow-hidden">
@@ -278,12 +278,12 @@ function LeadFormSection() {
                     </div>
 
                     {/* ── RIGHT: form side ── */}
-                    <div className="bg-[oklch(0.22_0.038_258)] p-10">
+                    <div className="bg-white p-10">
                         <div className="mb-7">
-                            <h2 className="font-display text-[28px] font-black text-white leading-tight mb-2">
+                            <h2 className="font-display text-[28px] font-black text-[oklch(0.1998_0.0403_258.29)] leading-tight mb-2">
                                 Olá! Que bom ter você aqui.
                             </h2>
-                            <p className="font-body text-white/50 text-[15px] leading-relaxed">
+                            <p className="font-body text-gray-500 text-[15px] leading-relaxed">
                                 As informações preenchidas serão utilizadas exclusivamente para identificação do candidato,
                                 controle interno da franqueadora e envio dos materiais relacionados à expansão da Help Multas.
                             </p>
@@ -342,7 +342,7 @@ function LeadFormSection() {
                                     <input
                                         id="lf-nasc" name="nascimento" type="date"
                                         value={fields.nascimento} onChange={handleChange}
-                                        className={`${inputCls} [color-scheme:dark]`} required
+                                        className={`${inputCls} [color-scheme:light]`} required
                                     />
                                 </div>
                             </div>
@@ -366,26 +366,26 @@ function LeadFormSection() {
                                             type="button"
                                             onClick={() => setUfOpen(o => !o)}
                                             className={`w-full min-h-[50px] border rounded-[14px] px-4 pr-10 text-left text-[15px] outline-none transition-all duration-200 relative
-                                                ${fields.uf ? "text-white" : "text-white/30"}
+                                                ${fields.uf ? "text-[oklch(0.1998_0.0403_258.29)]" : "text-[#98a2b3]"}
                                                 ${ufOpen
-                                                    ? "border-[#D4A017] ring-4 ring-[#D4A017]/20 bg-white/5"
-                                                    : "border-[#D4A017]/25 bg-white/5 focus:border-[#D4A017] focus:ring-4 focus:ring-[#D4A017]/20"
+                                                    ? "border-[#D4A017] ring-4 ring-[#D4A017]/20 bg-white"
+                                                    : "border-[#D9E1E8] bg-white focus:border-[#D4A017] focus:ring-4 focus:ring-[#D4A017]/20"
                                                 }`}
                                             aria-haspopup="listbox"
                                             aria-expanded={ufOpen}
                                         >
                                             {fields.uf || "UF"}
-                                            <span className={`absolute right-4 top-1/2 w-2 h-2 border-r-2 border-b-2 border-white/60 transition-transform duration-200 ${ufOpen ? "-translate-y-1/3 rotate-[225deg]" : "-translate-y-2/3 rotate-45"}`} />
+                                            <span className={`absolute right-4 top-1/2 w-2 h-2 border-r-2 border-b-2 border-[oklch(0.1998_0.0403_258.29)]/50 transition-transform duration-200 ${ufOpen ? "-translate-y-1/3 rotate-[225deg]" : "-translate-y-2/3 rotate-45"}`} />
                                         </button>
 
                                         {ufOpen && (
                                             <div
                                                 role="listbox"
-                                                className="absolute top-[calc(100%+6px)] left-0 right-0 z-30 max-h-56 overflow-y-auto overscroll-contain rounded-[14px] border border-[#D4A017]/30 bg-[oklch(0.18_0.034_258)] shadow-[0_18px_34px_rgba(0,0,0,0.4)] p-1.5 flex flex-col gap-0.5"
+                                                className="absolute top-[calc(100%+6px)] left-0 right-0 z-30 max-h-56 overflow-y-auto overscroll-contain rounded-[14px] border border-[#D9E1E8] bg-white shadow-[0_18px_34px_rgba(36,55,70,0.16)] p-1.5 flex flex-col gap-0.5"
                                             >
                                                 <button
                                                     type="button"
-                                                    className="w-full text-left px-3 py-2.5 rounded-[10px] text-white/35 text-[15px] hover:bg-white/5"
+                                                    className="w-full text-left px-3 py-2.5 rounded-[10px] text-[#98a2b3] text-[15px] hover:bg-[#edf2f6]"
                                                     onClick={() => { setFields(p => ({ ...p, uf: "" })); setUfOpen(false); }}
                                                 >
                                                     Selecione
@@ -397,7 +397,7 @@ function LeadFormSection() {
                                                         role="option"
                                                         aria-selected={fields.uf === uf}
                                                         className={`w-full text-left px-3 py-2.5 rounded-[10px] text-[15px] transition-colors duration-150
-                                                            ${fields.uf === uf ? "bg-[#D4A017]/20 text-[#D4A017] font-bold" : "text-white hover:bg-white/8"}`}
+                                                            ${fields.uf === uf ? "bg-[#D4A017]/15 text-[#D4A017] font-bold" : "text-[oklch(0.1998_0.0403_258.29)] hover:bg-[#edf2f6]"}`}
                                                         onClick={() => { setFields(p => ({ ...p, uf })); setUfOpen(false); }}
                                                     >
                                                         {uf}
@@ -430,7 +430,7 @@ function LeadFormSection() {
                                     onChange={handleChange}
                                     className="mt-[2px] w-[18px] h-[18px] min-w-[18px] accent-[#D4A017] cursor-pointer"
                                 />
-                                <span className="font-body text-[13px] text-white/55 leading-[1.5]">
+                                <span className="font-body text-[13px] text-gray-500 leading-[1.5]">
                                     Declaro que desejo receber os materiais da franquia Help Multas e autorizo o contato da equipe de expansão.
                                 </span>
                             </label>
@@ -440,8 +440,8 @@ function LeadFormSection() {
                                 <div
                                     className={`rounded-[14px] px-4 py-3 text-[14px] leading-[1.5] border font-body
                                         ${status.type === "error"
-                                            ? "bg-red-500/10 text-red-300 border-red-500/30"
-                                            : "bg-emerald-500/10 text-emerald-300 border-emerald-500/30"
+                                            ? "bg-red-50 text-red-700 border-red-200"
+                                            : "bg-emerald-50 text-emerald-700 border-emerald-200"
                                         }`}
                                     role="alert"
                                     aria-live="polite"
@@ -461,7 +461,7 @@ function LeadFormSection() {
                                 </button>
                                 <button
                                     type="reset"
-                                    className="min-h-[52px] px-5 rounded-[14px] bg-white/8 text-white/70 font-body font-bold text-[15px] hover:bg-white/12 hover:-translate-y-[1px] transition-all duration-200"
+                                    className="min-h-[52px] px-5 rounded-[14px] bg-[#edf2f6] text-[oklch(0.1998_0.0403_258.29)] font-body font-bold text-[15px] hover:bg-[#dde4ea] hover:-translate-y-[1px] transition-all duration-200"
                                 >
                                     Limpar
                                 </button>
@@ -470,12 +470,12 @@ function LeadFormSection() {
 
                         {/* download area */}
                         {showDownload && (
-                            <div className="mt-7 p-7 rounded-[22px] bg-gradient-to-br from-[#D4A017]/15 to-[oklch(0.1998_0.0403_258.29)]/30 border border-[#D4A017]/35 text-center">
+                            <div className="mt-7 p-7 rounded-[22px] bg-gradient-to-br from-[#D4A017]/10 to-[#D4A017]/5 border border-[#D4A017]/35 text-center">
                                 <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-[#D4A017] flex items-center justify-center text-[oklch(0.1998_0.0403_258.29)] text-2xl font-black">
                                     ✓
                                 </div>
-                                <h3 className="font-display text-2xl font-black text-white mb-2">Materiais liberados</h3>
-                                <p className="font-body text-white/55 text-[14px] leading-relaxed mb-5">
+                                <h3 className="font-display text-2xl font-black text-[oklch(0.1998_0.0403_258.29)] mb-2">Materiais liberados</h3>
+                                <p className="font-body text-gray-500 text-[14px] leading-relaxed mb-5">
                                     Agora você pode baixar a Apresentação Institucional e o DRE da Franquia Help Multas.
                                 </p>
                                 <div className="grid grid-cols-2 gap-3 mb-4">
@@ -494,20 +494,20 @@ function LeadFormSection() {
                                         Baixar DRE
                                     </a>
                                 </div>
-                                <p className="font-body text-white/35 text-[12px]">
+                                <p className="font-body text-gray-400 text-[12px]">
                                     Nossa equipe também receberá seus dados para dar sequência ao processo.
                                 </p>
                             </div>
                         )}
 
                         {/* footer */}
-                        <footer className="mt-7 pt-5 border-t border-white/8">
-                            <p className="font-body text-[12px] text-white/35 leading-relaxed">
+                        <footer className="mt-7 pt-5 border-t border-gray-100">
+                            <p className="font-body text-[12px] text-gray-400 leading-relaxed">
                                 © Help Multas Franquia. Todos os direitos reservados.
                             </p>
-                            <p className="font-body text-[12px] text-white/35 mt-1">
+                            <p className="font-body text-[12px] text-gray-400 mt-1">
                                 Este formulário parece suspeito?{" "}
-                                <a href="mailto:contato@helpmultas.com.br" className="text-[#D4A017] font-bold hover:underline">
+                                <a href="mailto:contato@helpmultas.com.br" className="text-[oklch(0.1998_0.0403_258.29)] font-bold hover:underline">
                                     Entre em contato
                                 </a>
                             </p>
@@ -715,6 +715,8 @@ export default function ThankYouPage() {
   2. Apresentação
 ══════════════════════════════════════════ */}
             <section className="relative py-24 px-6 bg-[oklch(0.1998_0.0403_258.29)] overflow-hidden">
+                {/* Background decorativo */}
+
                 <div
                     ref={introRef as React.RefObject<HTMLDivElement>}
                     className="relative z-10 max-w-6xl mx-auto"
@@ -1331,6 +1333,8 @@ export default function ThankYouPage() {
                     </div>
                 </div>
             </section>
+
+            
 
             {/* ══════════════════════════════════════════
           9. CTA Final + Footer
