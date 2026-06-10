@@ -127,13 +127,8 @@ export default function HeroSection() {
 
       /*
         =========================================
-        PAYLOAD LIMPO PARA WEB3FORMS
+        1. WEB3FORMS
         =========================================
-
-        Importante:
-        - Não enviar fbclid, fbc, fbp e UTMs para o Web3Forms.
-        - Esses dados podem aumentar chance de falso positivo no antispam.
-        - O CRM continua recebendo os dados completos.
       */
 
       const web3Payload = {
@@ -149,26 +144,17 @@ export default function HeroSection() {
         uf: formData.uf,
         capital: capitalLabel,
 
-        // Honeypot/botcheck do Web3Forms
         botcheck: false,
       };
 
       console.log("WEB3 PAYLOAD:", web3Payload);
 
-      /*
-        =========================================
-        1. WEB3FORMS (OBRIGATÓRIO)
-        =========================================
-      */
-
       const web3Response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
-
         body: JSON.stringify(web3Payload),
       });
 
@@ -180,94 +166,90 @@ export default function HeroSection() {
         web3Result = null;
       }
 
+      console.log("WEB3 STATUS:", web3Response.status);
       console.log("WEB3 RESPONSE:", web3Result);
 
-      // WEB3FORMS É OBRIGATÓRIO
       if (!web3Response.ok || !web3Result?.success) {
         throw new Error(
-          web3Result?.message ||
-            "Erro ao enviar formulário pelo Web3Forms."
+          `Erro Web3Forms: ${web3Result?.message || `Status ${web3Response.status}`
+          }`
         );
       }
 
       /*
         =========================================
-        2. CRM (OPCIONAL)
+        2. CRM
         =========================================
-
-        Atenção:
-        A chave do CRM continua exposta se ficar no frontend.
-        O ideal é mover esse envio para uma rota backend/serverless.
+  
+        Agora o CRM NÃO é mais opcional.
+        Se o CRM falhar, NÃO redireciona.
       */
 
-      try {
-        const crmPayload = {
-          fullName: formData.nome.trim(),
-          phone: formData.whatsapp,
-          email: formData.email.trim(),
+      const crmPayload = {
+        fullName: formData.nome.trim(),
+        phone: formData.whatsapp,
+        email: formData.email.trim(),
 
-          cidade: formData.cidade.trim(),
-          uf: formData.uf,
-          capital: formData.capital,
-          capitalLabel,
+        cidade: formData.cidade.trim(),
+        uf: formData.uf,
+        capital: formData.capital,
+        capitalLabel,
 
-          // META
-          fbp: meta?.fbp || "",
-          fbc: meta?.fbc || "",
-          fbclid: meta?.fbclid || "",
+        // META
+        fbp: meta?.fbp || "",
+        fbc: meta?.fbc || "",
+        fbclid: meta?.fbclid || "",
 
-          // UTMS
-          utmSource: tracking?.utm_source || "",
-          utmMedium: tracking?.utm_medium || "",
-          utmCampaign: tracking?.utm_campaign || "",
-          utmContent: tracking?.utm_content || "",
-          utmTerm: tracking?.utm_term || "",
-          utmId: tracking?.utm_id || "",
-        };
+        // UTMS
+        utmSource: tracking?.utm_source || "",
+        utmMedium: tracking?.utm_medium || "",
+        utmCampaign: tracking?.utm_campaign || "",
+        utmContent: tracking?.utm_content || "",
+        utmTerm: tracking?.utm_term || "",
+        utmId: tracking?.utm_id || "",
+      };
 
-        console.log("CRM PAYLOAD:", crmPayload);
+      console.log("CRM PAYLOAD:", crmPayload);
 
-        const crmResponse = await fetch(
-          "https://crm.helprecurso.com.br/leads/create-by-api-key",
-          {
-            method: "POST",
+      const crmResponse = await fetch(
+        "https://crm.helprecurso.com.br/leads/create-by-api-key",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
 
-            headers: {
-              "Content-Type": "application/json",
-
-              "x-api-key": "93wkn371eaEbl6P41RlNWhM1xrFGSXdRVjDf3AGC",
-            },
-
-            body: JSON.stringify(crmPayload),
-          }
-        );
-
-        console.log("CRM STATUS:", crmResponse.status);
-
-        // CRM NÃO QUEBRA O FLUXO
-        if (!crmResponse.ok) {
-          let crmResult: any = null;
-
-          try {
-            crmResult = await crmResponse.json();
-          } catch {
-            crmResult = null;
-          }
-
-          console.error("Erro CRM:", {
-            status: crmResponse.status,
-            response: crmResult,
-          });
+            "x-api-key": "93wkn371eaEbl6P41RlNWhM1xrFGSXdRVjDf3AGC",
+          },
+          body: JSON.stringify(crmPayload),
         }
-      } catch (crmError) {
-        // CRM NÃO PODE QUEBRAR O FORM
-        console.error("CRM ERROR:", crmError);
+      );
+
+      let crmResult: any = null;
+
+      try {
+        crmResult = await crmResponse.json();
+      } catch {
+        crmResult = null;
+      }
+
+      console.log("CRM STATUS:", crmResponse.status);
+      console.log("CRM RESPONSE:", crmResult);
+
+      if (!crmResponse.ok) {
+        throw new Error(
+          `Erro CRM: ${crmResult?.message ||
+          crmResult?.error ||
+          `Status ${crmResponse.status}`
+          }`
+        );
       }
 
       /*
         =========================================
         3. REDIRECT
         =========================================
+  
+        Só chega aqui se Web3Forms e CRM derem certo.
       */
 
       window.location.href = "https://franquias.helpmultas.com.br/obrigado";
@@ -281,6 +263,9 @@ export default function HeroSection() {
             ? error.message
             : "Erro ao enviar formulário.",
       });
+
+      // Garante que NÃO redireciona em caso de erro.
+      return;
     } finally {
       setIsSubmitting(false);
     }
@@ -522,10 +507,9 @@ export default function HeroSection() {
                         onClick={() => setUfOpen((o) => !o)}
                         className={`w-full min-h-[50px] border rounded-[14px] px-4 pr-10 text-left text-[15px] outline-none transition-all duration-200 relative
                           ${formData.uf ? "text-[oklch(0.1998_0.0403_258.29)]" : "text-[#98a2b3]"}
-                          ${
-                            ufOpen
-                              ? "border-[#D4A017] ring-4 ring-[#D4A017]/20 bg-white"
-                              : "border-[#D9E1E8] bg-white focus:border-[#D4A017] focus:ring-4 focus:ring-[#D4A017]/20"
+                          ${ufOpen
+                            ? "border-[#D4A017] ring-4 ring-[#D4A017]/20 bg-white"
+                            : "border-[#D9E1E8] bg-white focus:border-[#D4A017] focus:ring-4 focus:ring-[#D4A017]/20"
                           }`}
                         aria-haspopup="listbox"
                         aria-expanded={ufOpen}
@@ -533,11 +517,10 @@ export default function HeroSection() {
                         {formData.uf || "UF"}
 
                         <span
-                          className={`absolute right-4 top-1/2 w-2 h-2 border-r-2 border-b-2 border-[oklch(0.1998_0.0403_258.29)]/50 transition-transform duration-200 ${
-                            ufOpen
+                          className={`absolute right-4 top-1/2 w-2 h-2 border-r-2 border-b-2 border-[oklch(0.1998_0.0403_258.29)]/50 transition-transform duration-200 ${ufOpen
                               ? "-translate-y-1/3 rotate-[225deg]"
                               : "-translate-y-2/3 rotate-45"
-                          }`}
+                            }`}
                         />
                       </button>
 
@@ -564,10 +547,9 @@ export default function HeroSection() {
                               role="option"
                               aria-selected={formData.uf === uf}
                               className={`w-full text-left px-3 py-2.5 rounded-[10px] text-[15px] transition-colors duration-150
-                                ${
-                                  formData.uf === uf
-                                    ? "bg-[#D4A017]/15 text-[#D4A017] font-bold"
-                                    : "text-[oklch(0.1998_0.0403_258.29)] hover:bg-[#edf2f6]"
+                                ${formData.uf === uf
+                                  ? "bg-[#D4A017]/15 text-[#D4A017] font-bold"
+                                  : "text-[oklch(0.1998_0.0403_258.29)] hover:bg-[#edf2f6]"
                                 }`}
                               onClick={() => {
                                 setFormData((p) => ({ ...p, uf }));
@@ -595,10 +577,9 @@ export default function HeroSection() {
                       onClick={() => setCapitalOpen((o) => !o)}
                       className={`w-full min-h-[50px] border rounded-[14px] px-4 pr-10 text-left text-[15px] outline-none transition-all duration-200 relative
                         ${formData.capital ? "text-[oklch(0.1998_0.0403_258.29)]" : "text-[#98a2b3]"}
-                        ${
-                          capitalOpen
-                            ? "border-[#D4A017] ring-4 ring-[#D4A017]/20 bg-white"
-                            : "border-[#D9E1E8] bg-white focus:border-[#D4A017] focus:ring-4 focus:ring-[#D4A017]/20"
+                        ${capitalOpen
+                          ? "border-[#D4A017] ring-4 ring-[#D4A017]/20 bg-white"
+                          : "border-[#D9E1E8] bg-white focus:border-[#D4A017] focus:ring-4 focus:ring-[#D4A017]/20"
                         }`}
                       aria-haspopup="listbox"
                       aria-expanded={capitalOpen}
@@ -607,11 +588,10 @@ export default function HeroSection() {
                         "Selecione uma faixa"}
 
                       <span
-                        className={`absolute right-4 top-1/2 w-2 h-2 border-r-2 border-b-2 border-[oklch(0.1998_0.0403_258.29)]/50 transition-transform duration-200 ${
-                          capitalOpen
+                        className={`absolute right-4 top-1/2 w-2 h-2 border-r-2 border-b-2 border-[oklch(0.1998_0.0403_258.29)]/50 transition-transform duration-200 ${capitalOpen
                             ? "-translate-y-1/3 rotate-[225deg]"
                             : "-translate-y-2/3 rotate-45"
-                        }`}
+                          }`}
                       />
                     </button>
 
@@ -627,10 +607,9 @@ export default function HeroSection() {
                             role="option"
                             aria-selected={formData.capital === opt.value}
                             className={`w-full text-left px-3 py-2.5 rounded-[10px] text-[15px] transition-colors duration-150
-                              ${
-                                formData.capital === opt.value
-                                  ? "bg-[#D4A017]/15 text-[#D4A017] font-bold"
-                                  : "text-[oklch(0.1998_0.0403_258.29)] hover:bg-[#edf2f6]"
+                              ${formData.capital === opt.value
+                                ? "bg-[#D4A017]/15 text-[#D4A017] font-bold"
+                                : "text-[oklch(0.1998_0.0403_258.29)] hover:bg-[#edf2f6]"
                               }`}
                             onClick={() => {
                               setFormData((p) => ({ ...p, capital: opt.value }));
@@ -649,10 +628,9 @@ export default function HeroSection() {
                 {status && (
                   <div
                     className={`rounded-[14px] px-4 py-3 text-[14px] leading-[1.5] border font-body
-                      ${
-                        status.type === "error"
-                          ? "bg-red-50 text-red-700 border-red-200"
-                          : "bg-emerald-50 text-emerald-700 border-emerald-200"
+                      ${status.type === "error"
+                        ? "bg-red-50 text-red-700 border-red-200"
+                        : "bg-emerald-50 text-emerald-700 border-emerald-200"
                       }`}
                     role="alert"
                     aria-live="polite"
