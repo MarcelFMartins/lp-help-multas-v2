@@ -5,6 +5,16 @@ import { Img } from "./Img";
 
 const testimonials = [
   {
+    name: "Vinicius",
+    location: "Pato Branco / Curitiba Hauer — PR",
+    quote:
+      "O suporte que a franqueadora presta é sensacional. Quando ela pega na mão da gente, literalmente faz a gente crescer. Aqui eu não precisei criar nada do zero — só repliquei o que realmente deu certo.",
+    highlight: "Só replico o que já deu certo",
+    videoThumb: "/image/VINICIUS.jpeg",
+    videoThumbFallback: "/image/VINICIUS.jpeg",
+    videoUrl: "https://www.youtube.com/embed/pG5I2rFutPI?autoplay=1",
+  },
+  {
     name: "Kelly",
     location: "Criciúma — SC",
     quote:
@@ -13,6 +23,16 @@ const testimonials = [
     videoThumb: "/image/KELLY.webp",
     videoThumbFallback: "/image/KELLY.png",
     videoUrl: "https://www.youtube.com/embed/44PoELQxMwI?autoplay=1",
+  },
+  {
+    name: "André",
+    location: "Curitiba Centro — PR",
+    quote:
+      "Não falta apoio. A própria franqueadora dá o suporte, chama a gente, incentiva. Ela não só ajuda, ela orienta.",
+    highlight: "Ela não só ajuda, ela orienta",
+    videoThumb: "/image/ANDRE.jpeg",
+    videoThumbFallback: "/image/ANDRE.jpeg",
+    videoUrl: "https://www.youtube.com/embed/TG7Q4yicXek?autoplay=1",
   },
   {
     name: "Dani",
@@ -45,16 +65,6 @@ const testimonials = [
     videoUrl: "https://www.youtube.com/embed/NsWT_P2RAtM?autoplay=1",
   },
   {
-    name: "André",
-    location: "Curitiba Centro — PR",
-    quote:
-      "Não falta apoio. A própria franqueadora dá o suporte, chama a gente, incentiva. Ela não só ajuda, ela orienta.",
-    highlight: "Ela não só ajuda, ela orienta",
-    videoThumb: "/image/ANDRE.jpeg",
-    videoThumbFallback: "/image/ANDRE.jpeg",
-    videoUrl: "https://www.youtube.com/embed/TG7Q4yicXek?autoplay=1",
-  },
-  {
     name: "Jean",
     location: "Palhoça — SC",
     quote:
@@ -73,16 +83,6 @@ const testimonials = [
     videoThumb: "/image/MARCOS.jpeg",
     videoThumbFallback: "/image/MARCOS.jpeg",
     videoUrl: "https://www.youtube.com/embed/GbKJ6cgk-nQ?autoplay=1",
-  },
-  {
-    name: "Vinicius",
-    location: "Pato Branco / Curitiba Hauer — PR",
-    quote:
-      "O suporte que a franqueadora presta é sensacional. Quando ela pega na mão da gente, literalmente faz a gente crescer. Aqui eu não precisei criar nada do zero — só repliquei o que realmente deu certo.",
-    highlight: "Só replico o que já deu certo",
-    videoThumb: "/image/VINICIUS.jpeg",
-    videoThumbFallback: "/image/VINICIUS.jpeg",
-    videoUrl: "https://www.youtube.com/embed/pG5I2rFutPI?autoplay=1",
   },
 ];
 
