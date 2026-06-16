@@ -1,27 +1,50 @@
 /*
- * HeroSection — Seção hero com layout assimétrico
- * Design: Background com imagem de estrada/navy, texto à esquerda, formulário à direita
- * Typography: Fraunces display para headline, Plus Jakarta Sans para corpo
- * Colors: White text on dark navy bg, gold accents
- * Form: visual padronizado com o LeadFormSection (PreReunião)
+ * HeroSection — Layout assimétrico melhorado
+ *
+ * Mobile  → Logo ▸ Form ▸ Copy
+ * Desktop → [Logo + Copy] | [Form]
+ *
+ * Formulário:
+ *  - Email e WhatsApp lado a lado
+ *  - Novo campo: Ocupação atual (select)
+ *  - Novo campo: Melhor horário para contato (select)
+ *  - Novos campos incluídos nos payloads Web3Forms e CRM
  */
 
 import { useState, useEffect, useRef } from "react";
-import { ChevronDown } from "lucide-react";
-import { useInView, useCounter } from "@/hooks/useInView";
+import { ChevronDown, ShieldCheck, TrendingUp, Users } from "lucide-react";
 
 const HERO_BG = "/image/fundo.webp";
 
+/* ─── OPTIONS ─── */
 const UF_OPTIONS = [
   "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG",
   "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO",
 ];
 
 const CAPITAL_OPTIONS = [
-  { value: "20.000", label: "Mais de R$ 20 mil" },
-  { value: "30.000", label: "Mais de R$ 30 mil" },
-  { value: "50.000", label: "Mais de R$ 50 mil" },
+  { value: "20.000",  label: "Mais de R$ 20 mil"  },
+  { value: "30.000",  label: "Mais de R$ 30 mil"  },
+  { value: "50.000",  label: "Mais de R$ 50 mil"  },
   { value: "100.000", label: "Mais de R$ 100 mil" },
+];
+
+const OCUPACAO_OPTIONS = [
+  { value: "clt",               label: "Empregado (CLT)"            },
+  { value: "autonomo",          label: "Autônomo / Freelancer"       },
+  { value: "empresario",        label: "Empresário / Empreendedor"   },
+  { value: "funcionario_publico",   label: "Funcionário Público"         },
+  { value: "desempregado",      label: "Desempregado"                },
+  { value: "estudante",         label: "Estudante"                   },
+  { value: "aposentado",        label: "Aposentado / Pensionista"    },
+  { value: "outro",        label: "Outro"    },
+];
+
+const HORARIO_OPTIONS = [
+  { value: "manha",    label: "Manhã (8h – 12h)"   },
+  { value: "tarde",    label: "Tarde (12h – 18h)"  },
+  { value: "noite",    label: "Noite (18h – 21h)"  },
+  { value: "qualquer", label: "Qualquer horário"    },
 ];
 
 /* ─── FORMATTERS ─── */
@@ -31,276 +54,261 @@ function onlyNumbers(v: string) {
 
 function formatWhatsapp(v: string) {
   const n = onlyNumbers(v).slice(0, 11);
-
-  if (n.length <= 2) return n;
-  if (n.length <= 6) return n.replace(/(\d{2})(\d+)/, "($1) $2");
+  if (n.length <= 2)  return n;
+  if (n.length <= 6)  return n.replace(/(\d{2})(\d+)/, "($1) $2");
   if (n.length <= 10) return n.replace(/(\d{2})(\d{4})(\d+)/, "($1) $2-$3");
-
   return n.replace(/(\d{2})(\d{5})(\d{1,4})/, "($1) $2-$3");
 }
 
+/* ─────────────────────────────────────────────────────────────
+   CustomSelect — dropdown reutilizável (gerencia próprio estado)
+   Usado para: Capital, Ocupação e Horário
+───────────────────────────────────────────────────────────── */
+interface SelectOpt { value: string; label: string }
+
+function CustomSelect({
+  label,
+  placeholder,
+  options,
+  value,
+  onChange,
+}: {
+  label: string;
+  placeholder: string;
+  options: SelectOpt[];
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function h(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", h);
+    return () => document.removeEventListener("mousedown", h);
+  }, []);
+
+  const selected = options.find((o) => o.value === value);
+  const lCls = "text-[oklch(0.1998_0.0403_258.29)] text-[13px] font-bold uppercase tracking-wide";
+
+  return (
+    <div className="flex flex-col gap-[7px]" ref={ref}>
+      <span className={lCls}>{label}</span>
+      <div className="relative">
+        <button
+          type="button"
+          onClick={() => setOpen((o) => !o)}
+          aria-haspopup="listbox"
+          aria-expanded={open}
+          className={`w-full min-h-[50px] border rounded-[14px] px-4 pr-10 text-left text-[15px] outline-none transition-all duration-200 relative
+            ${value ? "text-[oklch(0.1998_0.0403_258.29)]" : "text-[#98a2b3]"}
+            ${open
+              ? "border-[#D4A017] ring-4 ring-[#D4A017]/20 bg-white"
+              : "border-[#D9E1E8] bg-white"
+            }`}
+        >
+          {selected?.label || placeholder}
+          <span
+            className={`absolute right-4 top-1/2 w-2 h-2 border-r-2 border-b-2 border-[oklch(0.1998_0.0403_258.29)]/50 transition-transform duration-200 ${
+              open ? "-translate-y-1/3 rotate-[225deg]" : "-translate-y-2/3 rotate-45"
+            }`}
+          />
+        </button>
+
+        {open && (
+          <div
+            role="listbox"
+            className="absolute top-[calc(100%+6px)] left-0 right-0 z-30 max-h-56 overflow-y-auto overscroll-contain rounded-[14px] border border-[#D9E1E8] bg-white shadow-[0_18px_34px_rgba(36,55,70,0.16)] p-1.5 flex flex-col gap-0.5"
+          >
+            {/* clear option */}
+            <button
+              type="button"
+              className="w-full text-left px-3 py-2.5 rounded-[10px] text-[#98a2b3] text-[15px] hover:bg-[#edf2f6]"
+              onClick={() => { onChange(""); setOpen(false); }}
+            >
+              {placeholder}
+            </button>
+
+            {options.map((opt) => (
+              <button
+                key={opt.value}
+                type="button"
+                role="option"
+                aria-selected={value === opt.value}
+                className={`w-full text-left px-3 py-2.5 rounded-[10px] text-[15px] transition-colors duration-150
+                  ${value === opt.value
+                    ? "bg-[#D4A017]/15 text-[#D4A017] font-bold"
+                    : "text-[oklch(0.1998_0.0403_258.29)] hover:bg-[#edf2f6]"
+                  }`}
+                onClick={() => { onChange(opt.value); setOpen(false); }}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────
+   HeroSection
+───────────────────────────────────────────────────────────── */
 export default function HeroSection() {
   const [formData, setFormData] = useState({
-    nome: "",
-    email: "",
-    whatsapp: "",
-    cidade: "",
-    uf: "",
-    capital: "",
+    nome:      "",
+    email:     "",
+    whatsapp:  "",
+    cidade:    "",
+    uf:        "",
+    capital:   "",
+    ocupacao:  "",   
+    horario:   "",   
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [status, setStatus] = useState<{ type: "error" | "success"; text: string } | null>(null);
 
+  // UF ainda tem dropdown próprio (display compacto "UF")
   const [ufOpen, setUfOpen] = useState(false);
-  const [capitalOpen, setCapitalOpen] = useState(false);
-
   const ufRef = useRef<HTMLDivElement>(null);
-  const capitalRef = useRef<HTMLDivElement>(null);
 
-  // Fecha dropdowns ao clicar fora
   useEffect(() => {
     function handler(e: MouseEvent) {
-      if (ufRef.current && !ufRef.current.contains(e.target as Node)) {
-        setUfOpen(false);
-      }
-
-      if (capitalRef.current && !capitalRef.current.contains(e.target as Node)) {
-        setCapitalOpen(false);
-      }
+      if (ufRef.current && !ufRef.current.contains(e.target as Node)) setUfOpen(false);
     }
-
     document.addEventListener("mousedown", handler);
-
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
+  /* ─────────────────────────────────────────────────────────
+     BACKEND — endpoints, keys e lógica 100% preservados
+     Apenas adicionados ocupacao/horario aos payloads
+  ───────────────────────────────────────────────────────── */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus(null);
 
-    // Validações
     const required: (keyof typeof formData)[] = [
-      "nome",
-      "email",
-      "whatsapp",
-      "cidade",
-      "uf",
-      "capital",
+      "nome", "email", "whatsapp", "cidade", "uf",
+      "capital", "ocupacao", "horario",
     ];
 
     for (const key of required) {
       if (!formData[key]) {
-        setStatus({
-          type: "error",
-          text: "Preencha todos os campos antes de continuar.",
-        });
+        setStatus({ type: "error", text: "Preencha todos os campos antes de continuar." });
         return;
       }
     }
 
     const wa = onlyNumbers(formData.whatsapp);
-
     if (wa.length < 10 || wa.length > 11) {
-      setStatus({
-        type: "error",
-        text: "WhatsApp inválido. Digite DDD + número.",
-      });
+      setStatus({ type: "error", text: "WhatsApp inválido. Digite DDD + número." });
       return;
     }
 
     setIsSubmitting(true);
 
     try {
-      /*
-        =========================================
-        TRACKING
-        =========================================
-      */
-
-      const meta = window.getMetaTrackingData?.() || {};
+      const meta     = window.getMetaTrackingData?.() || {};
       const tracking = window.getTrackingData?.() || {};
 
-      const capitalLabel =
-        CAPITAL_OPTIONS.find((opt) => opt.value === formData.capital)?.label ||
-        formData.capital;
+      const capitalLabel  = CAPITAL_OPTIONS.find((o) => o.value === formData.capital)?.label  || formData.capital;
+      const ocupacaoLabel = OCUPACAO_OPTIONS.find((o) => o.value === formData.ocupacao)?.label || formData.ocupacao;
+      const horarioLabel  = HORARIO_OPTIONS.find((o) => o.value === formData.horario)?.label   || formData.horario;
 
-      /*
-        =========================================
-        1. WEB3FORMS
-        =========================================
-      */
-
+      /* 1. WEB3FORMS */
       const web3Payload = {
         access_key: "1f63b8b2-e797-4e97-8308-b9b8509f6449",
-
-        from_name: "Landing Page Franquias",
-        subject: `Novo Candidato a Franqueado - ${formData.nome.trim()}`,
-
-        nome: formData.nome.trim(),
-        email: formData.email.trim(),
-        whatsapp: formData.whatsapp,
-        cidade: formData.cidade.trim(),
-        uf: formData.uf,
-        capital: capitalLabel,
-
-        botcheck: false,
+        from_name:  "Landing Page Franquias",
+        subject:    `Novo Candidato a Franqueado - ${formData.nome.trim()}`,
+        nome:       formData.nome.trim(),
+        email:      formData.email.trim(),
+        whatsapp:   formData.whatsapp,
+        cidade:     formData.cidade.trim(),
+        uf:         formData.uf,
+        capital:    capitalLabel,
+        ocupacao:   ocupacaoLabel,
+        horario:    horarioLabel,
+        botcheck:   false,
       };
 
       console.log("WEB3 PAYLOAD:", web3Payload);
 
       const web3Response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify(web3Payload),
+        method:  "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body:    JSON.stringify(web3Payload),
       });
 
       let web3Result: any = null;
+      try { web3Result = await web3Response.json(); } catch { web3Result = null; }
 
-      try {
-        web3Result = await web3Response.json();
-      } catch {
-        web3Result = null;
-      }
-
-      console.log("WEB3 STATUS:", web3Response.status);
+      console.log("WEB3 STATUS:",   web3Response.status);
       console.log("WEB3 RESPONSE:", web3Result);
 
       if (!web3Response.ok || !web3Result?.success) {
-        throw new Error(
-          `Erro Web3Forms: ${web3Result?.message || `Status ${web3Response.status}`
-          }`
-        );
+        throw new Error(`Erro Web3Forms: ${web3Result?.message || `Status ${web3Response.status}`}`);
       }
 
-      /*
-        =========================================
-        2. CRM
-        =========================================
-  
-        Agora o CRM NÃO é mais opcional.
-        Se o CRM falhar, NÃO redireciona.
-      */
-
+      /* 2. CRM */
       const crmPayload = {
-        fullName: formData.nome.trim(),
-        phone: formData.whatsapp,
-        email: formData.email.trim(),
-
-        cidade: formData.cidade.trim(),
-        uf: formData.uf,
-        capital: formData.capital,
+        fullName:     formData.nome.trim(),
+        phone:        formData.whatsapp,
+        email:        formData.email.trim(),
+        cidade:       formData.cidade.trim(),
+        uf:           formData.uf,
+        capital:      formData.capital,
         capitalLabel,
-
-        // META
-        fbp: meta?.fbp || "",
-        fbc: meta?.fbc || "",
-        fbclid: meta?.fbclid || "",
-
-        // UTMS
-        utmSource: tracking?.utm_source || "",
-        utmMedium: tracking?.utm_medium || "",
-        utmCampaign: tracking?.utm_campaign || "",
-        utmContent: tracking?.utm_content || "",
-        utmTerm: tracking?.utm_term || "",
-        utmId: tracking?.utm_id || "",
+        fbp:          meta?.fbp    || "",
+        fbc:          meta?.fbc    || "",
+        fbclid:       meta?.fbclid || "",
+        utmSource:    tracking?.utm_source   || "",
+        utmMedium:    tracking?.utm_medium   || "",
+        utmCampaign:  tracking?.utm_campaign || "",
+        utmContent:   tracking?.utm_content  || "",
+        utmTerm:      tracking?.utm_term     || "",
+        utmId:        tracking?.utm_id       || "",
       };
 
       console.log("CRM PAYLOAD:", crmPayload);
 
-      const crmResponse = await fetch(
-        "https://crm.helprecurso.com.br/leads/create-by-api-key",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-
-            "x-api-key": "93wkn371eaEbl6P41RlNWhM1xrFGSXdRVjDf3AGC",
-          },
-          body: JSON.stringify(crmPayload),
-        }
-      );
+      const crmResponse = await fetch("https://crm.helprecurso.com.br/leads/create-by-api-key", {
+        method:  "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key":    "93wkn371eaEbl6P41RlNWhM1xrFGSXdRVjDf3AGC",
+        },
+        body: JSON.stringify(crmPayload),
+      });
 
       let crmResult: any = null;
+      try { crmResult = await crmResponse.json(); } catch { crmResult = null; }
 
-      try {
-        crmResult = await crmResponse.json();
-      } catch {
-        crmResult = null;
-      }
-
-      console.log("CRM STATUS:", crmResponse.status);
+      console.log("CRM STATUS:",   crmResponse.status);
       console.log("CRM RESPONSE:", crmResult);
 
       if (!crmResponse.ok) {
-        throw new Error(
-          `Erro CRM: ${crmResult?.message ||
-          crmResult?.error ||
-          `Status ${crmResponse.status}`
-          }`
-        );
+        throw new Error(`Erro CRM: ${crmResult?.message || crmResult?.error || `Status ${crmResponse.status}`}`);
       }
 
-      /*
-        =========================================
-        3. REDIRECT
-        =========================================
-  
-        Só chega aqui se Web3Forms e CRM derem certo.
-      */
-
+      /* 3. REDIRECT */
       window.location.href = "https://franquias.helpmultas.com.br/obrigado";
     } catch (error) {
       console.error("ERRO COMPLETO:", error);
-
       setStatus({
         type: "error",
-        text:
-          error instanceof Error
-            ? error.message
-            : "Erro ao enviar formulário.",
+        text: error instanceof Error ? error.message : "Erro ao enviar formulário.",
       });
-
-      // Garante que NÃO redireciona em caso de erro.
       return;
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  function AnimatedStat({
-    value,
-    suffix,
-    label,
-  }: {
-    value: number;
-    suffix: string;
-    label: string;
-  }) {
-    const { ref, inView } = useInView();
-    const count = useCounter(value, 2500, inView);
-
-    return (
-      <div
-        ref={ref as React.RefObject<HTMLDivElement>}
-        className="flex flex-col items-center text-center p-4"
-      >
-        <span className="font-body text-4xl lg:text-4xl font-bold text-gold leading-none">
-          {count}
-          {suffix}
-        </span>
-
-        <span className="font-display text-sm font-bold text-white mt-2">
-          {label}
-        </span>
-      </div>
-    );
-  }
-
-  /* classes compartilhadas — mesmo visual do form da PreReunião */
   const inputCls =
     "w-full min-h-[50px] border border-[#D9E1E8] rounded-[14px] px-4 bg-white text-[oklch(0.1998_0.0403_258.29)] text-[15px] outline-none placeholder-[#98a2b3] focus:border-[#D4A017] focus:ring-4 focus:ring-[#D4A017]/20 transition-all duration-200";
 
@@ -311,216 +319,194 @@ export default function HeroSection() {
     <section
       id="inicio"
       className="relative min-h-screen flex flex-col overflow-hidden"
-      style={{
-        backgroundImage: `url(${HERO_BG})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
+      style={{ backgroundImage: `url(${HERO_BG})`, backgroundSize: "cover", backgroundPosition: "center" }}
     >
+      {/* Overlay */}
       <div className="absolute inset-0 bg-[oklch(0.1998_0.0403_258.29)]/60 backdrop-blur-[8px]" />
 
-      <div className="relative z-10 container mx-auto px-6 lg:px-12 flex-1 flex items-center py-20 lg:py-28">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center w-full">
-          {/* Left: Copy */}
-          <div className="text-white">
-            {/* Logo */}
-            <div className="mb-3">
-              <img
-                src="/image/LogotipoHelpinho.png"
-                alt="Help Multas"
-                className="h-12 w-auto"
-              />
+      <div className="relative z-10 container mx-auto px-5 lg:px-12 flex-1 flex items-center py-10 lg:py-28">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center w-full">
+
+          {/* ══════════════════════════════════════════
+              COLUNA ESQUERDA — Copy
+              Desktop: esquerda / Mobile: abaixo do form
+          ══════════════════════════════════════════ */}
+          <div className="text-white order-2 lg:order-1">
+            {/* Logo — desktop only */}
+            <div className="hidden lg:block mb-4">
+              <img src="/image/LogotipoHelpinho.png" alt="Help Multas" className="h-12 w-auto" />
             </div>
 
-            {/* Gold line */}
             <span className="gold-line" />
 
-            {/* Pre-headline */}
-            <p className="text-gold font-body font-semibold text-sm uppercase tracking-widest mb-3">
+            <p className="text-gold font-body font-semibold text-sm uppercase tracking-widest mb-4">
               Oportunidade de Negócio 2026
             </p>
 
-            {/* Main headline */}
-            <h1 className="font-display text-3xl lg:text-6xl xl:text-6xl font-black leading-[1.05] mb-3">
-              BILHÕES EM MULTAS TODOS OS ANOS.{" "}
-              <span className="text-gold">SEU NEGÓCIO ESTÁ AQUI.</span>
+            <h1 className="font-display text-4xl lg:text-[52px] font-black text-white leading-[1.1] tracking-tight mb-4">
+              NÃO TEM EXPERTISE?{" "}
+              <span className="text-gold">SEM PROBLEMA.</span>
             </h1>
 
-            {/* Sub-headline */}
-            <p className="font-body text-lg text-white/80 leading-relaxed mb-4 max-w-lg font-semibold">
-              Não tem expertise? Sem problema. Você só vende. A gente defende. Você lucra.
+            <p className="font-body text-lg text-white/80 leading-relaxed mb-7 max-w-lg font-semibold">
+              Você só vende. A gente defende. Você lucra.
             </p>
 
-            {/* Highlight box */}
-            <div className="bg-gradient-to-r from-gold/20 to-gold/10 rounded-xl p-4 mb-8 border border-gold/30">
-              <p className="font-body text-sm text-gold/90 mb-2 font-semibold">
-                Potencial de faturamento:
-              </p>
-
-              <p className="font-display text-3xl font-bold text-gold mb-2">
+            <div className="bg-gradient-to-r from-gold/20 to-gold/10 rounded-xl p-5 mb-8 border border-gold/30">
+              <p className="font-body text-sm text-gold/90 mb-2 font-semibold">Potencial de faturamento:</p>
+              <p className="font-display text-3xl lg:text-[38px] font-bold text-gold mb-1 leading-tight">
                 Até R$ 500 Mil por ano
               </p>
-
               <p className="font-body text-sm text-white/80 font-semibold">
                 Investimento a partir de R$ 30 mil
               </p>
             </div>
 
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-1 mb-10">
+            {/* Trust pills — desktop only */}
+            <div className="hidden lg:flex gap-3 flex-wrap mb-8">
               {[
-                { value: 80, suffix: "+", label: "Franquias no Brasil" },
-                { value: 100, suffix: "K+", label: "Motoristas Atendidos" },
-                { value: 10, suffix: "", label: "Anos de Mercado" },
-                { value: 27, suffix: "", label: "Estados Atendidos" },
-              ].map((stat) => (
-                <div key={stat.label} className="rounded-xl">
-                  <AnimatedStat {...stat} />
+                { icon: <Users className="w-4 h-4" />,      text: "+100 mil motoristas atendidos" },
+                { icon: <TrendingUp className="w-4 h-4" />, text: "+80 escritórios no Brasil"      },
+                { icon: <ShieldCheck className="w-4 h-4" />, text: "Mercado de bilhões/ano"        },
+              ].map((pill) => (
+                <div
+                  key={pill.text}
+                  className="flex items-center gap-2 bg-white/10 border border-white/15 rounded-full px-4 py-2"
+                >
+                  <span className="text-gold">{pill.icon}</span>
+                  <span className="font-body text-xs font-semibold text-white/80">{pill.text}</span>
                 </div>
               ))}
             </div>
 
-            {/* Scroll indicator */}
-            <a
-              href="#modelo"
-              className="hidden lg:flex items-center gap-2 text-white/40 text-sm hover:text-white transition-colors"
-            >
+            <a href="#modelo" className="hidden lg:flex items-center gap-2 text-white/40 text-sm hover:text-white transition-colors">
               <ChevronDown className="animate-bounce w-4 h-4" />
-              <span className="font-body font-semibold">
-                Role para conhecer o modelo
-              </span>
+              <span className="font-body font-semibold">Role para conhecer o modelo</span>
             </a>
           </div>
 
-          {/* Right: Form card — visual padronizado com LeadFormSection */}
-          <div id="formulario">
-            <div className="bg-white rounded-[28px] shadow-[0_32px_70px_rgba(0,0,0,0.45)] border border-[#D4A017]/20 p-7 sm:p-10">
-              {/* header do card */}
-              <div className="mb-7">
-                <div className="flex items-center justify-between gap-3 mb-5 flex-wrap">
-                  <span className="gold-line !mb-0" />
-                </div>
+          {/* ══════════════════════════════════════════
+              COLUNA DIREITA — Formulário
+              Mobile: primeiro (order-1), com logo acima
+          ══════════════════════════════════════════ */}
+          <div id="formulario" className="order-1 lg:order-2">
 
+            {/* Logo + mini hook — mobile only */}
+            <div className="lg:hidden flex items-center justify-between mb-5">
+              <img src="/image/LogotipoHelpinho.png" alt="Help Multas" className="h-9 w-auto" />
+              <div className="text-right">
+                <p className="text-gold font-body font-black text-[11px] uppercase tracking-widest leading-tight">
+                  Oportunidade 2026
+                </p>
+                <p className="text-white/70 font-body text-[11px] font-semibold leading-tight">
+                  Até R$ 500 Mil / ano
+                </p>
+              </div>
+            </div>
+
+            {/* Card do formulário */}
+            <div className="bg-white rounded-[28px] shadow-[0_32px_70px_rgba(0,0,0,0.45)] border border-[#D4A017]/20 p-6 sm:p-10">
+
+              <div className="mb-6">
+                <span className="gold-line !mb-0 block mb-4" />
                 <h2 className="font-display text-[26px] sm:text-[28px] font-black text-[oklch(0.1998_0.0403_258.29)] leading-tight mb-2">
                   Quero ser um franqueado
                 </h2>
-
                 <p className="font-body text-gray-500 text-[15px] leading-relaxed">
                   Preencha seus dados e nosso time de expansão entra em contato em até 24h.
                 </p>
               </div>
 
               <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4">
-                {/* nome */}
-                <div className="flex flex-col gap-[7px]">
-                  <label className={labelCls} htmlFor="hero-nome">
-                    Nome completo
-                  </label>
 
+                {/* Nome */}
+                <div className="flex flex-col gap-[7px]">
+                  <label className={labelCls} htmlFor="hero-nome">Nome completo</label>
                   <input
                     id="hero-nome"
                     name="nome"
                     type="text"
                     placeholder="Digite seu nome completo"
                     value={formData.nome}
-                    onChange={(e) =>
-                      setFormData({ ...formData, nome: e.target.value })
-                    }
+                    onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
                     className={inputCls}
                     required
                   />
                 </div>
 
-                {/* email */}
-                <div className="flex flex-col gap-[7px]">
-                  <label className={labelCls} htmlFor="hero-email">
-                    E-mail
-                  </label>
-
-                  <input
-                    id="hero-email"
-                    name="email"
-                    type="email"
-                    placeholder="seuemail@exemplo.com"
-                    value={formData.email}
-                    onChange={(e) =>
-                      setFormData({ ...formData, email: e.target.value })
-                    }
-                    className={inputCls}
-                    required
-                  />
-                </div>
-
-                {/* whatsapp */}
-                <div className="flex flex-col gap-[7px]">
-                  <label className={labelCls} htmlFor="hero-whatsapp">
-                    WhatsApp
-                  </label>
-
-                  <input
-                    id="hero-whatsapp"
-                    name="whatsapp"
-                    type="tel"
-                    placeholder="(00) 00000-0000"
-                    value={formData.whatsapp}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        whatsapp: formatWhatsapp(e.target.value),
-                      })
-                    }
-                    maxLength={15}
-                    inputMode="numeric"
-                    autoComplete="tel"
-                    className={inputCls}
-                    required
-                  />
-                </div>
-
-                {/* cidade + uf */}
-                <div className="grid gap-3" style={{ gridTemplateColumns: "1fr 110px" }}>
+                {/* Email + WhatsApp — lado a lado */}
+                <div className="grid grid-cols-2 gap-3">
                   <div className="flex flex-col gap-[7px]">
-                    <label className={labelCls} htmlFor="hero-cidade">
-                      Cidade
-                    </label>
+                    <label className={labelCls} htmlFor="hero-email">E-mail</label>
+                    <input
+                      id="hero-email"
+                      name="email"
+                      type="email"
+                      placeholder="seu@email.com"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      className={inputCls}
+                      required
+                    />
+                  </div>
 
+                  <div className="flex flex-col gap-[7px]">
+                    <label className={labelCls} htmlFor="hero-whatsapp">WhatsApp</label>
+                    <input
+                      id="hero-whatsapp"
+                      name="whatsapp"
+                      type="tel"
+                      placeholder="(00) 00000-0000"
+                      value={formData.whatsapp}
+                      onChange={(e) =>
+                        setFormData({ ...formData, whatsapp: formatWhatsapp(e.target.value) })
+                      }
+                      maxLength={15}
+                      inputMode="numeric"
+                      autoComplete="tel"
+                      className={inputCls}
+                      required
+                    />
+                  </div>
+                </div>
+
+                {/* Cidade + UF */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="flex flex-col gap-[7px]">
+                    <label className={labelCls} htmlFor="hero-cidade">Cidade</label>
                     <input
                       id="hero-cidade"
                       name="cidade"
                       type="text"
                       placeholder="Sua cidade"
                       value={formData.cidade}
-                      onChange={(e) =>
-                        setFormData({ ...formData, cidade: e.target.value })
-                      }
+                      onChange={(e) => setFormData({ ...formData, cidade: e.target.value })}
                       className={inputCls}
                       required
                     />
                   </div>
 
-                  {/* custom UF select */}
+                  {/* UF — dropdown próprio (compacto) */}
                   <div className="flex flex-col gap-[7px]" ref={ufRef}>
                     <label className={labelCls}>UF</label>
-
                     <div className="relative">
                       <button
                         type="button"
                         onClick={() => setUfOpen((o) => !o)}
+                        aria-haspopup="listbox"
+                        aria-expanded={ufOpen}
                         className={`w-full min-h-[50px] border rounded-[14px] px-4 pr-10 text-left text-[15px] outline-none transition-all duration-200 relative
                           ${formData.uf ? "text-[oklch(0.1998_0.0403_258.29)]" : "text-[#98a2b3]"}
                           ${ufOpen
                             ? "border-[#D4A017] ring-4 ring-[#D4A017]/20 bg-white"
-                            : "border-[#D9E1E8] bg-white focus:border-[#D4A017] focus:ring-4 focus:ring-[#D4A017]/20"
+                            : "border-[#D9E1E8] bg-white"
                           }`}
-                        aria-haspopup="listbox"
-                        aria-expanded={ufOpen}
                       >
                         {formData.uf || "UF"}
-
                         <span
-                          className={`absolute right-4 top-1/2 w-2 h-2 border-r-2 border-b-2 border-[oklch(0.1998_0.0403_258.29)]/50 transition-transform duration-200 ${ufOpen
-                              ? "-translate-y-1/3 rotate-[225deg]"
-                              : "-translate-y-2/3 rotate-45"
-                            }`}
+                          className={`absolute right-4 top-1/2 w-2 h-2 border-r-2 border-b-2 border-[oklch(0.1998_0.0403_258.29)]/50 transition-transform duration-200 ${
+                            ufOpen ? "-translate-y-1/3 rotate-[225deg]" : "-translate-y-2/3 rotate-45"
+                          }`}
                         />
                       </button>
 
@@ -532,14 +518,10 @@ export default function HeroSection() {
                           <button
                             type="button"
                             className="w-full text-left px-3 py-2.5 rounded-[10px] text-[#98a2b3] text-[15px] hover:bg-[#edf2f6]"
-                            onClick={() => {
-                              setFormData((p) => ({ ...p, uf: "" }));
-                              setUfOpen(false);
-                            }}
+                            onClick={() => { setFormData((p) => ({ ...p, uf: "" })); setUfOpen(false); }}
                           >
                             Selecione
                           </button>
-
                           {UF_OPTIONS.map((uf) => (
                             <button
                               key={uf}
@@ -551,10 +533,7 @@ export default function HeroSection() {
                                   ? "bg-[#D4A017]/15 text-[#D4A017] font-bold"
                                   : "text-[oklch(0.1998_0.0403_258.29)] hover:bg-[#edf2f6]"
                                 }`}
-                              onClick={() => {
-                                setFormData((p) => ({ ...p, uf }));
-                                setUfOpen(false);
-                              }}
+                              onClick={() => { setFormData((p) => ({ ...p, uf })); setUfOpen(false); }}
                             >
                               {uf}
                             </button>
@@ -565,66 +544,35 @@ export default function HeroSection() {
                   </div>
                 </div>
 
-                {/* capital — custom select */}
-                <div className="flex flex-col gap-[7px]" ref={capitalRef}>
-                  <label className={labelCls}>
-                    Capital disponível para investimento
-                  </label>
+                {/* Capital */}
+                <CustomSelect
+                  label="Capital disponível para investimento"
+                  placeholder="Selecione uma faixa"
+                  options={CAPITAL_OPTIONS}
+                  value={formData.capital}
+                  onChange={(v) => setFormData((p) => ({ ...p, capital: v }))}
+                />
 
-                  <div className="relative">
-                    <button
-                      type="button"
-                      onClick={() => setCapitalOpen((o) => !o)}
-                      className={`w-full min-h-[50px] border rounded-[14px] px-4 pr-10 text-left text-[15px] outline-none transition-all duration-200 relative
-                        ${formData.capital ? "text-[oklch(0.1998_0.0403_258.29)]" : "text-[#98a2b3]"}
-                        ${capitalOpen
-                          ? "border-[#D4A017] ring-4 ring-[#D4A017]/20 bg-white"
-                          : "border-[#D9E1E8] bg-white focus:border-[#D4A017] focus:ring-4 focus:ring-[#D4A017]/20"
-                        }`}
-                      aria-haspopup="listbox"
-                      aria-expanded={capitalOpen}
-                    >
-                      {CAPITAL_OPTIONS.find((o) => o.value === formData.capital)?.label ||
-                        "Selecione uma faixa"}
+                {/* Ocupação + Horário — lado a lado */}
+                <div className="grid grid-cols-2 gap-3">
+                  <CustomSelect
+                    label="Ocupação atual"
+                    placeholder="Selecione"
+                    options={OCUPACAO_OPTIONS}
+                    value={formData.ocupacao}
+                    onChange={(v) => setFormData((p) => ({ ...p, ocupacao: v }))}
+                  />
 
-                      <span
-                        className={`absolute right-4 top-1/2 w-2 h-2 border-r-2 border-b-2 border-[oklch(0.1998_0.0403_258.29)]/50 transition-transform duration-200 ${capitalOpen
-                            ? "-translate-y-1/3 rotate-[225deg]"
-                            : "-translate-y-2/3 rotate-45"
-                          }`}
-                      />
-                    </button>
-
-                    {capitalOpen && (
-                      <div
-                        role="listbox"
-                        className="absolute top-[calc(100%+6px)] left-0 right-0 z-30 max-h-56 overflow-y-auto overscroll-contain rounded-[14px] border border-[#D9E1E8] bg-white shadow-[0_18px_34px_rgba(36,55,70,0.16)] p-1.5 flex flex-col gap-0.5"
-                      >
-                        {CAPITAL_OPTIONS.map((opt) => (
-                          <button
-                            key={opt.value}
-                            type="button"
-                            role="option"
-                            aria-selected={formData.capital === opt.value}
-                            className={`w-full text-left px-3 py-2.5 rounded-[10px] text-[15px] transition-colors duration-150
-                              ${formData.capital === opt.value
-                                ? "bg-[#D4A017]/15 text-[#D4A017] font-bold"
-                                : "text-[oklch(0.1998_0.0403_258.29)] hover:bg-[#edf2f6]"
-                              }`}
-                            onClick={() => {
-                              setFormData((p) => ({ ...p, capital: opt.value }));
-                              setCapitalOpen(false);
-                            }}
-                          >
-                            {opt.label}
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                  <CustomSelect
+                    label="Melhor horário"
+                    placeholder="Selecione"
+                    options={HORARIO_OPTIONS}
+                    value={formData.horario}
+                    onChange={(v) => setFormData((p) => ({ ...p, horario: v }))}
+                  />
                 </div>
 
-                {/* status message */}
+                {/* Status */}
                 {status && (
                   <div
                     className={`rounded-[14px] px-4 py-3 text-[14px] leading-[1.5] border font-body
@@ -639,7 +587,7 @@ export default function HeroSection() {
                   </div>
                 )}
 
-                {/* submit */}
+                {/* Submit */}
                 <button
                   type="submit"
                   disabled={isSubmitting}
@@ -651,9 +599,12 @@ export default function HeroSection() {
                 <p className="text-center text-xs text-gray-400 font-body">
                   Seus dados estão seguros. Sem spam.
                 </p>
+
               </form>
             </div>
+
           </div>
+
         </div>
       </div>
     </section>

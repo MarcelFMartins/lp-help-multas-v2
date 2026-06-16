@@ -102,6 +102,27 @@ function formatWhatsapp(v: string) {
     return n.replace(/(\d{2})(\d{5})(\d{1,4})/, "($1) $2-$3");
 }
 
+/* ─── VALIDAÇÃO DE CPF ─── */
+function validarCPF(cpf: string): boolean {
+    cpf = cpf.replace(/\D/g, "");
+    if (cpf.length !== 11) return false;
+    if (/^(\d)\1{10}$/.test(cpf)) return false; // bloqueia 111.111.111-11, 000.000.000-00, etc.
+    let soma = 0;
+    for (let i = 0; i < 9; i++) {
+        soma += Number(cpf[i]) * (10 - i);
+    }
+    let digito = (soma * 10) % 11;
+    if (digito === 10) digito = 0;
+    if (digito !== Number(cpf[9])) return false;
+    soma = 0;
+    for (let i = 0; i < 10; i++) {
+        soma += Number(cpf[i]) * (11 - i);
+    }
+    digito = (soma * 10) % 11;
+    if (digito === 10) digito = 0;
+    return digito === Number(cpf[10]);
+}
+
 /* ─── LEAD FORM SECTION ─── */
 function LeadFormSection() {
     const { ref: sectionRef, inView } = useInView();
@@ -142,6 +163,7 @@ function LeadFormSection() {
         const cep = onlyNumbers(fields.cep);
         const wa = onlyNumbers(fields.whatsapp);
         if (cpf.length !== 11) { setStatus({ type: "error", text: "CPF inválido. Digite os 11 números do CPF." }); return false; }
+        if (!validarCPF(cpf)) { setStatus({ type: "error", text: "CPF inválido. Verifique os dígitos e tente novamente." }); return false; }
         if (wa.length < 10 || wa.length > 11) { setStatus({ type: "error", text: "WhatsApp inválido. Digite DDD + número." }); return false; }
         if (cep.length !== 8) { setStatus({ type: "error", text: "CEP inválido. Digite os 8 números do CEP." }); return false; }
         return true;
