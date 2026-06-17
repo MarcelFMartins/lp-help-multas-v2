@@ -23,10 +23,10 @@ const UF_OPTIONS = [
 ];
 
 const CAPITAL_OPTIONS = [
-  { value: "20.000", label: "Mais de R$ 20 mil" },
-  { value: "30.000", label: "Mais de R$ 30 mil" },
-  { value: "50.000", label: "Mais de R$ 50 mil" },
-  { value: "100.000", label: "Mais de R$ 100 mil" },
+  { value: "30.000", label: "De R$ 0 a R$ 30 mil (não tenho condições de adquirir a franquia atualmente)" },
+  { value: "50.000", label: "De R$ 30 mil a R$ 50 mil" },
+  { value: "70.000", label: "De R$ 50 mil a R$ 70 mil" },
+  { value: "100.000", label: "Acima de R$ 70 mil" },
 ];
 
 const OCUPACAO_OPTIONS = [
@@ -358,7 +358,7 @@ export default function HeroSection() {
                   R$ 30 MIL
                 </p>
                 <p className="font-body text-white/35 text-xs mt-1.5">
-                  Taxa de franquia inclusa · Sem royalties no 1º ano
+                  Taxa de franquia inclusa
                 </p>
               </div>
             </div>
