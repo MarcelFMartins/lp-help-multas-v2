@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/contexts/ThemeContext";
 import Home from "@/pages/Home";
 import ThankYouPage from "@/pages/ThankYouPage";
 import PreReuniao from "@/pages/PreReunião";
+import FranqueadoLP from "@/pages/FranqueadoLP";
 
 
 function Router() {
@@ -17,6 +18,8 @@ function Router() {
       <Route path="/obrigado" component={ThankYouPage} />
 
       <Route path="/prereuniao" component={PreReuniao} />
+
+      <Route path="/franqueado" component={FranqueadoLP} />
       
       <Route path="/404" component={NotFound} />
 

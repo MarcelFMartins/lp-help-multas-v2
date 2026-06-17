@@ -12,7 +12,7 @@
  */
 
 import { useState, useEffect, useRef } from "react";
-import { ChevronDown, ShieldCheck, TrendingUp, Users } from "lucide-react";
+import { ChevronDown, BadgeCheck  } from "lucide-react";
 
 const HERO_BG = "/image/fundo.webp";
 
@@ -23,28 +23,28 @@ const UF_OPTIONS = [
 ];
 
 const CAPITAL_OPTIONS = [
-  { value: "20.000",  label: "Mais de R$ 20 mil"  },
-  { value: "30.000",  label: "Mais de R$ 30 mil"  },
-  { value: "50.000",  label: "Mais de R$ 50 mil"  },
+  { value: "20.000", label: "Mais de R$ 20 mil" },
+  { value: "30.000", label: "Mais de R$ 30 mil" },
+  { value: "50.000", label: "Mais de R$ 50 mil" },
   { value: "100.000", label: "Mais de R$ 100 mil" },
 ];
 
 const OCUPACAO_OPTIONS = [
-  { value: "clt",               label: "Empregado (CLT)"            },
-  { value: "autonomo",          label: "Autônomo / Freelancer"       },
-  { value: "empresario",        label: "Empresário / Empreendedor"   },
-  { value: "funcionario_publico",   label: "Funcionário Público"         },
-  { value: "desempregado",      label: "Desempregado"                },
-  { value: "estudante",         label: "Estudante"                   },
-  { value: "aposentado",        label: "Aposentado / Pensionista"    },
-  { value: "outro",        label: "Outro"    },
+  { value: "clt", label: "Empregado (CLT)" },
+  { value: "autonomo", label: "Autônomo / Freelancer" },
+  { value: "empresario", label: "Empresário / Empreendedor" },
+  { value: "funcionario_publico", label: "Funcionário Público" },
+  { value: "desempregado", label: "Desempregado" },
+  { value: "estudante", label: "Estudante" },
+  { value: "aposentado", label: "Aposentado / Pensionista" },
+  { value: "outro", label: "Outro" },
 ];
 
 const HORARIO_OPTIONS = [
-  { value: "manha",    label: "Manhã (8h – 12h)"   },
-  { value: "tarde",    label: "Tarde (12h – 18h)"  },
-  { value: "noite",    label: "Noite (18h – 21h)"  },
-  { value: "qualquer", label: "Qualquer horário"    },
+  { value: "manha", label: "Manhã (8h – 12h)" },
+  { value: "tarde", label: "Tarde (12h – 18h)" },
+  { value: "noite", label: "Noite (18h – 21h)" },
+  { value: "qualquer", label: "Qualquer horário" },
 ];
 
 /* ─── FORMATTERS ─── */
@@ -54,8 +54,8 @@ function onlyNumbers(v: string) {
 
 function formatWhatsapp(v: string) {
   const n = onlyNumbers(v).slice(0, 11);
-  if (n.length <= 2)  return n;
-  if (n.length <= 6)  return n.replace(/(\d{2})(\d+)/, "($1) $2");
+  if (n.length <= 2) return n;
+  if (n.length <= 6) return n.replace(/(\d{2})(\d+)/, "($1) $2");
   if (n.length <= 10) return n.replace(/(\d{2})(\d{4})(\d+)/, "($1) $2-$3");
   return n.replace(/(\d{2})(\d{5})(\d{1,4})/, "($1) $2-$3");
 }
@@ -111,9 +111,8 @@ function CustomSelect({
         >
           {selected?.label || placeholder}
           <span
-            className={`absolute right-4 top-1/2 w-2 h-2 border-r-2 border-b-2 border-[oklch(0.1998_0.0403_258.29)]/50 transition-transform duration-200 ${
-              open ? "-translate-y-1/3 rotate-[225deg]" : "-translate-y-2/3 rotate-45"
-            }`}
+            className={`absolute right-4 top-1/2 w-2 h-2 border-r-2 border-b-2 border-[oklch(0.1998_0.0403_258.29)]/50 transition-transform duration-200 ${open ? "-translate-y-1/3 rotate-[225deg]" : "-translate-y-2/3 rotate-45"
+              }`}
           />
         </button>
 
@@ -159,14 +158,14 @@ function CustomSelect({
 ───────────────────────────────────────────────────────────── */
 export default function HeroSection() {
   const [formData, setFormData] = useState({
-    nome:      "",
-    email:     "",
-    whatsapp:  "",
-    cidade:    "",
-    uf:        "",
-    capital:   "",
-    ocupacao:  "",   
-    horario:   "",   
+    nome: "",
+    email: "",
+    whatsapp: "",
+    cidade: "",
+    uf: "",
+    capital: "",
+    ocupacao: "",
+    horario: "",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -213,41 +212,41 @@ export default function HeroSection() {
     setIsSubmitting(true);
 
     try {
-      const meta     = window.getMetaTrackingData?.() || {};
+      const meta = window.getMetaTrackingData?.() || {};
       const tracking = window.getTrackingData?.() || {};
 
-      const capitalLabel  = CAPITAL_OPTIONS.find((o) => o.value === formData.capital)?.label  || formData.capital;
+      const capitalLabel = CAPITAL_OPTIONS.find((o) => o.value === formData.capital)?.label || formData.capital;
       const ocupacaoLabel = OCUPACAO_OPTIONS.find((o) => o.value === formData.ocupacao)?.label || formData.ocupacao;
-      const horarioLabel  = HORARIO_OPTIONS.find((o) => o.value === formData.horario)?.label   || formData.horario;
+      const horarioLabel = HORARIO_OPTIONS.find((o) => o.value === formData.horario)?.label || formData.horario;
 
       /* 1. WEB3FORMS */
       const web3Payload = {
         access_key: "1f63b8b2-e797-4e97-8308-b9b8509f6449",
-        from_name:  "Landing Page Franquias",
-        subject:    `Novo Candidato a Franqueado - ${formData.nome.trim()}`,
-        nome:       formData.nome.trim(),
-        email:      formData.email.trim(),
-        whatsapp:   formData.whatsapp,
-        cidade:     formData.cidade.trim(),
-        uf:         formData.uf,
-        capital:    capitalLabel,
-        ocupacao:   ocupacaoLabel,
-        horario:    horarioLabel,
-        botcheck:   false,
+        from_name: "Landing Page Franquias",
+        subject: `Novo Candidato a Franqueado - ${formData.nome.trim()}`,
+        nome: formData.nome.trim(),
+        email: formData.email.trim(),
+        whatsapp: formData.whatsapp,
+        cidade: formData.cidade.trim(),
+        uf: formData.uf,
+        capital: capitalLabel,
+        ocupacao: ocupacaoLabel,
+        horario: horarioLabel,
+        botcheck: false,
       };
 
       console.log("WEB3 PAYLOAD:", web3Payload);
 
       const web3Response = await fetch("https://api.web3forms.com/submit", {
-        method:  "POST",
+        method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body:    JSON.stringify(web3Payload),
+        body: JSON.stringify(web3Payload),
       });
 
       let web3Result: any = null;
       try { web3Result = await web3Response.json(); } catch { web3Result = null; }
 
-      console.log("WEB3 STATUS:",   web3Response.status);
+      console.log("WEB3 STATUS:", web3Response.status);
       console.log("WEB3 RESPONSE:", web3Result);
 
       if (!web3Response.ok || !web3Result?.success) {
@@ -256,31 +255,31 @@ export default function HeroSection() {
 
       /* 2. CRM */
       const crmPayload = {
-        fullName:     formData.nome.trim(),
-        phone:        formData.whatsapp,
-        email:        formData.email.trim(),
-        cidade:       formData.cidade.trim(),
-        uf:           formData.uf,
-        capital:      formData.capital,
+        fullName: formData.nome.trim(),
+        phone: formData.whatsapp,
+        email: formData.email.trim(),
+        cidade: formData.cidade.trim(),
+        uf: formData.uf,
+        capital: formData.capital,
         capitalLabel,
-        fbp:          meta?.fbp    || "",
-        fbc:          meta?.fbc    || "",
-        fbclid:       meta?.fbclid || "",
-        utmSource:    tracking?.utm_source   || "",
-        utmMedium:    tracking?.utm_medium   || "",
-        utmCampaign:  tracking?.utm_campaign || "",
-        utmContent:   tracking?.utm_content  || "",
-        utmTerm:      tracking?.utm_term     || "",
-        utmId:        tracking?.utm_id       || "",
+        fbp: meta?.fbp || "",
+        fbc: meta?.fbc || "",
+        fbclid: meta?.fbclid || "",
+        utmSource: tracking?.utm_source || "",
+        utmMedium: tracking?.utm_medium || "",
+        utmCampaign: tracking?.utm_campaign || "",
+        utmContent: tracking?.utm_content || "",
+        utmTerm: tracking?.utm_term || "",
+        utmId: tracking?.utm_id || "",
       };
 
       console.log("CRM PAYLOAD:", crmPayload);
 
       const crmResponse = await fetch("https://crm.helprecurso.com.br/leads/create-by-api-key", {
-        method:  "POST",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "x-api-key":    "93wkn371eaEbl6P41RlNWhM1xrFGSXdRVjDf3AGC",
+          "x-api-key": "93wkn371eaEbl6P41RlNWhM1xrFGSXdRVjDf3AGC",
         },
         body: JSON.stringify(crmPayload),
       });
@@ -288,7 +287,7 @@ export default function HeroSection() {
       let crmResult: any = null;
       try { crmResult = await crmResponse.json(); } catch { crmResult = null; }
 
-      console.log("CRM STATUS:",   crmResponse.status);
+      console.log("CRM STATUS:", crmResponse.status);
       console.log("CRM RESPONSE:", crmResult);
 
       if (!crmResponse.ok) {
@@ -339,42 +338,42 @@ export default function HeroSection() {
 
             <span className="gold-line" />
 
-            <p className="text-gold font-body font-semibold text-sm uppercase tracking-widest mb-4">
-              Oportunidade de Negócio 2026
-            </p>
 
             <h1 className="font-display text-4xl lg:text-[52px] font-black text-white leading-[1.1] tracking-tight mb-4">
-              NÃO TEM EXPERTISE?{" "}
-              <span className="text-gold">SEM PROBLEMA.</span>
+              VOCÊ VENDE.{" "}
+              <span className="text-gold">NÓS EXECUTAMOS TODA A OPERAÇÃO.</span>
             </h1>
 
             <p className="font-body text-lg text-white/80 leading-relaxed mb-7 max-w-lg font-semibold">
-              Você só vende. A gente defende. Você lucra.
+              50% da venda no seu bolso. Nós cuidamos de todo o resto.
             </p>
 
-            <div className="bg-gradient-to-r from-gold/20 to-gold/10 rounded-xl p-5 mb-8 border border-gold/30">
-              <p className="font-body text-sm text-gold/90 mb-2 font-semibold">Potencial de faturamento:</p>
-              <p className="font-display text-3xl lg:text-[38px] font-bold text-gold mb-1 leading-tight">
-                Até R$ 500 Mil por ano
-              </p>
-              <p className="font-body text-sm text-white/80 font-semibold">
-                Investimento a partir de R$ 30 mil
-              </p>
+            <div className="flex items-stretch gap-0 mb-8">
+              <div className="w-1 bg-gold rounded-full shrink-0" />
+              <div className="pl-5">
+                <p className="font-body text-gold/60 text-[11px] font-semibold uppercase tracking-[.15em] mb-1">
+                  Investimento a partir de
+                </p>
+                <p className="font-display text-5xl lg:text-6xl font-black text-gold leading-none tracking-tight">
+                  R$ 30 MIL
+                </p>
+                <p className="font-body text-white/35 text-xs mt-1.5">
+                  Taxa de franquia inclusa · Sem royalties no 1º ano
+                </p>
+              </div>
             </div>
 
             {/* Trust pills — desktop only */}
-            <div className="hidden lg:flex gap-3 flex-wrap mb-8">
+            <div className="hidden lg:flex gap-1 flex-wrap mb-8">
               {[
-                { icon: <Users className="w-4 h-4" />,      text: "+100 mil motoristas atendidos" },
-                { icon: <TrendingUp className="w-4 h-4" />, text: "+80 escritórios no Brasil"      },
-                { icon: <ShieldCheck className="w-4 h-4" />, text: "Mercado de bilhões/ano"        },
+                { icon: <BadgeCheck className="w-5 h-5" />, text: "Franquia com mais de 10 ANOS DE MERCADO" },
               ].map((pill) => (
                 <div
                   key={pill.text}
                   className="flex items-center gap-2 bg-white/10 border border-white/15 rounded-full px-4 py-2"
                 >
                   <span className="text-gold">{pill.icon}</span>
-                  <span className="font-body text-xs font-semibold text-white/80">{pill.text}</span>
+                  <span className="font-body text-body font-bold text-white/80">{pill.text}</span>
                 </div>
               ))}
             </div>
@@ -504,9 +503,8 @@ export default function HeroSection() {
                       >
                         {formData.uf || "UF"}
                         <span
-                          className={`absolute right-4 top-1/2 w-2 h-2 border-r-2 border-b-2 border-[oklch(0.1998_0.0403_258.29)]/50 transition-transform duration-200 ${
-                            ufOpen ? "-translate-y-1/3 rotate-[225deg]" : "-translate-y-2/3 rotate-45"
-                          }`}
+                          className={`absolute right-4 top-1/2 w-2 h-2 border-r-2 border-b-2 border-[oklch(0.1998_0.0403_258.29)]/50 transition-transform duration-200 ${ufOpen ? "-translate-y-1/3 rotate-[225deg]" : "-translate-y-2/3 rotate-45"
+                            }`}
                         />
                       </button>
 
