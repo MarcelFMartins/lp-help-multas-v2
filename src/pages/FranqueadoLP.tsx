@@ -730,7 +730,6 @@ function ModelosLP() {
   const modelos = [
     {
       tag:          "Mais popular",
-      icon:         "🏢",
       name:         "Loja Fisica",
       description:  "Escritório comercial com atendimento presencial e equipe enxuta, fortalecendo presença local e credibilidade na sua cidade.",
       investimento: "R$ 100 mil",
@@ -744,7 +743,6 @@ function ModelosLP() {
     },
     {
       tag:          "Melhor custo-benefício",
-      icon:         "🏠",
       name:         "Home Based",
       description:  "Modalidade 100% remota, ideal para quem deseja iniciar com baixo investimento e flexibilidade total de horários.",
       investimento: "R$ 30 mil",
@@ -812,7 +810,6 @@ function ModelosLP() {
                     >
                       {m.tag}
                     </div>
-                    <div className="text-5xl mb-2">{m.icon}</div>
                     <h3 className="font-display text-3xl font-black text-white">{m.name}</h3>
                   </div>
                 </div>
