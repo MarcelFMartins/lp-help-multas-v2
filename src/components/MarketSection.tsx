@@ -60,13 +60,13 @@ export default function MarketSection() {
 
   const primaryStats = [
     { value: 80,  suffix: "+",    label: "Franquias no Brasil",  description: "Franqueados operando em todo o país" },
-    { value: 100, suffix: "MIL+", label: "Motoristas Atendidos", description: "Se defenderam com a Help Multas" },
+    { value: 100, suffix: "MIL+", label: "Clientes", description: "Se defenderam com a Help Multas" },
     { value: 27,  suffix: "",     label: "Estados Atendidos",    description: "Presença nacional consolidada" },
   ];
 
   const socialProofStats = [
-    { value: 7,  suffix: "+", label: "Anos de Franquia",    description: "Franqueados com mais de 7 anos de unidade ativa" },
-    { value: 40, suffix: "%", label: "Índice de Recompra",  description: "Dos clientes voltam para recorrer novas multas" },
+    { value: 10,  suffix: " ANOS", label: "De Franquia",    description: "Temos Franqueados com mais de 07 anos de unidade ativa" },
+    { value: 40, suffix: "%", label: "Índice de Recompra",  description: "Dos clientes que voltam para recorrer novas multas" },
     { value: 20, suffix: "%", label: "Índice de Indicação", description: "Dos clientes indicam a Help passivamente a amigos" },
   ];
 

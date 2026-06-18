@@ -105,11 +105,6 @@ const getItemsPerPage = () => {
 
 /* ══════════════════════════════════════════════ */
 export default function ThankYouPage() {
-
-  /* ─── vídeo hero ─── */
-  const [isPlaying, setIsPlaying] = useState(false);
-  const youtubeId = "PmmQMLF96Vw";
-
   /* ─── carrossel ─── */
   const [activeVideo, setActiveVideo] = useState<number | null>(null);
   const [activePage, setActivePage] = useState(0);
@@ -210,66 +205,6 @@ export default function ThankYouPage() {
             <p className="font-body text-xl text-white/75 leading-relaxed font-semibold">
               Recebemos seus dados com sucesso.
             </p>
-          </div>
-
-          {/* ── VÍDEO — container alargado ── */}
-          <div className="w-full max-w-5xl animate-fade-up" style={{ animationDelay: "0.38s" }}>
-            <div className="relative rounded-3xl overflow-hidden border border-[#D4A017]/35 shadow-[0_50px_100px_rgba(0,0,0,0.8),0_0_80px_rgba(212,160,23,0.18)] bg-black">
-
-              {/* player */}
-              <div className="relative aspect-video group">
-                {!isPlaying ? (
-                  <div onClick={() => setIsPlaying(true)} className="absolute inset-0 cursor-pointer">
-                    <img
-                      src="/image/thumbprereuniao.png"
-                      alt="Conheça a Help Multas"
-                      className="w-full h-full object-cover"
-                    />
-                    {/* overlay gradiente */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent transition-all duration-300 group-hover:from-black/70 group-hover:via-black/30" />
-
-                    {/* play centralizado */}
-                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-5">
-                      <div
-                        className="w-28 h-28 rounded-full flex items-center justify-center shadow-[0_0_60px_rgba(212,160,23,0.7),0_0_120px_rgba(212,160,23,0.3)] transition-all duration-300 group-hover:scale-110 group-hover:shadow-[0_0_80px_rgba(212,160,23,0.9),0_0_160px_rgba(212,160,23,0.4)]"
-                        style={{ background: "oklch(0.8371 0.1715 85.23)" }}
-                      >
-                        <Play
-                          className="w-11 h-11 fill-current ml-2.5"
-                          style={{ color: "oklch(0.3274 0.0363 242.96)" }}
-                        />
-                      </div>
-                      <span className="font-body text-white text-sm font-bold uppercase tracking-[0.2em] bg-black/50 px-5 py-2 rounded-full backdrop-blur-sm border border-white/10">
-                        Assistir
-                      </span>
-                    </div>
-
-                    {/* label canto superior esquerdo */}
-                    <div className="absolute top-4 left-4 flex items-center gap-2 bg-black/50 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/10">
-                      <div className="w-2 h-2 rounded-full bg-[#D4A017] animate-pulse" />
-                      <span className="font-body text-white/80 text-xs font-semibold uppercase tracking-widest">
-                        Obrigado por enviar nosso Formulário!
-                      </span>
-                    </div>
-                  </div>
-                ) : (
-                  <iframe
-                    className="w-full h-full"
-                    src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&rel=0`}
-                    title="Conheça a Help Multas"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen
-                  />
-                )}
-              </div>
-
-              {/* rodapé */}
-              <div className="flex items-center justify-between gap-4 px-6 py-4 bg-[oklch(0.13_0.03_258)] border-t border-white/8">
-                <p className="font-body text-sm text-white/50">
-                  Assista enquanto aguarda o nosso contato
-                </p>
-              </div>
-            </div>
           </div>
 
           {/* Scroll hint */}
