@@ -25,7 +25,7 @@ export default function TeamSection() {
               
               <div className="rounded-3xl overflow-hidden shadow-2xl border-2 border-gray-100">
                 <Img
-                  webp="/image/equipe_help.webp"
+                  webp="/image/TIME.jpg"
                   fallback="/image/logotipo.png"
                   alt="Equipe Help Multas"
                   className="w-full h-auto object-cover"

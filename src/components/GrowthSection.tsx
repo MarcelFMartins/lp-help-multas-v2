@@ -358,26 +358,6 @@ export default function GrowthSection() {
             </div>
           </div>
         </div>
-
-        {/* ── Bottom insight ── */}
-        <div className="mt-16 lg:mt-20 max-w-4xl mx-auto bg-gradient-to-r from-gold/10 to-gold/5 rounded-2xl p-8 sm:p-10 border border-gold/30">
-          <div className="flex gap-5 sm:gap-6">
-            <div className="w-1.5 bg-gradient-to-b from-gold to-gold/30 rounded-full flex-shrink-0" />
-            <div>
-              <p className="font-display text-xl sm:text-2xl font-bold text-[oklch(0.1998_0.0403_258.29)] mb-3">
-                Um mercado bilionário em expansão
-              </p>
-              <p className="font-body text-[oklch(0.1998_0.0403_258.29)] text-sm sm:text-base leading-relaxed mb-3">
-                Com 74,9 milhões de multas em 2024 e crescimento de 40% em 2025, o mercado de defesa
-                de multas é uma oportunidade real. São Paulo arrecadou R$&nbsp;1,6 bilhão em 2023,
-                demonstrando o volume financeiro envolvido.
-              </p>
-              <p className="font-body text-[oklch(0.1998_0.0403_258.29)] text-xs sm:text-sm italic">
-                Dados verificados: Senatran, PRF, G1, CET-SP, SEGS Portal Nacional
-              </p>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );
