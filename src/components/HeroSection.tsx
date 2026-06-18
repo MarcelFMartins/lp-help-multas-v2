@@ -339,13 +339,13 @@ export default function HeroSection() {
             <span className="gold-line" />
 
 
-            <h1 className="font-display text-4xl lg:text-[52px] font-black text-white leading-[1.1] tracking-tight mb-4">
+            <h1 className="font-display text-4xl lg:text-[64px] font-black text-white leading-[1.1] tracking-tight mb-4">
               VOCÊ VENDE.{" "}
-              <span className="text-gold">NÓS EXECUTAMOS TODA A OPERAÇÃO.</span>
+              <br /><span className="text-gold">NÓS EXECUTAMOS TODA A OPERAÇÃO.</span>
             </h1>
 
             <p className="font-body text-lg text-white/80 leading-relaxed mb-7 max-w-lg font-semibold">
-              50% da venda no seu bolso. Nós cuidamos de todo o resto.
+              <span className="text-gold">Sem Royalties e 50% da venda no seu bolso.</span> <span><br />Nós cuidamos de todo o resto.</span>
             </p>
 
             <div className="flex items-stretch gap-0 mb-8">

@@ -7,7 +7,8 @@
 import * as React from "react";
 import { useInView, useCounter } from "@/hooks/useInView";
 
-function AnimatedStat({ value, suffix, label, description }: {
+/* ─── Stats principais (grandes) ─── */
+function Primarystat({ value, suffix, label, description }: {
   value: number;
   suffix: string;
   label: string;
@@ -19,13 +20,37 @@ function AnimatedStat({ value, suffix, label, description }: {
   return (
     <div
       ref={ref as React.RefObject<HTMLDivElement>}
-      className="flex flex-col items-center text-center p-6 bg-[oklch(0.1998_0.0403_258.29)] rounded-xl border border-white/10 p-6 hover:border-gold/40 transition-all duration-300 group"
+      className="flex flex-col items-center text-center p-8 rounded-2xl border border-white/10 hover:border-gold/40 transition-all duration-300 group"
     >
-      <span className="font-data text-6xl lg:text-7xl text-gold leading-none font-bold">
+      <span className="font-data text-6xl lg:text-7xl text-gold leading-none font-bold tracking-tight">
         {count}{suffix}
       </span>
-      <span className="font-display text-lg font-bold text-white mt-2">{label}</span>
-      <span className="font-body text-sm text-white/60 mt-1 max-w-[200px]">{description}</span>
+      <span className="font-display text-lg font-bold text-white mt-3">{label}</span>
+      <span className="font-body text-sm text-white/50 mt-1 max-w-[200px] leading-snug">{description}</span>
+    </div>
+  );
+}
+
+/* ─── Stats secundários (compactos / prova social) ─── */
+function SecondaryStat({ value, suffix, label, description }: {
+  value: number;
+  suffix: string;
+  label: string;
+  description: string;
+}) {
+  const { ref, inView } = useInView();
+  const count = useCounter(value, 1400, inView);
+
+  return (
+    <div
+      ref={ref as React.RefObject<HTMLDivElement>}
+      className="flex flex-col items-center text-center px-6 py-4 group"
+    >
+      <span className="font-data text-4xl lg:text-5xl text-gold leading-none font-bold">
+        {count}{suffix}
+      </span>
+      <span className="font-display text-sm font-bold text-white mt-2">{label}</span>
+      <span className="font-body text-xs text-white/50 mt-1 max-w-[160px] leading-snug">{description}</span>
     </div>
   );
 }
@@ -33,20 +58,25 @@ function AnimatedStat({ value, suffix, label, description }: {
 export default function MarketSection() {
   const { ref: titleRef, inView: titleInView } = useInView();
 
+  const primaryStats = [
+    { value: 80,  suffix: "+",    label: "Franquias no Brasil",  description: "Franqueados operando em todo o país" },
+    { value: 100, suffix: "MIL+", label: "Motoristas Atendidos", description: "Se defenderam com a Help Multas" },
+    { value: 27,  suffix: "",     label: "Estados Atendidos",    description: "Presença nacional consolidada" },
+  ];
+
+  const socialProofStats = [
+    { value: 7,  suffix: "+", label: "Anos de Franquia",    description: "Franqueados com mais de 7 anos de unidade ativa" },
+    { value: 40, suffix: "%", label: "Índice de Recompra",  description: "Dos clientes voltam para recorrer novas multas" },
+    { value: 20, suffix: "%", label: "Índice de Indicação", description: "Dos clientes indicam a Help passivamente a amigos" },
+  ];
+
   return (
     <section id="mercado" className="relative py-24 bg-[oklch(0.1998_0.0403_258.29)] overflow-hidden">
-      {/* Background image with overlay */}
-      <div
-        className="absolute inset-0 opacity-20"
-        style={{
-          backgroundColor: "[oklch(0.1998_0.0403_258.29)]",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      />
+      <div className="absolute inset-0 opacity-20" />
       <div className="absolute inset-0" />
 
-      <div className="relative z-10 container mx-auto">
+      <div className="relative z-10 container mx-auto px-4">
+
         {/* Section header */}
         <div
           ref={titleRef as React.RefObject<HTMLDivElement>}
@@ -58,7 +88,7 @@ export default function MarketSection() {
           </p>
           <h2 className="font-display text-4xl lg:text-5xl font-black text-white leading-tight max-w-3xl mx-auto">
             O BRASIL EMITE{" "}
-            <span className="text-gold italic">MILHÕES DE MULTAS</span>{" "}
+            <span className="text-gold italic">MAIS DE <br />70 MILHÕES DE MULTAS</span>{" "}
             POR ANO. ALGUÉM PRECISA DEFENDER ESSES MOTORISTAS.
           </h2>
           <p className="font-body text-white/70 text-lg mt-6 max-w-2xl mx-auto">
@@ -67,17 +97,20 @@ export default function MarketSection() {
           </p>
         </div>
 
-        {/* Stats grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-16">
-          {[
-            { value: 80, suffix: "+", label: "Franquias no Brasil", description: "Franqueados operando em todo o Brasil" },
-            { value: 100, suffix: "MIL+", label: "Motoristas", description: "Se Defenderam com a Help Multas" },
-            { value: 27, suffix: "", label: "Estados Atendidos", description: "Presença nacional consolidada" },
-          ].map((stat) => (
-            <div key={stat.label} className="bg-white/5 rounded-xl border border-white/10">
-              <AnimatedStat {...stat} />
-            </div>
+        {/* ── Bloco 1: Stats principais ── */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          {primaryStats.map((stat) => (
+            <Primarystat key={stat.label} {...stat} />
           ))}
+        </div>
+
+        {/* ── Bloco 2: Prova social (strip compacto) ── */}
+        <div className="rounded-2xl border border-white/10 mb-16 overflow-hidden">
+          <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/10">
+            {socialProofStats.map((stat) => (
+              <SecondaryStat key={stat.label} {...stat} />
+            ))}
+          </div>
         </div>
 
         {/* Market insight cards */}
@@ -110,6 +143,7 @@ export default function MarketSection() {
             </div>
           ))}
         </div>
+
       </div>
     </section>
   );
