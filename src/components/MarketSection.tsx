@@ -2,6 +2,9 @@
  * MarketSection — "O Problema / A Oportunidade"
  * Design: Dark navy background, gold data visualization, market stats
  * Narrative: Apresenta o tamanho do mercado de multas como oportunidade
+ * fature até 30k mes modelo franquia
+ticket medio
+n contratos por mes 
  */
 
 import * as React from "react";
@@ -59,14 +62,14 @@ export default function MarketSection() {
   const { ref: titleRef, inView: titleInView } = useInView();
 
   const primaryStats = [
-    { value: 80,  suffix: "+",    label: "Franquias no Brasil",  description: "Franqueados operando em todo o país" },
+    { value: 80, suffix: "+", label: "Franquias no Brasil", description: "Franqueados operando em todo o país" },
     { value: 100, suffix: "MIL+", label: "Clientes", description: "Se defenderam com a Help Multas" },
-    { value: 27,  suffix: "",     label: "Estados Atendidos",    description: "Presença nacional consolidada" },
+    { value: 27, suffix: "", label: "Estados Atendidos", description: "Presença nacional consolidada" },
   ];
 
   const socialProofStats = [
-    { value: 10,  suffix: " ANOS", label: "De Franquia",    description: "Temos Franqueados com mais de 07 anos de unidade ativa" },
-    { value: 40, suffix: "%", label: "Índice de Recompra",  description: "Dos clientes que voltam para recorrer novas multas" },
+    { value: 10, suffix: " ANOS", label: "De Franquia", description: "Temos Franqueados com mais de 07 anos de unidade ativa" },
+    { value: 40, suffix: "%", label: "Índice de Recompra", description: "Dos clientes que voltam para recorrer novas multas" },
     { value: 20, suffix: "%", label: "Índice de Indicação", description: "Dos clientes indicam a Help passivamente a amigos" },
   ];
 
