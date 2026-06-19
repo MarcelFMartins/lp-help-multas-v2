@@ -219,7 +219,7 @@ export default function MarketSection() {
           {/* Canais de vendas — strip dentro do card */}
           <div className="relative z-10 border-t border-white/10 px-8 py-5 flex flex-col items-center gap-3">
             <span className="font-body text-[10px] font-bold uppercase tracking-widest text-white/30">
-              Principais canais
+              Principais Canais de Vendas
             </span>
             <div className="flex flex-row items-center gap-6">
               {[
