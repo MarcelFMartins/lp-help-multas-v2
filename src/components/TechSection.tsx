@@ -244,15 +244,14 @@ export default function TechSection() {
             Ecossistema Digital
           </p>
           <h2 className="font-display text-4xl lg:text-5xl font-black text-white leading-tight max-w-3xl mx-auto">
-            TECNOLOGIA PRÓPRIA{" "}
+            O QUE FAZ A HELPMULTAS{" "}
             <span className="italic" style={{ color: GOLD }}>
-              CRIADA PELA HELP MULTAS
+              SER DIFERENTE
             </span>{" "}
-            PARA O SEU SUCESSO
+            DE OUTRAS FRANQUIAS
           </h2>
           <p className="font-body text-white/60 text-lg mt-6 max-w-2xl mx-auto leading-relaxed">
-            Você não começa do zero. Desde o primeiro dia, tem acesso a um ecossistema
-            digital completo, desenvolvido internamente para maximizar suas vendas.
+            Enquanto muitas franquias entregam apenas a marca, a Help Multas entrega um ecossistema próprio de tecnologia que gera oportunidades, organiza o processo comercial e impulsiona novas vendas todos os dias.
           </p>
         </div>
 
