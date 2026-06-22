@@ -988,7 +988,7 @@ function FormSection() {
                   className="w-full py-4 rounded-xl font-display font-black text-sm uppercase tracking-wider transition-all hover:opacity-90 hover:-translate-y-0.5 disabled:opacity-60 mt-1"
                   style={{ background: GOLD, color: NAVY_DEEP }}
                 >
-                  {sending ? "Enviando..." : "Quero ser parceiro Help Indica →"}
+                  {sending ? "Enviando..." : "Quero ser parceiro →"}
                 </button>
 
                 <p className="text-[11px] text-center leading-relaxed" style={{ color: `${MUTED}90` }}>
