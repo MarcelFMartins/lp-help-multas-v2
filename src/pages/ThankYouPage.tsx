@@ -244,14 +244,6 @@ export default function ThankYouPage() {
                         Assistir
                       </span>
                     </div>
-
-                    {/* label canto superior esquerdo */}
-                    <div className="absolute top-4 left-4 flex items-center gap-2 bg-black/50 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/10">
-                      <div className="w-2 h-2 rounded-full bg-[#D4A017] animate-pulse" />
-                      <span className="font-body text-white/80 text-xs font-semibold uppercase tracking-widest">
-                        Obrigado por enviar nosso Formulário!!
-                      </span>
-                    </div>
                   </div>
                 ) : (
                   <iframe

@@ -58,6 +58,69 @@ function SecondaryStat({ value, suffix, label, description }: {
   );
 }
 
+/* ─── Divider responsivo ─── */
+function Divider() {
+  return (
+    <>
+      <div className="hidden md:block w-px self-stretch bg-white/10 my-8" />
+      <div className="md:hidden h-px w-full bg-white/10" />
+    </>
+  );
+}
+
+/* ─── Earnings stat ─── */
+function EarningsStat({
+  eyebrow,
+  value,
+  prefix = "",
+  suffix = "",
+  description,
+  highlight = false,
+}: {
+  eyebrow: string;
+  value: number;
+  prefix?: string;
+  suffix?: string;
+  description: string;
+  highlight?: boolean;
+}) {
+  const { ref, inView } = useInView();
+  const count = useCounter(value, 1800, inView);
+
+  return (
+    <div
+      ref={ref as React.RefObject<HTMLDivElement>}
+      className="flex flex-col items-center justify-center text-center px-8 py-10 gap-1"
+    >
+      <span className="font-body text-xs font-semibold uppercase tracking-widest text-white/50 mb-1">
+        {eyebrow}
+      </span>
+      <div className="flex items-baseline justify-center whitespace-nowrap">
+        <span
+          className={`font-data font-black leading-none tracking-tight ${
+            highlight
+              ? "text-5xl lg:text-6xl text-gold"
+              : "text-4xl lg:text-5xl text-white"
+          }`}
+          style={{ minWidth: highlight ? "3ch" : undefined, display: "inline-block", textAlign: "right" }}
+        >
+          {prefix}{count}
+        </span>
+        <span
+          className={`font-data font-black leading-none tracking-tight ${
+            highlight ? "text-5xl lg:text-6xl text-gold" : "text-4xl lg:text-5xl text-white"
+          }`}
+        >
+          {suffix}
+        </span>
+      </div>
+      <span className="font-body text-xs text-white/40 mt-2 max-w-[180px] leading-snug">
+        {description}
+      </span>
+    </div>
+  );
+}
+
 export default function MarketSection() {
   const { ref: titleRef, inView: titleInView } = useInView();
 
@@ -95,7 +158,7 @@ export default function MarketSection() {
             POR ANO. ALGUÉM PRECISA DEFENDER ESSES MOTORISTAS.
           </h2>
           <p className="font-body text-white/70 text-lg mt-6 max-w-2xl mx-auto">
-            Esse alguém pode ser você, com suporte técnico completo da HelpMultas,
+            Esse alguém pode ser você, com suporte técnico completo da Help Multas,
             sem precisar ser advogado.
           </p>
         </div>
@@ -116,35 +179,61 @@ export default function MarketSection() {
           </div>
         </div>
 
-        {/* Market insight cards */}
-        <div className="grid md:grid-cols-3 gap-6">
-          {[
-            {
-              id: "mercado",
-              title: <>Mercado <span className="text-gold">Bilionário</span></>,
-              text: "O Brasil arrecada bilhões em multas de trânsito por ano. A maioria dos motoristas não sabe que pode contestar.",
-            },
-            {
-              id: "defesa",
-              title: <>Defesa <span className="text-gold">Acessível</span></>,
-              text: "Apenas uma fração dos motoristas multados busca defesa administrativa. Essa é a janela de oportunidade.",
-            },
-            {
-              id: "demanda",
-              title: <>Demanda <span className="text-gold">Crescente</span></>,
-              text: "Com o aumento da fiscalização eletrônica, o número de multas cresce ano a ano, e a demanda por defesa também.",
-            },
-          ].map((card) => (
-            <div
-              key={card.id}
-              className="bg-[oklch(0.1998_0.0403_258.29)] rounded-xl border border-white/10 p-6 hover:border-gold/40 transition-all duration-300 group"
-            >
-              <h3 className="font-display text-xl font-bold text-white mb-2 group-hover:text-gold transition-colors">
-                {card.title}
-              </h3>
-              <p className="font-body text-sm text-white/60 leading-relaxed">{card.text}</p>
+        {/* ── Bloco 3: Potencial de Faturamento ── */}
+        <div className="relative rounded-2xl border border-gold/30 overflow-hidden bg-gradient-to-br from-white/5 to-transparent">
+          {/* Glow sutil */}
+          <div className="absolute inset-0 bg-gradient-to-r from-gold/5 via-transparent to-gold/5 pointer-events-none" />
+
+          <div className="relative z-10 grid grid-cols-1 md:grid-cols-[1fr_auto_1fr_auto_1fr] items-center">
+            
+            <EarningsStat
+              eyebrow="Faturamento médio das franquias Help"
+              value={30}
+              prefix="R$"
+              suffix=" MIL/mês"
+              description="Potencial de faturamento mensal como franqueado"
+              highlight
+            />
+
+            <Divider />
+
+            <EarningsStat
+              eyebrow="Ticket médio por venda"
+              value={616}
+              prefix="R$"
+              suffix=",63"
+              description="Valor médio por contrato fechado"
+            />
+
+            <Divider />
+
+            <EarningsStat
+              eyebrow="Vendas médias por mês"
+              value={52}
+              suffix="&nbsp;vendas"
+              description="Volume médio de contratos mensais"
+            />
+
+          </div>
+
+          {/* Canais de vendas — strip dentro do card */}
+          <div className="relative z-10 border-t border-white/10 px-8 py-5 flex flex-col items-center gap-3">
+            <span className="font-body text-[10px] font-bold uppercase tracking-widest text-white/30">
+              Principais Canais de Vendas
+            </span>
+            <div className="flex flex-row items-center gap-6">
+              {[
+                { label: "Marketing Digital" },
+                { label: "Recompra" },
+                { label: "Indicação" },
+              ].map((c, i) => (
+                <React.Fragment key={c.label}>
+                  {i > 0 && <span className="text-white/20">·</span>}
+                  <span className="font-display text-sm font-bold text-white/70">{c.label}</span>
+                </React.Fragment>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
 
       </div>

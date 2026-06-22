@@ -30,6 +30,7 @@ import StickyNav from "@/components/StickyNav";
 import FranchiseeMotivationSection from "@/components/FranchiseeMotivationSection";
 import HelpExperienceVideoSection from "@/components/HelpExperienceVideoSection";
 import TeamSection from "@/components/TeamSection";
+import TechSection from "@/components/TechSection";
 
 export default function Home() {
   return (
@@ -45,6 +46,8 @@ export default function Home() {
 
       {/* 3. Market data: the opportunity */}
       <MarketSection />
+
+      <TechSection />
       
       {/* 3.5. Growth factors: why the market grows */}
       <GrowthSection />
