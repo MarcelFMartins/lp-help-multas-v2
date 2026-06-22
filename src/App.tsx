@@ -8,7 +8,7 @@ import Home from "@/pages/Home";
 import ThankYouPage from "@/pages/ThankYouPage";
 import PreReuniao from "@/pages/PreReunião";
 import FranqueadoLP from "@/pages/FranqueadoLP";
-
+import HelpIndica from "@/pages/IndicaLP"
 
 function Router() {
   return (
@@ -20,6 +20,8 @@ function Router() {
       <Route path="/prereuniao" component={PreReuniao} />
 
       <Route path="/franqueado" component={FranqueadoLP} />
+
+      <Route path="/indica" component={HelpIndica} />
       
       <Route path="/404" component={NotFound} />
 
