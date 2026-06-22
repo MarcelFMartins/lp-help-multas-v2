@@ -855,7 +855,7 @@ function FormSection() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        origem: "Landing Page Help Indica",
+        origem: "Landing Page Parceiro",
         nome,
         email,
         whatsapp: wpp,
@@ -866,7 +866,7 @@ function FormSection() {
     if (!response.ok) {
       throw new Error("Erro no webhook");
     }
-    window.location.href = "/obrigado";
+    window.location.href = "/sucesso";
   } catch {
     setError("Erro ao enviar. Tente novamente.");
     setSending(false);

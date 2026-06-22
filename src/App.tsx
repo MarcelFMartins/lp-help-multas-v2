@@ -9,6 +9,7 @@ import ThankYouPage from "@/pages/ThankYouPage";
 import PreReuniao from "@/pages/PreReunião";
 import FranqueadoLP from "@/pages/FranqueadoLP";
 import HelpIndica from "@/pages/IndicaLP"
+import Sucesso from "@/pages/Success"
 
 function Router() {
   return (
@@ -16,6 +17,8 @@ function Router() {
       <Route path="/" component={Home} />
 
       <Route path="/obrigado" component={ThankYouPage} />
+
+      <Route path="/sucesso" component={Sucesso} />
 
       <Route path="/prereuniao" component={PreReuniao} />
 
