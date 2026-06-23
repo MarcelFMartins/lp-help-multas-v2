@@ -1202,13 +1202,13 @@ export default function IndicaLP() {
     <div style={{ background: NAVY_DEEP, color: OFFWHITE, overflowX: "hidden" }}>
       <IndicaNav />
       <Hero />
+      <ComoFunciona />
       <Ticker />
       <ParaQuem />
       <Numeros />
       <BancoMultas />
       <Deferidos />
       <Depoimentos />
-      <ComoFunciona />
       <FormSection />
       <IndicaFooter />
     </div>
