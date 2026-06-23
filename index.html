@@ -23,7 +23,9 @@
     !function (f, b, e, v, n, t, s) {
       if (f.fbq) return;
       n = f.fbq = function () {
-        n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+        n.callMethod ?
+          n.callMethod.apply(n, arguments) :
+          n.queue.push(arguments);
       };
       if (!f._fbq) f._fbq = n;
       n.push = n;
@@ -38,11 +40,24 @@
     }(window, document, 'script',
       'https://connect.facebook.net/en_US/fbevents.js');
 
-    fbq('init', '2376156952875118');
-    fbq('init', '1552879123068423');
+    (function () {
+      const path = window.location.pathname;
 
-    fbq('track', 'PageView');
+      const isPartner = path.startsWith('/indica') || path.startsWith('/sucesso');
+
+      if (isPartner) {
+        // PIXEL PARCEIROS (Help Indica)
+        fbq('init', '948091398277124');
+      } else {
+        // PIXELS FRANQUIAS
+        fbq('init', '2376156952875118');
+        fbq('init', '1552879123068423');
+      }
+
+      fbq('track', 'PageView');
+    })();
   </script>
+
   <!-- End Meta Pixel Code -->
 
   <title>Help Multas Franquias</title>

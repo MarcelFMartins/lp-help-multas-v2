@@ -52,7 +52,7 @@ const IcDollar = ({ c = "w-5 h-5" }) => <svg className={c} viewBox="0 0 24 24" {
 const IcTrend = ({ c = "w-5 h-5" }) => <svg className={c} viewBox="0 0 24 24" {...S}><polyline points="23 6 13.5 15.5 8.5 10.5 1 18" /><polyline points="17 6 23 6 23 12" /></svg>;
 
 /* ════════════════════════════════════
-   NAV — sempre visível, logo Help Multas
+   NAV
    ════════════════════════════════════ */
 function IndicaNav() {
   const [scrolled, setScrolled] = useState(false);
@@ -72,18 +72,14 @@ function IndicaNav() {
         backdropFilter: scrolled ? "blur(16px)" : "none",
       }}
     >
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+      <div className="w-full px-4 max-w-screen-xl mx-auto">
+        <div className="flex items-center justify-between h-16 gap-4">
 
-          <a href="#inicio" className="flex-shrink-0">
-            <img
-              src="/image/logotipo.png"
-              alt="Help Multas"
-              className="h-8 md:h-10 w-auto"
-            />
+          <a href="#inicio" className="flex-shrink-0 min-w-0">
+            <img src="/image/logotipo.png" alt="Help Multas" className="h-7 md:h-10 w-auto" />
           </a>
 
-          <div className="hidden lg:flex items-center gap-6">
+          <div className="hidden lg:flex items-center gap-6 flex-1 justify-center">
             {[
               ["Para quem é", "#para-quem"],
               ["Como funciona", "#como"],
@@ -92,7 +88,7 @@ function IndicaNav() {
               <a
                 key={href}
                 href={href}
-                className="text-sm hover:text-yellow-400 transition-colors"
+                className="text-sm hover:text-yellow-400 transition-colors whitespace-nowrap"
                 style={{ color: `${OFFWHITE}90` }}
               >
                 {label}
@@ -102,22 +98,11 @@ function IndicaNav() {
 
           <a
             href="#cadastro"
-            className="
-              px-3 py-2
-              md:px-5 md:py-2.5
-              text-[10px]
-              md:text-xs
-              rounded-lg
-              font-bold
-              uppercase
-              whitespace-nowrap
-            "
-            style={{
-              background: GOLD,
-              color: NAVY_DEEP,
-            }}
+            className="flex-shrink-0 px-3 py-2 md:px-5 md:py-2.5 rounded-lg font-bold uppercase whitespace-nowrap"
+            style={{ background: GOLD, color: NAVY_DEEP, fontSize: "clamp(9px, 2.2vw, 12px)" }}
           >
-            Quero ser parceiro
+            <span className="sm:hidden">Parceiro</span>
+            <span className="hidden sm:inline">Quero ser parceiro</span>
           </a>
 
         </div>
@@ -159,7 +144,7 @@ function Ticker() {
 }
 
 /* ════════════════════════════════════
-   HERO — full-screen com fundo + earnings
+   HERO
    ════════════════════════════════════ */
 function Hero() {
   const [refs, setRefs] = useState(7);
@@ -172,9 +157,7 @@ function Hero() {
       className="relative min-h-screen flex flex-col"
       style={{ background: NAVY_DEEP }}
     >
-      {/* Fundo com overlay */}
-      <div
-        className="absolute inset-0"
+      <div className="absolute inset-0"
         style={{
           backgroundImage: `url('/image/fundo.webp')`,
           backgroundSize: "cover",
@@ -182,27 +165,22 @@ function Hero() {
           opacity: 0.12,
         }}
       />
-      {/* Gradient overlay */}
-      <div
-        className="absolute inset-0"
+      <div className="absolute inset-0"
         style={{
           background: `linear-gradient(135deg, ${NAVY_DEEP}EE 0%, ${NAVY_DEEP}88 50%, ${NAVY_DEEP}CC 100%)`,
         }}
       />
-      {/* Gold glow top-right */}
       <div className="pointer-events-none absolute top-0 right-0 w-[600px] h-[600px]"
         style={{ background: `radial-gradient(ellipse at 80% 10%, ${GOLD}12 0%, transparent 65%)` }}
       />
-      {/* Green glow bottom-left */}
       <div className="pointer-events-none absolute bottom-0 left-0 w-[500px] h-[500px]"
         style={{ background: `radial-gradient(ellipse at 10% 90%, ${GREEN}0D 0%, transparent 65%)` }}
       />
 
-      {/* Content */}
       <div className="relative z-10 container mx-auto px-4 flex-1 flex items-center pt-24 pb-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center w-full">
 
-          {/* ── Copy ── */}
+          {/* Copy */}
           <div>
             <h1
               className="font-display font-black leading-[.98] mb-6"
@@ -236,7 +214,6 @@ function Hero() {
               </a>
             </div>
 
-            {/* Trust row */}
             <div className="flex flex-wrap items-center gap-4">
               {["Cadastro gratuito", "Sem mensalidade", "Sem metas"].map(t => (
                 <span key={t} className="flex items-center gap-1.5 text-xs" style={{ color: MUTED }}>
@@ -247,16 +224,15 @@ function Hero() {
             </div>
           </div>
 
-          {/* ── Earnings widget ── */}
+          {/* Earnings widget */}
           <EarningsWidget refs={refs} setRefs={setRefs} earn={earn} pct={pct} />
-
         </div>
       </div>
     </section>
   );
 }
 
-/* ── Earnings Widget — custom slider ── */
+/* ── Earnings Widget ── */
 function EarningsWidget({
   refs, setRefs, earn, pct,
 }: { refs: number; setRefs: (n: number) => void; earn: number; pct: number }) {
@@ -274,21 +250,17 @@ function EarningsWidget({
       className="rounded-2xl relative overflow-hidden"
       style={{ background: NAVY, border: `1px solid ${GOLD}30` }}
     >
-      {/* Green glow top */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-1"
         style={{ background: `linear-gradient(to right, transparent, ${GREEN}70, transparent)` }}
       />
 
-      {/* Header row */}
-      <div className="px-7 pt-7 pb-5" style={{ borderBottom: `1px solid ${OFFWHITE}08` }}>
+      <div className="px-6 pt-6 pb-5 sm:px-7 sm:pt-7" style={{ borderBottom: `1px solid ${OFFWHITE}08` }}>
         <p className="font-display font-bold text-[10px] uppercase tracking-[.18em] mb-2" style={{ color: MUTED }}>
           Sua estimativa de comissão / mês
         </p>
-
-        {/* BIG earning number */}
         <p
           className="font-display font-black leading-none"
-          style={{ fontSize: "clamp(3.5rem, 6vw, 5rem)", color: GREEN_LT, letterSpacing: "-0.02em" }}
+          style={{ fontSize: "clamp(3rem, 6vw, 5rem)", color: GREEN_LT, letterSpacing: "-0.02em" }}
         >
           {fmtBRL(earn)}
         </p>
@@ -299,26 +271,22 @@ function EarningsWidget({
         </p>
       </div>
 
-      {/* Slider */}
-      <div className="px-7 py-5">
+      <div className="px-6 py-5 sm:px-7">
         <div className="flex justify-between text-xs mb-3" style={{ color: MUTED }}>
           <span>Indicações / mês</span>
           <span className="font-bold tabular-nums" style={{ color: OFFWHITE }}>{refs}</span>
         </div>
 
-        {/* Custom track */}
         <div
           ref={trackRef}
           className="relative h-2 rounded-full cursor-pointer select-none"
           style={{ background: `${OFFWHITE}15` }}
           onClick={handleTrackClick}
         >
-          {/* Fill */}
           <div
             className="absolute left-0 top-0 h-2 rounded-full"
             style={{ width: `${pct}%`, background: `linear-gradient(to right, ${GOLD}, ${GOLD_LIGHT})` }}
           />
-          {/* Thumb */}
           <div
             className="absolute top-1/2 -translate-y-1/2 w-5 h-5 rounded-full shadow-lg"
             style={{
@@ -329,7 +297,6 @@ function EarningsWidget({
               pointerEvents: "none",
             }}
           />
-          {/* Invisible native input for keyboard + drag */}
           <input
             type="range" min={1} max={30} value={refs}
             onChange={e => setRefs(Number(e.target.value))}
@@ -343,8 +310,7 @@ function EarningsWidget({
         </div>
       </div>
 
-      {/* Breakdown grid */}
-      <div className="grid grid-cols-2 gap-px mx-7 mb-5 rounded-xl overflow-hidden"
+      <div className="grid grid-cols-2 gap-px mx-6 mb-5 sm:mx-7 rounded-xl overflow-hidden"
         style={{ border: `1px solid ${OFFWHITE}10` }}
       >
         {[
@@ -360,8 +326,7 @@ function EarningsWidget({
         ))}
       </div>
 
-      {/* CTA inside widget */}
-      <div className="px-7 pb-7">
+      <div className="px-6 pb-6 sm:px-7 sm:pb-7">
         <a
           href="#cadastro"
           className="flex items-center justify-center gap-2 w-full py-3 rounded-xl font-display font-bold text-sm uppercase tracking-wide transition-all hover:opacity-90"
@@ -373,7 +338,6 @@ function EarningsWidget({
     </div>
   );
 }
-
 
 /* ════════════════════════════════════
    PARA QUEM É
@@ -390,10 +354,10 @@ const PERSONAS = [
 function ParaQuem() {
   const { ref, inView } = useInView();
   return (
-    <section id="para-quem" className="py-24" style={{ background: NAVY }}>
+    <section id="para-quem" className="py-20 md:py-24" style={{ background: NAVY }}>
       <div className="container mx-auto px-4">
         <div ref={ref as React.RefObject<HTMLDivElement>}
-          className={`mb-14 transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+          className={`mb-12 md:mb-14 transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
           <span className="font-display font-bold text-[11px] uppercase tracking-[.18em] block mb-3" style={{ color: GOLD }}>Para quem é</span>
           <h2 className="font-display font-black leading-tight mb-4" style={{ fontSize: "clamp(2rem, 4vw, 3.25rem)", color: OFFWHITE }}>
             Você tem uma rede?<br />
@@ -439,25 +403,25 @@ function PersonaCard({ icon, title, desc, featured, delay }: typeof PERSONAS[0] 
 }
 
 /* ════════════════════════════════════
-   STATS
+   STATS — sem comparação 7K vs 100K
    ════════════════════════════════════ */
 const STATS = [
-  { value: 7, suffix: "K+", label: "multas deferidas no banco da Help", green: true },
-  { value: 100, suffix: "K+", label: "motoristas atendidos em todo o Brasil" },
-  { value: 80, suffix: "+", label: "franqueados ativos em 27 estados" },
+  { value: 100, suffix: "K+", label: "motoristas atendidos em todo o Brasil", gold: true },
+  { value: 80, suffix: "+", label: "franqueados ativos em todo o país" },
+  { value: 27, suffix: "", label: "estados com atuação ativa", green: true },
   { value: 10, suffix: "+", label: "anos de experiência no mercado" },
 ];
 
 function Numeros() {
   const { ref, inView } = useInView();
   return (
-    <section id="numeros" className="py-24 relative overflow-hidden" style={{ background: NAVY_DEEP }}>
+    <section id="numeros" className="py-20 md:py-24 relative overflow-hidden" style={{ background: NAVY_DEEP }}>
       <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] rounded-full"
         style={{ background: `radial-gradient(ellipse, ${GOLD}08 0%, transparent 70%)` }}
       />
       <div className="container mx-auto px-4 relative z-10">
         <div ref={ref as React.RefObject<HTMLDivElement>}
-          className={`text-center mb-16 transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+          className={`text-center mb-14 transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
           <span className="font-display font-bold text-[11px] uppercase tracking-[.18em] block mb-3" style={{ color: GOLD }}>Números Help Multas</span>
           <h2 className="font-display font-black leading-tight" style={{ fontSize: "clamp(2rem, 4vw, 3.25rem)", color: OFFWHITE }}>
             Você indica para quem já tem{" "}
@@ -472,15 +436,17 @@ function Numeros() {
   );
 }
 
-function StatCard({ value, suffix, label, green, delay }: typeof STATS[0] & { delay: number }) {
+function StatCard({ value, suffix, label, green, gold, delay }: typeof STATS[0] & { delay: number; gold?: boolean }) {
   const { ref, inView } = useInView();
   const count = useCounter(value, 1600, inView);
+  const accentColor = green ? GREEN : gold ? GOLD : GOLD;
+  const textColor = green ? GREEN_LT : gold ? GOLD : GOLD;
   return (
     <div ref={ref as React.RefObject<HTMLDivElement>}
       className={`text-center py-8 px-4 rounded-2xl transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-      style={{ transitionDelay: `${delay}ms`, background: `${OFFWHITE}04`, border: `1px solid ${OFFWHITE}08`, borderTop: `2px solid ${green ? GREEN : GOLD}55` }}>
+      style={{ transitionDelay: `${delay}ms`, background: `${OFFWHITE}04`, border: `1px solid ${OFFWHITE}08`, borderTop: `2px solid ${accentColor}55` }}>
       <span className="block font-display font-black leading-none mb-2"
-        style={{ fontSize: "clamp(3rem, 5.5vw, 5rem)", color: green ? GREEN_LT : GOLD }}>
+        style={{ fontSize: "clamp(3rem, 5.5vw, 5rem)", color: textColor }}>
         {count}{suffix}
       </span>
       <p className="text-sm leading-snug" style={{ color: MUTED }}>{label}</p>
@@ -489,51 +455,90 @@ function StatCard({ value, suffix, label, green, delay }: typeof STATS[0] & { de
 }
 
 /* ════════════════════════════════════
-   BANCO DE MULTAS + FEATURES
+   CREDIBILIDADE + FEATURES
    ════════════════════════════════════ */
-const BARS = [
-  { label: "Excesso de velocidade", pct: 38 },
-  { label: "Frota corporativa", pct: 27 },
-  { label: "Suspensão de CNH", pct: 18 },
-  { label: "Demais infrações", pct: 17 },
-];
 
 function BancoMultas() {
   const { ref: lRef, inView: lIn } = useInView(0.2);
   const { ref: rRef, inView: rIn } = useInView(0.2);
   return (
-    <section id="banco" className="py-24" style={{ background: NAVY }}>
+    <section id="banco" className="py-20 md:py-24" style={{ background: NAVY }}>
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
 
-          {/* Card */}
+          {/* Card — credibilidade */}
           <div ref={lRef as React.RefObject<HTMLDivElement>}
             className={`transition-all duration-700 ${lIn ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-            <div className="rounded-2xl p-8 relative overflow-hidden"
-              style={{ background: NAVY_DEEP, border: `1px solid ${GREEN}30` }}>
-              <div className="pointer-events-none absolute inset-0"
-                style={{ background: `radial-gradient(ellipse at 50% -5%, ${GREEN}10 0%, transparent 60%)` }}
+            <div className="rounded-2xl p-6 md:p-8 relative overflow-hidden"
+              style={{ background: NAVY_DEEP, border: `1px solid ${GOLD}28` }}>
+
+              {/* Gradient top accent */}
+              <div className="h-1 rounded-full mb-8 -mt-2 -mx-2"
+                style={{ background: `linear-gradient(to right, ${GOLD}, ${GREEN})` }}
               />
-              <p className="font-display font-black leading-none relative z-10"
-                style={{ fontSize: "clamp(4rem, 8vw, 6.5rem)", color: GREEN_LT }}>
-                7.752
-              </p>
-              <p className="text-sm mb-8 relative z-10" style={{ color: MUTED }}>multas deferidas pela Help Multas</p>
-              <div className="flex flex-col gap-4 relative z-10">
-                {BARS.map(b => (
-                  <div key={b.label} className="flex flex-col gap-1.5">
-                    <div className="flex justify-between text-xs" style={{ color: MUTED }}>
-                      <span>{b.label}</span>
-                      <span className="font-bold" style={{ color: GREEN_LT }}>{b.pct}%</span>
-                    </div>
-                    <div className="h-1.5 rounded-full overflow-hidden" style={{ background: `${OFFWHITE}10` }}>
-                      <div className="h-full rounded-full transition-all duration-[1400ms] ease-out"
-                        style={{ width: lIn ? `${b.pct}%` : "0%", background: `linear-gradient(to right, ${GREEN}, ${GREEN_LT})` }}
-                      />
-                    </div>
-                  </div>
-                ))}
+              {/* Glow */}
+              <div className="pointer-events-none absolute top-0 right-0 w-64 h-64"
+                style={{ background: `radial-gradient(ellipse at 90% 10%, ${GOLD}09 0%, transparent 65%)` }}
+              />
+
+              {/* Big stat */}
+              <div className="relative z-10 mb-7">
+                <p className="font-display font-black leading-none"
+                  style={{ fontSize: "clamp(3.5rem, 7vw, 5.5rem)", color: GOLD }}>
+                  10<span style={{ fontSize: "60%", color: `${GOLD}BB` }}>+ anos</span>
+                </p>
+                <p className="text-sm mt-1" style={{ color: MUTED }}>
+                  defendendo motoristas em todo o Brasil
+                </p>
               </div>
+
+              {/* Divider */}
+              <div className="h-px mb-6 relative z-10" style={{ background: `${OFFWHITE}10` }} />
+
+              {/* Órgãos */}
+              <div className="relative z-10 mb-7">
+                <p className="font-display font-bold text-[10px] uppercase tracking-[.18em] mb-3"
+                  style={{ color: `${MUTED}90` }}>
+                  Atuação direta em
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {["DETRAN", "DER", "SENATRAN", "CONTRAN", "PRF"].map(org => (
+                    <span key={org}
+                      className="px-3 py-1.5 rounded-lg font-display font-bold text-xs"
+                      style={{ background: `${GOLD}12`, color: GOLD, border: `1px solid ${GOLD}28` }}>
+                      {org}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Divider */}
+              <div className="h-px mb-6 relative z-10" style={{ background: `${OFFWHITE}10` }} />
+
+              {/* Tipos de infração */}
+              <div className="relative z-10">
+                <p className="font-display font-bold text-[10px] uppercase tracking-[.18em] mb-4"
+                  style={{ color: `${MUTED}90` }}>
+                  Tipos de infração que atuamos
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  {[
+                    "Multa por radar",
+                    "Suspensão de CNH",
+                    "Excesso de velocidade",
+                    "Frota corporativa",
+                    "Infração por pontuação",
+                    "Licenciamento e documentação",
+                  ].map(tipo => (
+                    <div key={tipo} className="flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                        style={{ background: GREEN_LT }} />
+                      <span className="text-sm" style={{ color: `${OFFWHITE}85` }}>{tipo}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
             </div>
           </div>
 
@@ -548,14 +553,15 @@ function BancoMultas() {
               O argumento que<br />fecha a <em className="not-italic" style={{ color: GOLD }}>indicação.</em>
             </h2>
             <p className="text-base leading-relaxed mb-8" style={{ color: MUTED }}>
-              Quando um cliente em dúvida pergunta "mas funciona mesmo?",
-              você tem dados reais para mostrar. Mais de 7 mil multas deferidas
-              é um histórico que convence, e que faz sua indicação chegar com credibilidade.
+              Quando alguém hesita com o "mas funciona mesmo?",
+              você tem documentação real para mostrar. Cada número representa
+              um recurso fundamentado, trabalhado e ganho — e isso é o que
+              faz sua indicação chegar com credibilidade.
             </p>
             <div className="flex flex-col gap-5">
               {[
-                { title: "Argumentação técnica comprovada", desc: "Cada caso deferido documentado com fundamento jurídico e técnico que gerou o cancelamento." },
-                { title: "Atuação em todo o Brasil", desc: "DETRAN, DER, SENATRAN. A Help conhece cada órgão autuador e o canal certo para recurso." },
+                { title: "Histórico documentado por tipo de infração", desc: "Cada caso com fundamento jurídico e técnico rastreável. Você indica com embasamento, não com promessa." },
+                { title: "Atuação em todo o Brasil", desc: "DETRAN, DER, SENATRAN. A Help conhece cada órgão autuador e o canal certo para o recurso." },
                 { title: "Nova receita sem investimento", desc: "Sem curso, sem formação específica, sem custo. Só você, sua rede e a Help Multas." },
               ].map(({ title, desc }) => (
                 <div key={title} className="flex gap-3 items-start">
@@ -578,9 +584,8 @@ function BancoMultas() {
 }
 
 /* ════════════════════════════════════
-   DEFERIDOS — carrossel com 6 por slide
+   DEFERIDOS — carrossel 6 por slide
    ════════════════════════════════════ */
-
 const DEFERIDOS_IMGS: string[] = [
   "/image/deferidos/d1 (1).png",
   "/image/deferidos/d1 (2).png",
@@ -626,16 +631,11 @@ function Deferidos() {
   const totalSlides = Math.ceil(images.length / itemsPerSlide);
   const currentSlideImages = images.slice(slide * itemsPerSlide, (slide + 1) * itemsPerSlide);
 
-  function nextSlide() {
-    if (slide < totalSlides - 1) setSlide(slide + 1);
-  }
-  function prevSlide() {
-    if (slide > 0) setSlide(slide - 1);
-  }
+  const nextSlide = () => { if (slide < totalSlides - 1) setSlide(slide + 1); };
+  const prevSlide = () => { if (slide > 0) setSlide(slide - 1); };
 
   return (
-    <section id="deferidos" className="py-24 relative overflow-hidden" style={{ background: NAVY_DEEP }}>
-      {/* Diagonal gold rule */}
+    <section id="deferidos" className="py-20 md:py-24 relative overflow-hidden" style={{ background: NAVY_DEEP }}>
       <div className="pointer-events-none absolute top-0 inset-x-0 h-px"
         style={{ background: `linear-gradient(to right, transparent, ${GOLD}40, transparent)` }}
       />
@@ -657,67 +657,54 @@ function Deferidos() {
           </p>
         </div>
 
-        {/* Carousel container */}
-        <div className="relative">
-          {/* Grid static — só mostra 6 items do slide atual */}
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 transition-all duration-500">
-            {currentSlideImages.map((src, i) => (
-              <DeferidoCardCarousel key={`${slide}-${i}`} src={src} index={slide * itemsPerSlide + i} inView={inView} />
-            ))}
-          </div>
+        {/* Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 transition-all duration-500">
+          {currentSlideImages.map((src, i) => (
+            <DeferidoCardCarousel key={`${slide}-${i}`} src={src} index={slide * itemsPerSlide + i} inView={inView} />
+          ))}
+        </div>
 
-          {/* Prev button */}
-          {totalSlides > 1 && (
+        {/* Navigation — botões junto com dots, sem overflow */}
+        {totalSlides > 1 && (
+          <div className="flex justify-center items-center gap-3 mt-8">
             <button
               onClick={prevSlide}
               disabled={slide === 0}
-              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 sm:-translate-x-16 md:-translate-x-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed"
-              style={{
-                background: GOLD,
-                color: NAVY_DEEP,
-              }}
+              className="w-10 h-10 rounded-full flex items-center justify-center transition-all hover:opacity-80 disabled:opacity-30 disabled:cursor-not-allowed flex-shrink-0"
+              style={{ background: GOLD, color: NAVY_DEEP }}
               aria-label="Slide anterior"
             >
-              <svg className="w-5 h-5 sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <polyline points="15 18 9 12 15 6" />
               </svg>
             </button>
-          )}
 
-          {/* Next button */}
-          {totalSlides > 1 && (
+            <div className="flex gap-2">
+              {Array.from({ length: totalSlides }).map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setSlide(i)}
+                  className="h-2 rounded-full transition-all"
+                  style={{
+                    width: slide === i ? "32px" : "8px",
+                    background: slide === i ? GOLD : `${OFFWHITE}30`,
+                  }}
+                  aria-label={`Ir para página ${i + 1}`}
+                />
+              ))}
+            </div>
+
             <button
               onClick={nextSlide}
               disabled={slide === totalSlides - 1}
-              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 sm:translate-x-16 md:translate-x-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed"
-              style={{
-                background: GOLD,
-                color: NAVY_DEEP,
-              }}
+              className="w-10 h-10 rounded-full flex items-center justify-center transition-all hover:opacity-80 disabled:opacity-30 disabled:cursor-not-allowed flex-shrink-0"
+              style={{ background: GOLD, color: NAVY_DEEP }}
               aria-label="Próximo slide"
             >
-              <svg className="w-5 h-5 sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <polyline points="9 18 15 12 9 6" />
               </svg>
             </button>
-          )}
-        </div>
-
-        {/* Slide indicators */}
-        {totalSlides > 1 && (
-          <div className="flex justify-center gap-2 mt-8">
-            {Array.from({ length: totalSlides }).map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setSlide(i)}
-                className="h-2 rounded-full transition-all"
-                style={{
-                  width: slide === i ? "32px" : "8px",
-                  background: slide === i ? GOLD : `${OFFWHITE}30`,
-                }}
-                aria-label={`Ir para página ${i + 1}`}
-              />
-            ))}
           </div>
         )}
 
@@ -741,7 +728,7 @@ function DeferidoCardCarousel({ src, index, inView }: { src: string | null; inde
 
   return (
     <div
-      className={`rounded-2xl overflow-hidden aspect-square transition-all duration-700`}
+      className="rounded-2xl overflow-hidden aspect-square transition-all duration-300"
       style={{
         opacity: inView ? 1 : 0.6,
         border: `1px solid ${hover ? GOLD + "50" : OFFWHITE + "10"}`,
@@ -753,7 +740,6 @@ function DeferidoCardCarousel({ src, index, inView }: { src: string | null; inde
       {src ? (
         <img src={src} alt={`Multa deferida ${index + 1}`} className="w-full h-full object-cover" />
       ) : (
-        /* Placeholder */
         <div
           className="w-full h-full flex flex-col items-center justify-center gap-3 p-4"
           style={{ background: `${NAVY}CC` }}
@@ -771,6 +757,204 @@ function DeferidoCardCarousel({ src, index, inView }: { src: string | null; inde
 }
 
 /* ════════════════════════════════════
+   DEPOIMENTOS — carrossel de vídeos 9:16
+   ════════════════════════════════════ */
+const DEPOIMENTOS = [
+  { id: "vCb4UsdjnQo", nome: "Cliente Help Multas", cargo: "Multa cancelada" },
+  { id: "CBFWYJtLoJY", nome: "Cliente Help Multas", cargo: "CNH suspensa recuperada" },
+  { id: "R3VDIyxPUqQ", nome: "Cliente Help Multas", cargo: "Multa cancelada" },
+  { id: "pVJdx4Vl_wo", nome: "Cliente Help Multas", cargo: "Recurso deferido" },
+  { id: "x7WpYJjcv_g", nome: "Cliente Help Multas", cargo: "Recurso deferido" },
+  { id: "peUlKN--nAE", nome: "Cliente Help Multas", cargo: "Multa cancelada" },
+  { id: "1BNzKNy2nZc", nome: "Cliente Help Multas", cargo: "Recurso deferido" },
+];
+
+function VideoCard({ id, nome, cargo }: typeof DEPOIMENTOS[0]) {
+  const embedUrl = `https://www.youtube.com/embed/${id}?rel=0&modestbranding=1&playsinline=1`;
+
+  return (
+    <div className="flex flex-col gap-3">
+      {/* 9:16 iframe container */}
+      <div
+        className="rounded-2xl overflow-hidden w-full"
+        style={{
+          aspectRatio: "9/16",
+          background: NAVY_DEEP,
+          border: `1px solid ${OFFWHITE}12`,
+        }}
+      >
+        <iframe
+          src={embedUrl}
+          className="w-full h-full"
+          title={`Depoimento - ${nome}`}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
+          loading="lazy"
+          style={{ border: "none", display: "block" }}
+        />
+      </div>
+
+      {/* Label abaixo */}
+      <div className="px-1 flex items-center gap-2">
+        <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0"
+          style={{ background: `${GREEN}20`, border: `1px solid ${GREEN}40` }}>
+          <IcCheck c="w-3 h-3" />
+        </div>
+        <div>
+          <p className="font-display font-bold text-sm leading-tight" style={{ color: OFFWHITE }}>{nome}</p>
+          <p className="text-xs" style={{ color: MUTED }}>{cargo}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Depoimentos() {
+  const { ref, inView } = useInView();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [idx, setIdx] = useState(0);
+  const [cardW, setCardW] = useState(0);
+  const [visibleCount, setVisibleCount] = useState(1);
+  const GAP = 16;
+  const MAX_CARD_W = 240; // largura máxima: vídeo fica ~427px alto, tamanho de celular
+
+  useEffect(() => {
+    function measure() {
+      if (!containerRef.current) return;
+      const totalW = containerRef.current.offsetWidth;
+      const w = window.innerWidth;
+      const count = w >= 1024 ? 3 : w >= 640 ? 2 : 1;
+      const natural = (totalW - (count - 1) * GAP) / count;
+      setVisibleCount(count);
+      setCardW(Math.min(natural, MAX_CARD_W));
+    }
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
+
+  const maxIdx = Math.max(0, DEPOIMENTOS.length - visibleCount);
+  const prev = () => setIdx(i => Math.max(0, i - 1));
+  const next = () => setIdx(i => Math.min(maxIdx, i + 1));
+
+  return (
+    <section id="depoimentos" className="py-20 md:py-24 relative overflow-hidden" style={{ background: NAVY_DEEP }}>
+      <div className="pointer-events-none absolute top-0 inset-x-0 h-px"
+        style={{ background: `linear-gradient(to right, transparent, ${GREEN}40, transparent)` }}
+      />
+      <div className="pointer-events-none absolute top-1/4 right-0 w-[400px] h-[600px]"
+        style={{ background: `radial-gradient(ellipse at 90% 50%, ${GREEN}07 0%, transparent 65%)` }}
+      />
+
+      <div className="container mx-auto px-4">
+        {/* Header */}
+        <div ref={ref as React.RefObject<HTMLDivElement>}
+          className={`text-center mb-12 md:mb-16 transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+          <span className="font-display font-bold text-[11px] uppercase tracking-[.18em] block mb-3" style={{ color: GOLD }}>
+            Depoimentos reais
+          </span>
+          <h2 className="font-display font-black leading-tight mb-4"
+            style={{ fontSize: "clamp(2rem, 4vw, 3.25rem)", color: OFFWHITE }}>
+            Quem recorreu.<br />
+            <em className="not-italic" style={{ color: GREEN_LT }}>Quem ganhou.</em>
+          </h2>
+          <p className="text-base leading-relaxed max-w-lg mx-auto" style={{ color: MUTED }}>
+            Veja o que dizem os motoristas que usaram a Help Multas e tiveram suas multas canceladas.
+          </p>
+        </div>
+
+        {/* Carousel */}
+        <div ref={containerRef} className="w-full">
+          {cardW > 0 && (
+            <div className="flex justify-center">
+              {/* viewport — largura fixa, clippa o conteúdo */}
+              <div
+                style={{
+                  width: `${visibleCount * cardW + (visibleCount - 1) * GAP}px`,
+                  overflow: "hidden",
+                }}
+              >
+                {/* track — desliza via transform */}
+                <div
+                  className="flex transition-transform duration-500 ease-in-out"
+                  style={{
+                    gap: `${GAP}px`,
+                    transform: `translateX(-${idx * (cardW + GAP)}px)`,
+                  }}
+                >
+                  {DEPOIMENTOS.map((dep, i) => (
+                    <div
+                      key={i}
+                      style={{ width: cardW, flexShrink: 0 }}
+                      className={`transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+                    >
+                      <VideoCard {...dep} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Navigation */}
+        <div className="flex justify-center items-center gap-3 mt-10">
+          <button
+            onClick={prev}
+            disabled={idx === 0}
+            className="w-10 h-10 rounded-full flex items-center justify-center transition-all hover:opacity-80 disabled:opacity-30 disabled:cursor-not-allowed"
+            style={{ background: GOLD, color: NAVY_DEEP }}
+            aria-label="Anterior"
+          >
+            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
+          </button>
+
+          <div className="flex gap-2">
+            {Array.from({ length: maxIdx + 1 }).map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setIdx(i)}
+                className="h-2 rounded-full transition-all"
+                style={{
+                  width: idx === i ? "32px" : "8px",
+                  background: idx === i ? GOLD : `${OFFWHITE}30`,
+                }}
+                aria-label={`Ir para ${i + 1}`}
+              />
+            ))}
+          </div>
+
+          <button
+            onClick={next}
+            disabled={idx === maxIdx}
+            className="w-10 h-10 rounded-full flex items-center justify-center transition-all hover:opacity-80 disabled:opacity-30 disabled:cursor-not-allowed"
+            style={{ background: GOLD, color: NAVY_DEEP }}
+            aria-label="Próximo"
+          >
+            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+          </button>
+        </div>
+
+        {/* CTA */}
+        <div className={`mt-12 text-center transition-all duration-700 delay-300 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+          <a
+            href="#cadastro"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-display font-bold text-sm uppercase tracking-wide transition-all hover:opacity-90 hover:-translate-y-0.5"
+            style={{ background: GREEN, color: "#fff", boxShadow: `0 8px 32px ${GREEN}30` }}
+          >
+            Quero ser parceiro <IcArrow />
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ════════════════════════════════════
    COMO FUNCIONA
    ════════════════════════════════════ */
 const STEPS = [
@@ -782,7 +966,7 @@ const STEPS = [
 function ComoFunciona() {
   const { ref, inView } = useInView();
   return (
-    <section id="como" className="py-24" style={{ background: NAVY }}>
+    <section id="como" className="py-20 md:py-24" style={{ background: NAVY }}>
       <div className="container mx-auto px-4">
         <div ref={ref as React.RefObject<HTMLDivElement>}
           className={`text-center mb-16 transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
@@ -793,7 +977,6 @@ function ComoFunciona() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
-          {/* Connector line */}
           <div className="hidden md:block absolute top-10 left-[22%] right-[22%] h-px"
             style={{ background: `linear-gradient(to right, ${GOLD}, ${GOLD}20)` }}
           />
@@ -838,40 +1021,36 @@ function FormSection() {
   const [error, setError] = useState("");
 
   async function handleSubmit(e: React.FormEvent) {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (!nome || !wpp || !area) {
-    setError("Preencha nome, WhatsApp e área de atuação.");
-    return;
-  }
-
-  setSending(true);
-  setError("");
-
-  try {
-    const response = await fetch("https://n8n.helpmultas.com/webhook/lp-parceiro", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        origem: "Landing Page Parceiro",
-        nome,
-        email,
-        whatsapp: wpp,
-        area,
-        enviadoEm: new Date().toISOString(),
-      }),
-    });
-    if (!response.ok) {
-      throw new Error("Erro no webhook");
+    if (!nome || !wpp || !area) {
+      setError("Preencha nome, WhatsApp e área de atuação.");
+      return;
     }
-    window.location.href = "/sucesso";
-  } catch {
-    setError("Erro ao enviar. Tente novamente.");
-    setSending(false);
+
+    setSending(true);
+    setError("");
+
+    try {
+      const response = await fetch("https://n8n.helpmultas.com/webhook/lp-parceiro", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          origem: "Landing Page Parceiro",
+          nome,
+          email,
+          whatsapp: wpp,
+          area,
+          enviadoEm: new Date().toISOString(),
+        }),
+      });
+      if (!response.ok) throw new Error("Erro no webhook");
+      window.location.href = "/sucesso";
+    } catch {
+      setError("Erro ao enviar. Tente novamente.");
+      setSending(false);
+    }
   }
-}
 
   const iStyle = {
     background: OFFWHITE,
@@ -887,12 +1066,10 @@ function FormSection() {
   } as React.CSSProperties;
 
   return (
-    <section id="cadastro" className="py-24 relative overflow-hidden" style={{ background: NAVY_DEEP }}>
-      {/* Gold glow */}
+    <section id="cadastro" className="py-20 md:py-24 relative overflow-hidden" style={{ background: NAVY_DEEP }}>
       <div className="pointer-events-none absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px]"
         style={{ background: `radial-gradient(ellipse, ${GOLD}09 0%, transparent 70%)` }}
       />
-      {/* Background image overlay */}
       <div className="absolute inset-0 pointer-events-none"
         style={{
           backgroundImage: `url('/image/fundo.webp')`,
@@ -903,7 +1080,7 @@ function FormSection() {
       />
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
           {/* Left — copy */}
           <div ref={ref as React.RefObject<HTMLDivElement>}
@@ -921,7 +1098,6 @@ function FormSection() {
               para apresentar todos os detalhes e liberar seu acesso ao programa.
             </p>
 
-            {/* Mini trust cards */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {[
                 { icon: <IcTrophy c="w-5 h-5" />, title: "Histórico real", sub: "7K+ multas deferidas" },
@@ -940,7 +1116,7 @@ function FormSection() {
 
           {/* Right — form */}
           <div className={`transition-all duration-700 delay-150 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-            <div className="rounded-2xl p-8"
+            <div className="rounded-2xl p-6 md:p-8"
               style={{ background: NAVY, border: `1px solid ${GOLD}2A` }}>
 
               <div className="h-1 rounded-full mb-7 -mt-1 -mx-1"
@@ -1024,7 +1200,7 @@ function IndicaFooter() {
    ════════════════════════════════════ */
 export default function IndicaLP() {
   return (
-    <div style={{ background: NAVY_DEEP, color: OFFWHITE }}>
+    <div style={{ background: NAVY_DEEP, color: OFFWHITE, overflowX: "hidden" }}>
       <IndicaNav />
       <Hero />
       <Ticker />
@@ -1032,6 +1208,7 @@ export default function IndicaLP() {
       <Numeros />
       <BancoMultas />
       <Deferidos />
+      <Depoimentos />
       <ComoFunciona />
       <FormSection />
       <IndicaFooter />
