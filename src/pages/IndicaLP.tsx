@@ -1032,7 +1032,7 @@ function FormSection() {
     setError("");
 
     try {
-      const response = await fetch("https://n8n.helpmultas.com/webhook/lp-parceiro", {
+      const response = await fetch("https://n8n.helpmultas.com/webhook/forms", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -1173,7 +1173,6 @@ function FormSection() {
               </form>
             </div>
           </div>
-
         </div>
       </div>
     </section>

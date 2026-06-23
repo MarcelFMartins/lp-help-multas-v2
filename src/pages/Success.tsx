@@ -121,6 +121,22 @@ export default function ThankYouPage() {
               </div>
             </div>
           </div>
+          {/* CTA */}
+          <div className="text-center">
+            <p className="font-body text-white/50 text-sm mb-5">
+              Prefere adiantar a conversa? Fale direto com a gente.
+            </p>
+            <a
+              href="https://wa.me/554288675156"
+              className="inline-flex items-center gap-2.5 px-9 py-4 rounded-xl font-body font-bold text-sm uppercase tracking-wider transition-all duration-200 hover:opacity-90 hover:scale-[1.03] active:scale-[0.97] shadow-lg animate-[bounce_4s_infinite] bg-[#22c55e] text-white"
+            >
+              <WaSvg cls="w-5 h-5" />
+              Falar com especialista
+            </a>
+            <p className="font-body text-white/30 text-xs mt-4">
+              Atendimento via WhatsApp · DDD (42) ou (11)
+            </p>
+          </div>
         </div>
       </section>
 
