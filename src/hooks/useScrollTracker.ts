@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 /* ─── Tipos ─────────────────────────────────────────────── */
 interface ScrollTrackerConfig {
   /** URL do webhook n8n. Ex: 'https://n8n.helprecurso.com.br/webhook/scroll-tracker' */
-  webhookUrl: string;
+  webhookUrl: 'https://n8n.helprecurso.com.br/webhook/scroll-tracker';
   /** Nome da página. Ex: 'franqueado' | 'indica' | 'home' */
   pageName: string;
   /** Milestones de scroll em % a registrar. Padrão: [25, 50, 75, 90, 100] */
