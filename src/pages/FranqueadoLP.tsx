@@ -5,6 +5,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useInView } from "../hooks/useInView";
+import { useScrollTracker } from "../hooks/useScrollTracker";
 
 /* ─── Color tokens ─── */
 const NAVY = "oklch(0.1998 0.0403 258.29)";
@@ -390,7 +391,7 @@ function AnnouncementBarLP() {
 ════════════════════════════════════════════════════════════ */
 function HeroLP() {
   return (
-    <section id="inicio" className="relative overflow-hidden" style={{ background: NAVY }}>
+    <section id="inicio" data-section="hero" className="relative overflow-hidden" style={{ background: NAVY }}>
       <div className="absolute inset-0 opacity-[0.025]"
         style={{ backgroundImage:`url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")` }}
       />
@@ -558,7 +559,7 @@ function MarketLP() {
   ];
 
   return (
-    <section id="mercado" className="relative py-24" style={{ background:"oklch(0.96 0.01 75)" }}>
+    <section id="mercado" data-section="mercado" className="relative py-24" style={{ background:"oklch(0.96 0.01 75)" }}>
       <div className="container mx-auto px-6 lg:px-12">
         <div ref={ref as React.RefObject<HTMLDivElement>}
           className={`text-center mb-16 transition-all duration-700 ${inView?"opacity-100 translate-y-0":"opacity-0 translate-y-8"}`}>
@@ -650,7 +651,7 @@ function WhyLP() {
   ];
 
   return (
-    <section id="diferenciais" className="relative py-24 overflow-hidden" style={{ background:NAVY }}>
+    <section id="diferenciais" data-section="diferenciais" className="relative py-24 overflow-hidden" style={{ background:NAVY }}>
       <div className="absolute top-1/2 right-0 w-[500px] h-[500px] rounded-full pointer-events-none"
         style={{ background:`radial-gradient(circle, ${GOLD}10 0%, transparent 70%)`, transform:"translate(40%, -50%)" }}
       />
@@ -701,7 +702,7 @@ function WhyLP() {
 function VideoLP() {
   const { ref, inView } = useInView();
   return (
-    <section className="relative py-24 overflow-hidden" style={{ background:"oklch(0.96 0.01 75)" }}>
+    <section data-section="video" className="relative py-24 overflow-hidden" style={{ background:"oklch(0.96 0.01 75)" }}>
       <div className="container mx-auto px-6 lg:px-12">
         <div ref={ref as React.RefObject<HTMLDivElement>}
           className={`text-center mb-12 transition-all duration-700 ${inView?"opacity-100 translate-y-0":"opacity-0 translate-y-8"}`}>
@@ -755,7 +756,7 @@ function ModelosLP() {
   ];
 
   return (
-    <section id="modelo" className="relative py-24 overflow-hidden" style={{ background:NAVY }}>
+    <section id="modelo" data-section="modelo" className="relative py-24 overflow-hidden" style={{ background:NAVY }}>
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full pointer-events-none" style={{ background:`radial-gradient(ellipse, ${GOLD}08 0%, transparent 70%)` }} />
       <div className="relative z-10 container mx-auto px-6 lg:px-12">
         <div ref={ref as React.RefObject<HTMLDivElement>}
@@ -827,7 +828,7 @@ function TestimonialsLP() {
     { nome:"Alisson",   cidade:"Caçador — SC",                      estrelas:5, texto:"A Help me proporcionou mais tempo com a minha família. Eu trabalhava de domingo a domingo — hoje trabalho de segunda a sexta e tenho o final de semana inteiro com eles.",                                  initials:"A" },
   ];
   return (
-    <section id="depoimentos" className="relative py-24" style={{ background:"oklch(0.96 0.01 75)" }}>
+    <section id="depoimentos" data-section="depoimentos" className="relative py-24" style={{ background:"oklch(0.96 0.01 75)" }}>
       <div className="container mx-auto px-6 lg:px-12">
         <div ref={ref as React.RefObject<HTMLDivElement>}
           className={`text-center mb-14 transition-all duration-700 ${inView?"opacity-100 translate-y-0":"opacity-0 translate-y-8"}`}>
@@ -883,7 +884,7 @@ function ComparisonLP() {
     { criterio:"Marketing nacional",       helpMultas:"Suporte completo",     concA:"Por conta própria", concB:"Material básico"  },
   ];
   return (
-    <section id="comparativo" className="relative py-24 overflow-hidden" style={{ background:NAVY }}>
+    <section id="comparativo" data-section="comparativo" className="relative py-24 overflow-hidden" style={{ background:NAVY }}>
       <div className="relative z-10 container mx-auto px-6 lg:px-12">
         <div ref={ref as React.RefObject<HTMLDivElement>}
           className={`text-center mb-12 transition-all duration-700 ${inView?"opacity-100 translate-y-0":"opacity-0 translate-y-8"}`}>
@@ -938,7 +939,7 @@ function StepsLP() {
     { number:"03", title:"Abra e comece a faturar",           desc:"Você inicia a operação com sistema, treinamento, equipe jurídica e marketing prontos — tudo estruturado para você faturar desde os primeiros dias." },
   ];
   return (
-    <section className="relative py-24" style={{ background:"oklch(0.96 0.01 75)" }}>
+    <section data-section="como-comecar" className="relative py-24" style={{ background:"oklch(0.96 0.01 75)" }}>
       <div className="container mx-auto px-6 lg:px-12">
         <div ref={ref as React.RefObject<HTMLDivElement>}
           className={`text-center mb-14 transition-all duration-700 ${inView?"opacity-100 translate-y-0":"opacity-0 translate-y-8"}`}>
@@ -980,7 +981,7 @@ function CTAFinalLP() {
     { Icon: IcCheckCircle, text:"Resposta em até 24 horas"           },
   ];
   return (
-    <section id="formulario" className="relative py-24 overflow-hidden" style={{ background:NAVY }}>
+    <section id="formulario" data-section="cta-final" className="relative py-24 overflow-hidden" style={{ background:NAVY }}>
       <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage:`url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='1' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E")` }} />
       <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full pointer-events-none" style={{ background:`radial-gradient(circle, ${GOLD}12 0%, transparent 70%)`, transform:"translate(30%, -30%)" }} />
       <div className="relative z-10 container mx-auto px-6 lg:px-12">
@@ -1107,6 +1108,10 @@ function FooterLP() {
    PAGE ROOT
 ════════════════════════════════════════════════════════════ */
 export default function FranqueadoLP() {
+  useScrollTracker({
+    webhookUrl: "https://n8n.helprecurso.com.br/webhook/scroll-tracker",
+    pageName: "franqueado",
+  });
   return (
     <div className="min-h-screen">
       <AnnouncementBarLP />

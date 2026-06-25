@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useInView, useCounter } from "../hooks/useInView";
+import { useScrollTracker } from "../hooks/useScrollTracker";
 
 /* ─── Color tokens ─── */
 const NAVY_DEEP = "oklch(0.1998 0.0403 258.29)";
@@ -154,6 +155,7 @@ function Hero() {
   return (
     <section
       id="inicio"
+      data-section="hero"
       className="relative min-h-screen flex flex-col"
       style={{ background: NAVY_DEEP }}
     >
@@ -354,7 +356,7 @@ const PERSONAS = [
 function ParaQuem() {
   const { ref, inView } = useInView();
   return (
-    <section id="para-quem" className="py-20 md:py-24" style={{ background: NAVY }}>
+    <section id="para-quem" data-section="para-quem" className="py-20 md:py-24" style={{ background: NAVY }}>
       <div className="container mx-auto px-4">
         <div ref={ref as React.RefObject<HTMLDivElement>}
           className={`mb-12 md:mb-14 transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
@@ -415,7 +417,7 @@ const STATS = [
 function Numeros() {
   const { ref, inView } = useInView();
   return (
-    <section id="numeros" className="py-20 md:py-24 relative overflow-hidden" style={{ background: NAVY_DEEP }}>
+    <section id="numeros" data-section="numeros" className="py-20 md:py-24 relative overflow-hidden" style={{ background: NAVY_DEEP }}>
       <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] rounded-full"
         style={{ background: `radial-gradient(ellipse, ${GOLD}08 0%, transparent 70%)` }}
       />
@@ -462,7 +464,7 @@ function BancoMultas() {
   const { ref: lRef, inView: lIn } = useInView(0.2);
   const { ref: rRef, inView: rIn } = useInView(0.2);
   return (
-    <section id="banco" className="py-20 md:py-24" style={{ background: NAVY }}>
+    <section id="banco" data-section="banco" className="py-20 md:py-24" style={{ background: NAVY }}>
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
 
@@ -635,7 +637,7 @@ function Deferidos() {
   const prevSlide = () => { if (slide > 0) setSlide(slide - 1); };
 
   return (
-    <section id="deferidos" className="py-20 md:py-24 relative overflow-hidden" style={{ background: NAVY_DEEP }}>
+    <section id="deferidos" data-section="deferidos" className="py-20 md:py-24 relative overflow-hidden" style={{ background: NAVY_DEEP }}>
       <div className="pointer-events-none absolute top-0 inset-x-0 h-px"
         style={{ background: `linear-gradient(to right, transparent, ${GOLD}40, transparent)` }}
       />
@@ -838,7 +840,7 @@ function Depoimentos() {
   const next = () => setIdx(i => Math.min(maxIdx, i + 1));
 
   return (
-    <section id="depoimentos" className="py-20 md:py-24 relative overflow-hidden" style={{ background: NAVY_DEEP }}>
+    <section id="depoimentos" data-section="depoimentos" className="py-20 md:py-24 relative overflow-hidden" style={{ background: NAVY_DEEP }}>
       <div className="pointer-events-none absolute top-0 inset-x-0 h-px"
         style={{ background: `linear-gradient(to right, transparent, ${GREEN}40, transparent)` }}
       />
@@ -966,7 +968,7 @@ const STEPS = [
 function ComoFunciona() {
   const { ref, inView } = useInView();
   return (
-    <section id="como" className="py-20 md:py-24" style={{ background: NAVY }}>
+    <section id="como" data-section="como" className="py-20 md:py-24" style={{ background: NAVY }}>
       <div className="container mx-auto px-4">
         <div ref={ref as React.RefObject<HTMLDivElement>}
           className={`text-center mb-16 transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
@@ -1031,20 +1033,38 @@ function FormSection() {
     setSending(true);
     setError("");
 
+    const payload = {
+      origem: "Landing Page Parceiro",
+      nome,
+      email,
+      whatsapp: wpp,
+      area,
+      enviadoEm: new Date().toISOString(),
+    };
+
     try {
-      const response = await fetch("https://n8n.helpmultas.com/webhook/forms", {
+      // ── N8N
+      const n8nRes = await fetch("https://n8n.helpmultas.com/webhook/forms", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!n8nRes.ok) throw new Error("Erro no webhook");
+
+      // ── Web3Forms
+      fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          origem: "Landing Page Parceiro",
-          nome,
-          email,
-          whatsapp: wpp,
-          area,
-          enviadoEm: new Date().toISOString(),
+          access_key: "1f63b8b2-e797-4e97-8308-b9b8509f6449",
+          subject: `Novo Parceiro Landing Page Parceiro – ${nome}`,
+          // to: "SUBSTITUIR@helpmultas.com.br", // ← descomentar quando o e-mail existir
+          from_name: "Parceiro · Landing Page",
+          ...(email && { replyto: email }),
+          ...payload,
         }),
-      });
-      if (!response.ok) throw new Error("Erro no webhook");
+      }).catch(() => {});
+
       window.location.href = "/sucesso";
     } catch {
       setError("Erro ao enviar. Tente novamente.");
@@ -1066,7 +1086,7 @@ function FormSection() {
   } as React.CSSProperties;
 
   return (
-    <section id="cadastro" className="py-20 md:py-24 relative overflow-hidden" style={{ background: NAVY_DEEP }}>
+    <section id="cadastro" data-section="cta-cadastro" className="py-20 md:py-24 relative overflow-hidden" style={{ background: NAVY_DEEP }}>
       <div className="pointer-events-none absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px]"
         style={{ background: `radial-gradient(ellipse, ${GOLD}09 0%, transparent 70%)` }}
       />
@@ -1198,6 +1218,10 @@ function IndicaFooter() {
    PAGE ROOT
    ════════════════════════════════════ */
 export default function IndicaLP() {
+  useScrollTracker({
+    webhookUrl: "https://n8n.helprecurso.com.br/webhook/scroll-tracker",
+    pageName: "indica",
+  });
   return (
     <div style={{ background: NAVY_DEEP, color: OFFWHITE, overflowX: "hidden" }}>
       <IndicaNav />
