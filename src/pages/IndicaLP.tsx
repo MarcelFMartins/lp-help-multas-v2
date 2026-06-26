@@ -1003,24 +1003,126 @@ function ComoFunciona() {
 /* ════════════════════════════════════
    FORMULÁRIO CTA
    ════════════════════════════════════ */
-const AREAS = [
-  "Despachante",
-  "Contador / Assessor fiscal",
-  "Advogado",
-  "Corretor / Segurador",
-  "Gestor de RH / Frotas",
-  "Autônomo / Motorista",
-  "Outro",
+const AREAS_OPTIONS = [
+  { value: "Despachante",               label: "Despachante" },
+  { value: "Contador / Assessor fiscal", label: "Contador / Assessor fiscal" },
+  { value: "Advogado",                  label: "Advogado" },
+  { value: "Corretor / Segurador",      label: "Corretor / Segurador" },
+  { value: "Gestor de RH / Frotas",     label: "Gestor de RH / Frotas" },
+  { value: "Autônomo / Motorista",      label: "Autônomo / Motorista" },
+  { value: "Outro",                     label: "Outro" },
 ];
+
+const ESTADOS = [
+  "AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG",
+  "PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO",
+];
+
+/* ─────────────────────────────────────────────────────
+   CustomSelect — dropdown reutilizável (mesmo do Hero)
+───────────────────────────────────────────────────── */
+interface SelectOpt { value: string; label: string }
+
+function CustomSelect({
+  label,
+  placeholder,
+  options,
+  value,
+  onChange,
+}: {
+  label: string;
+  placeholder: string;
+  options: SelectOpt[];
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function h(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", h);
+    return () => document.removeEventListener("mousedown", h);
+  }, []);
+
+  const selected = options.find((o) => o.value === value);
+
+  return (
+    <div className="flex flex-col gap-[7px]" ref={ref}>
+      <span className="text-[oklch(0.1998_0.0403_258.29)] text-[13px] font-bold uppercase tracking-wide">{label}</span>
+      <div className="relative">
+        <button
+          type="button"
+          onClick={() => setOpen((o) => !o)}
+          aria-haspopup="listbox"
+          aria-expanded={open}
+          className={`w-full min-h-[50px] border rounded-[14px] px-4 pr-10 text-left text-[15px] outline-none transition-all duration-200 relative
+            ${value ? "text-[oklch(0.1998_0.0403_258.29)]" : "text-[#98a2b3]"}
+            ${open ? "border-[#D4A017] ring-4 ring-[#D4A017]/20 bg-white" : "border-[#D9E1E8] bg-white"}`}
+        >
+          {selected?.label || placeholder}
+          <span className={`absolute right-4 top-1/2 w-2 h-2 border-r-2 border-b-2 border-[oklch(0.1998_0.0403_258.29)]/50 transition-transform duration-200 ${open ? "-translate-y-1/3 rotate-[225deg]" : "-translate-y-2/3 rotate-45"}`} />
+        </button>
+
+        {open && (
+          <div
+            role="listbox"
+            className="absolute top-[calc(100%+6px)] left-0 right-0 z-30 max-h-56 overflow-y-auto overscroll-contain rounded-[14px] border border-[#D9E1E8] bg-white shadow-[0_18px_34px_rgba(36,55,70,0.16)] p-1.5 flex flex-col gap-0.5"
+          >
+            <button
+              type="button"
+              className="w-full text-left px-3 py-2.5 rounded-[10px] text-[#98a2b3] text-[15px] hover:bg-[#edf2f6]"
+              onClick={() => { onChange(""); setOpen(false); }}
+            >
+              {placeholder}
+            </button>
+            {options.map((opt) => (
+              <button
+                key={opt.value}
+                type="button"
+                role="option"
+                aria-selected={value === opt.value}
+                className={`w-full text-left px-3 py-2.5 rounded-[10px] text-[15px] transition-colors duration-150
+                  ${value === opt.value
+                    ? "bg-[#D4A017]/15 text-[#D4A017] font-bold"
+                    : "text-[oklch(0.1998_0.0403_258.29)] hover:bg-[#edf2f6]"
+                  }`}
+                onClick={() => { onChange(opt.value); setOpen(false); }}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
 
 function FormSection() {
   const { ref, inView } = useInView();
   const [nome, setNome] = useState("");
   const [wpp, setWpp] = useState("");
   const [email, setEmail] = useState("");
+  const [cidade, setCidade] = useState("");
+  const [estado, setEstado] = useState("");
   const [area, setArea] = useState("");
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
+
+  // UF dropdown
+  const [ufOpen, setUfOpen] = useState(false);
+  const ufRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handler(e: MouseEvent) {
+      if (ufRef.current && !ufRef.current.contains(e.target as Node)) setUfOpen(false);
+    }
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -1038,6 +1140,8 @@ function FormSection() {
       nome,
       email,
       whatsapp: wpp,
+      cidade,
+      estado,
       area,
       enviadoEm: new Date().toISOString(),
     };
@@ -1072,18 +1176,11 @@ function FormSection() {
     }
   }
 
-  const iStyle = {
-    background: OFFWHITE,
-    border: `1px solid ${OFFWHITE}40`,
-    color: NAVY_DEEP,
-    borderRadius: "12px",
-    padding: "0.8rem 1rem",
-    width: "100%",
-    fontSize: "0.9rem",
-    fontFamily: "inherit",
-    outline: "none",
-    transition: "border-color 0.2s",
-  } as React.CSSProperties;
+  const inputCls =
+    "w-full min-h-[50px] border border-[#D9E1E8] rounded-[14px] px-4 bg-white text-[oklch(0.1998_0.0403_258.29)] text-[15px] outline-none placeholder-[#98a2b3] focus:border-[#D4A017] focus:ring-4 focus:ring-[#D4A017]/20 transition-all duration-200";
+
+  const labelCls =
+    "text-[oklch(0.1998_0.0403_258.29)] text-[13px] font-bold uppercase tracking-wide";
 
   return (
     <section id="cadastro" data-section="cta-cadastro" className="py-20 md:py-24 relative overflow-hidden" style={{ background: NAVY_DEEP }}>
@@ -1136,69 +1233,147 @@ function FormSection() {
 
           {/* Right — form */}
           <div className={`transition-all duration-700 delay-150 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-            <div className="rounded-2xl p-6 md:p-8"
-              style={{ background: NAVY, border: `1px solid ${GOLD}2A` }}>
+            <div className="bg-white rounded-[28px] shadow-[0_32px_70px_rgba(0,0,0,0.45)] border border-[#D4A017]/20 p-6 sm:p-10">
 
-              <div className="h-1 rounded-full mb-7 -mt-1 -mx-1"
-                style={{ background: `linear-gradient(to right, ${GOLD}, ${GREEN})` }}
-              />
+              <div className="mb-6">
+                <div className="h-1 rounded-full mb-5" style={{ background: `linear-gradient(to right, ${GOLD}, ${GREEN})` }} />
+                <h3 className="font-display font-black text-[26px] text-[oklch(0.1998_0.0403_258.29)] leading-tight mb-2">
+                  Cadastro gratuito
+                </h3>
+                <p className="text-[15px] text-gray-400">Nossa equipe entra em contato em até 24 horas.</p>
+              </div>
 
-              <h3 className="font-display font-black text-xl mb-1" style={{ color: OFFWHITE }}>Cadastro gratuito</h3>
-              <p className="text-sm mb-6" style={{ color: MUTED }}>Nossa equipe entra em contato em até 24 horas.</p>
+              <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4">
 
-              <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                {[
-                  { label: "Nome completo", value: nome, set: setNome, type: "text", ph: "Seu nome" },
-                  { label: "WhatsApp", value: wpp, set: (v: string) => setWpp(fmtWpp(v)), type: "tel", ph: "(00) 00000-0000" },
-                  { label: "E-mail", value: email, set: setEmail, type: "email", ph: "seu@email.com" },
-                ].map(({ label, value, set, type, ph }) => (
-                  <div key={label}>
-                    <label className="block font-display font-bold text-[10px] uppercase tracking-wider mb-1.5" style={{ color: MUTED }}>{label}</label>
-                    <input
-                      type={type} value={value} placeholder={ph}
-                      onChange={e => set(e.target.value)}
-                      style={iStyle}
-                      onFocus={e => (e.currentTarget.style.borderColor = `${GOLD}90`)}
-                      onBlur={e => (e.currentTarget.style.borderColor = `${OFFWHITE}40`)}
-                    />
-                  </div>
-                ))}
-
-                <div>
-                  <label className="block font-display font-bold text-[10px] uppercase tracking-wider mb-1.5" style={{ color: MUTED }}>Área de atuação</label>
-                  <select
-                    value={area} onChange={e => setArea(e.target.value)}
-                    style={{ ...iStyle, appearance: "none", cursor: "pointer" } as React.CSSProperties}
-                    onFocus={e => (e.currentTarget.style.borderColor = `${GOLD}90`)}
-                    onBlur={e => (e.currentTarget.style.borderColor = `${OFFWHITE}40`)}
-                  >
-                    <option value="" disabled>Selecione...</option>
-                    {AREAS.map(a => <option key={a} value={a} style={{ background: "#ffffff" }}>{a}</option>)}
-                  </select>
+                {/* Nome */}
+                <div className="flex flex-col gap-[7px]">
+                  <label className={labelCls} htmlFor="i-nome">Nome completo</label>
+                  <input
+                    id="i-nome" type="text" placeholder="Seu nome completo"
+                    value={nome} onChange={e => setNome(e.target.value)}
+                    className={inputCls}
+                  />
                 </div>
 
-                {error && <p className="text-xs text-red-400">{error}</p>}
+                {/* WhatsApp + Email lado a lado */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="flex flex-col gap-[7px]">
+                    <label className={labelCls} htmlFor="i-wpp">WhatsApp</label>
+                    <input
+                      id="i-wpp" type="tel" placeholder="(00) 00000-0000"
+                      value={wpp} onChange={e => setWpp(fmtWpp(e.target.value))}
+                      inputMode="numeric" maxLength={15}
+                      className={inputCls}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-[7px]">
+                    <label className={labelCls} htmlFor="i-email">E-mail</label>
+                    <input
+                      id="i-email" type="email" placeholder="seu@email.com"
+                      value={email} onChange={e => setEmail(e.target.value)}
+                      className={inputCls}
+                    />
+                  </div>
+                </div>
+
+                {/* Cidade + UF lado a lado */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="flex flex-col gap-[7px]">
+                    <label className={labelCls} htmlFor="i-cidade">Cidade</label>
+                    <input
+                      id="i-cidade" type="text" placeholder="Sua cidade"
+                      value={cidade} onChange={e => setCidade(e.target.value)}
+                      className={inputCls}
+                    />
+                  </div>
+
+                  {/* UF — dropdown customizado */}
+                  <div className="flex flex-col gap-[7px]" ref={ufRef}>
+                    <span className={labelCls}>Estado</span>
+                    <div className="relative">
+                      <button
+                        type="button"
+                        onClick={() => setUfOpen((o) => !o)}
+                        aria-haspopup="listbox"
+                        aria-expanded={ufOpen}
+                        className={`w-full min-h-[50px] border rounded-[14px] px-4 pr-10 text-left text-[15px] outline-none transition-all duration-200 relative
+                          ${estado ? "text-[oklch(0.1998_0.0403_258.29)]" : "text-[#98a2b3]"}
+                          ${ufOpen ? "border-[#D4A017] ring-4 ring-[#D4A017]/20 bg-white" : "border-[#D9E1E8] bg-white"}`}
+                      >
+                        {estado || "UF"}
+                        <span className={`absolute right-4 top-1/2 w-2 h-2 border-r-2 border-b-2 border-[oklch(0.1998_0.0403_258.29)]/50 transition-transform duration-200 ${ufOpen ? "-translate-y-1/3 rotate-[225deg]" : "-translate-y-2/3 rotate-45"}`} />
+                      </button>
+
+                      {ufOpen && (
+                        <div
+                          role="listbox"
+                          className="absolute top-[calc(100%+6px)] left-0 right-0 z-30 max-h-56 overflow-y-auto overscroll-contain rounded-[14px] border border-[#D9E1E8] bg-white shadow-[0_18px_34px_rgba(36,55,70,0.16)] p-1.5 flex flex-col gap-0.5"
+                        >
+                          <button
+                            type="button"
+                            className="w-full text-left px-3 py-2.5 rounded-[10px] text-[#98a2b3] text-[15px] hover:bg-[#edf2f6]"
+                            onClick={() => { setEstado(""); setUfOpen(false); }}
+                          >
+                            Selecione
+                          </button>
+                          {ESTADOS.map((uf) => (
+                            <button
+                              key={uf}
+                              type="button"
+                              role="option"
+                              aria-selected={estado === uf}
+                              className={`w-full text-left px-3 py-2.5 rounded-[10px] text-[15px] transition-colors duration-150
+                                ${estado === uf
+                                  ? "bg-[#D4A017]/15 text-[#D4A017] font-bold"
+                                  : "text-[oklch(0.1998_0.0403_258.29)] hover:bg-[#edf2f6]"
+                                }`}
+                              onClick={() => { setEstado(uf); setUfOpen(false); }}
+                            >
+                              {uf}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Área de atuação */}
+                <CustomSelect
+                  label="Área de atuação"
+                  placeholder="Selecione sua área"
+                  options={AREAS_OPTIONS}
+                  value={area}
+                  onChange={setArea}
+                />
+
+                {error && (
+                  <div className="rounded-[14px] px-4 py-3 text-[14px] leading-[1.5] border bg-red-50 text-red-700 border-red-200" role="alert">
+                    {error}
+                  </div>
+                )}
 
                 <button
                   type="submit" disabled={sending}
-                  className="w-full py-4 rounded-xl font-display font-black text-sm uppercase tracking-wider transition-all hover:opacity-90 hover:-translate-y-0.5 disabled:opacity-60 mt-1"
+                  className="w-full min-h-[52px] mt-1 rounded-[14px] font-display font-black text-[15px] uppercase tracking-wide shadow-[0_14px_24px_rgba(212,160,23,0.28)] hover:-translate-y-[1px] active:scale-[0.98] transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none"
                   style={{ background: GOLD, color: NAVY_DEEP }}
                 >
                   {sending ? "Enviando..." : "Quero ser parceiro →"}
                 </button>
 
-                <p className="text-[11px] text-center leading-relaxed" style={{ color: `${MUTED}90` }}>
+                <p className="text-center text-xs text-gray-400">
                   Cadastro gratuito · Sem mensalidade · Sem metas obrigatórias
                 </p>
+
               </form>
             </div>
           </div>
+
         </div>
       </div>
     </section>
   );
 }
-
 /* ════════════════════════════════════
    FOOTER
    ════════════════════════════════════ */
