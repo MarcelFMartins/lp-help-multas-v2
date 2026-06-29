@@ -53,11 +53,20 @@ function onlyNumbers(v: string) {
 }
 
 function formatWhatsapp(v: string) {
-  const n = onlyNumbers(v).slice(0, 11);
+  let n = onlyNumbers(v);
+
+  // Remove o código do país (55), se existir
+  if (n.startsWith("55") && n.length > 11) {
+    n = n.slice(2);
+  }
+
+  n = n.slice(0, 11);
+
   if (n.length <= 2) return n;
   if (n.length <= 6) return n.replace(/(\d{2})(\d+)/, "($1) $2");
   if (n.length <= 10) return n.replace(/(\d{2})(\d{4})(\d+)/, "($1) $2-$3");
-  return n.replace(/(\d{2})(\d{5})(\d{1,4})/, "($1) $2-$3");
+
+  return n.replace(/(\d{2})(\d{5})(\d+)/, "($1) $2-$3");
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -460,7 +469,7 @@ export default function HeroSection() {
                       onChange={(e) =>
                         setFormData({ ...formData, whatsapp: formatWhatsapp(e.target.value) })
                       }
-                      maxLength={15}
+                      maxLength={19}
                       inputMode="numeric"
                       autoComplete="tel"
                       className={inputCls}
