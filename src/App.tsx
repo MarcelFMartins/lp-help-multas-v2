@@ -7,7 +7,6 @@ import { ThemeProvider } from "@/contexts/ThemeContext";
 import Home from "@/pages/Home";
 import ThankYouPage from "@/pages/ThankYouPage";
 import PreReuniao from "@/pages/PreReunião";
-import FranqueadoLP from "@/pages/FranqueadoLP";
 import HelpIndica from "@/pages/IndicaLP"
 import Sucesso from "@/pages/Success"
 
@@ -21,8 +20,6 @@ function Router() {
       <Route path="/sucesso" component={Sucesso} />
 
       <Route path="/prereuniao" component={PreReuniao} />
-
-      <Route path="/franqueado" component={FranqueadoLP} />
 
       <Route path="/indica" component={HelpIndica} />
       
