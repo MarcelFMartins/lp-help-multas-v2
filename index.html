@@ -63,7 +63,9 @@
         fbq('init', '1552879123068423');
       }
 
-      fbq('track', 'PageView');
+      const pvId = Date.now() + '-' + Math.random().toString(36).slice(2, 9);
+      fbq('track', 'PageView', {}, { eventID: pvId });
+      window.__pageViewEventId = pvId;
     })();
   </script>
 

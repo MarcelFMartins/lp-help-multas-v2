@@ -1004,18 +1004,18 @@ function ComoFunciona() {
    FORMULÁRIO CTA
    ════════════════════════════════════ */
 const AREAS_OPTIONS = [
-  { value: "Despachante",               label: "Despachante" },
+  { value: "Despachante", label: "Despachante" },
   { value: "Contador / Assessor fiscal", label: "Contador / Assessor fiscal" },
-  { value: "Advogado",                  label: "Advogado" },
-  { value: "Corretor / Segurador",      label: "Corretor / Segurador" },
-  { value: "Gestor de RH / Frotas",     label: "Gestor de RH / Frotas" },
-  { value: "Autônomo / Motorista",      label: "Autônomo / Motorista" },
-  { value: "Outro",                     label: "Outro" },
+  { value: "Advogado", label: "Advogado" },
+  { value: "Corretor / Segurador", label: "Corretor / Segurador" },
+  { value: "Gestor de RH / Frotas", label: "Gestor de RH / Frotas" },
+  { value: "Autônomo / Motorista", label: "Autônomo / Motorista" },
+  { value: "Outro", label: "Outro" },
 ];
 
 const ESTADOS = [
-  "AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG",
-  "PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO",
+  "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG",
+  "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO",
 ];
 
 /* ─────────────────────────────────────────────────────
@@ -1135,6 +1135,14 @@ function FormSection() {
     setSending(true);
     setError("");
 
+    // ── event_id para deduplicação Meta (pixel browser + CAPI servidor)
+    const eventId = `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+
+    // ── Dispara Lead no pixel do browser COM eventID
+    if ((window as any).fbq) {
+      (window as any).fbq('track', 'Lead', { content_name: 'Landing Page Parceiro' }, { eventID: eventId });
+    }
+
     const payload = {
       origem: "Landing Page Parceiro",
       nome,
@@ -1144,6 +1152,7 @@ function FormSection() {
       estado,
       area,
       enviadoEm: new Date().toISOString(),
+      event_id: eventId,
     };
 
     try {
@@ -1167,7 +1176,7 @@ function FormSection() {
           ...(email && { replyto: email }),
           ...payload,
         }),
-      }).catch(() => {});
+      }).catch(() => { });
 
       window.location.href = "/sucesso";
     } catch {
