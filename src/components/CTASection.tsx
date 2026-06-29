@@ -11,7 +11,7 @@
  *   - Campos: nome, email, whatsapp, cidade, uf, capital, ocupacao, horario
  *
  * Backend: 100% preservado
- *   - Web3Forms key, endpoint e payload idênticos ao original
+ *   - Web3Forms substituído por n8n + Resend
  *   - CRM em try-catch próprio (erro não bloqueia redirect)
  *   - Redirect idêntico
  */
@@ -218,30 +218,25 @@ export default function CTASection() {
       const ocupacaoLabel = OCUPACAO_OPTIONS.find((o) => o.value === formData.ocupacao)?.label || formData.ocupacao;
       const horarioLabel  = HORARIO_OPTIONS.find((o) => o.value === formData.horario)?.label   || formData.horario;
 
-      /* 1. WEB3FORMS — key e endpoint idênticos ao original */
-      const web3Response = await fetch("https://api.web3forms.com/submit", {
+      /* 1. N8N — notificação por e-mail via Resend (fire-and-forget) */
+      fetch("https://n8n.helpmultas.com/webhook/forms-email", {
         method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          access_key: "1f63b8b2-e797-4e97-8308-b9b8509f6449",
-          from_name:  "Landing Page Franquias",
-          subject:    "Novo Candidato a Franqueado",
-          nome:       formData.nome,
-          email:      formData.email,
-          whatsapp:   formData.whatsapp,
-          cidade:     formData.cidade,
-          uf:         formData.uf,
-          capital:    capitalLabel,
-          ocupacao:   ocupacaoLabel,
-          horario:    horarioLabel,
-          fbp:        meta?.fbp    || "",
-          fbc:        meta?.fbc    || "",
-          fbclid:     meta?.fbclid || "",
+          origem: "Landing Page Franqueado",
+          nome:     formData.nome,
+          email:    formData.email,
+          whatsapp: formData.whatsapp,
+          cidade:   formData.cidade,
+          uf:       formData.uf,
+          capital:  capitalLabel,
+          ocupacao: ocupacaoLabel,
+          horario:  horarioLabel,
+          fbp:      meta?.fbp    || "",
+          fbc:      meta?.fbc    || "",
+          fbclid:   meta?.fbclid || "",
         }),
-      });
-
-      const web3Result = await web3Response.json();
-      if (!web3Response.ok || !web3Result.success) throw new Error("Erro Web3Forms");
+      }).catch(() => { });
 
       /* 2. CRM — em try-catch próprio, erro só loga (preservado do original) */
       try {

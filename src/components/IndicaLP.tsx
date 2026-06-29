@@ -1157,26 +1157,14 @@ function FormSection() {
 
     try {
       // ── N8N
-      const n8nRes = await fetch("https://n8n.helpmultas.com/webhook/forms-email", {
+      const n8nRes = await fetch("https://n8n.helpmultas.com/webhook/forms", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
       if (!n8nRes.ok) throw new Error("Erro no webhook");
 
-      // ── Web3Forms
-      fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          access_key: "1f63b8b2-e797-4e97-8308-b9b8509f6449",
-          subject: `Novo Parceiro Landing Page Parceiro – ${nome}`,
-          // to: "SUBSTITUIR@helpmultas.com.br", // ← descomentar quando o e-mail existir
-          from_name: "Parceiro · Landing Page",
-          ...(email && { replyto: email }),
-          ...payload,
-        }),
-      }).catch(() => { });
+      // ── Web3Forms removido — notificação por e-mail agora via Resend dentro do n8n
 
       window.location.href = "/sucesso";
     } catch {

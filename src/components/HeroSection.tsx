@@ -8,7 +8,7 @@
  *  - Email e WhatsApp lado a lado
  *  - Novo campo: Ocupação atual (select)
  *  - Novo campo: Melhor horário para contato (select)
- *  - Novos campos incluídos nos payloads Web3Forms e CRM
+ *  - Web3Forms substituído por n8n + Resend
  */
 
 import { useState, useEffect, useRef } from "react";
@@ -228,39 +228,22 @@ export default function HeroSection() {
       const ocupacaoLabel = OCUPACAO_OPTIONS.find((o) => o.value === formData.ocupacao)?.label || formData.ocupacao;
       const horarioLabel = HORARIO_OPTIONS.find((o) => o.value === formData.horario)?.label || formData.horario;
 
-      /* 1. WEB3FORMS */
-      const web3Payload = {
-        access_key: "1f63b8b2-e797-4e97-8308-b9b8509f6449",
-        from_name: "Landing Page Franquias",
-        subject: `Novo Candidato a Franqueado - ${formData.nome.trim()}`,
-        nome: formData.nome.trim(),
-        email: formData.email.trim(),
-        whatsapp: formData.whatsapp,
-        cidade: formData.cidade.trim(),
-        uf: formData.uf,
-        capital: capitalLabel,
-        ocupacao: ocupacaoLabel,
-        horario: horarioLabel,
-        botcheck: false,
-      };
-
-      console.log("WEB3 PAYLOAD:", web3Payload);
-
-      const web3Response = await fetch("https://api.web3forms.com/submit", {
+      /* 1. N8N — notificação por e-mail via Resend (fire-and-forget) */
+      fetch("https://n8n.helpmultas.com/webhook/forms-email", {
         method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify(web3Payload),
-      });
-
-      let web3Result: any = null;
-      try { web3Result = await web3Response.json(); } catch { web3Result = null; }
-
-      console.log("WEB3 STATUS:", web3Response.status);
-      console.log("WEB3 RESPONSE:", web3Result);
-
-      if (!web3Response.ok || !web3Result?.success) {
-        throw new Error(`Erro Web3Forms: ${web3Result?.message || `Status ${web3Response.status}`}`);
-      }
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          origem: "Landing Page Franqueado",
+          nome: formData.nome.trim(),
+          email: formData.email.trim(),
+          whatsapp: formData.whatsapp,
+          cidade: formData.cidade.trim(),
+          uf: formData.uf,
+          capital: capitalLabel,
+          ocupacao: ocupacaoLabel,
+          horario: horarioLabel,
+        }),
+      }).catch(() => { });
 
       /* 2. CRM */
       const crmPayload = {
