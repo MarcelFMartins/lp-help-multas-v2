@@ -345,12 +345,12 @@ function EarningsWidget({
    PARA QUEM É
    ════════════════════════════════════ */
 const PERSONAS = [
-  { icon: <IcFile />, title: "Despachantes", desc: "Você já lida com documentação de veículos. Seus clientes têm multas, só faltava monetizar isso." },
-  { icon: <IcUsers />, title: "Gestores de RH e Frotas", desc: "Empresas com frota acumulam multas constantemente. Você tem acesso a esses decisores, é só indicar." },
-  { icon: <IcMonitor />, title: "Contadores e Assessores", desc: "Quem cuida das finanças de empresas tem acesso direto a transportadoras, frotas e autônomos." },
-  { icon: <IcShield />, title: "Advogados", desc: "Amplie seu portfólio sem precisar atuar na área. Indique, acompanhe o resultado e receba." },
-  { icon: <IcStar />, title: "Corretores e Seguradoras", desc: "Seguro e multa andam juntos. Ofereça mais uma solução e diferencie sua carteira." },
-  { icon: <IcPlusC />, title: "Qualquer pessoa com rede", desc: "Grupos de WhatsApp, vizinhos, colegas. Se você conhece quem tem multa, já tem tudo que precisa.", featured: true },
+  { icon: <IcFile />, title: "Despachantes", desc: "Você já mexe com documento de veículo. O cliente já tem multa — falta só indicar.",  featured: true },
+  { icon: <IcUsers />, title: "Gestores de RH e Frotas", desc: "Frota grande acumula multa toda semana. Você já fala direto com quem decide." },
+  { icon: <IcMonitor />, title: "Contadores e Assessores", desc: "Você já tem a carteira: transportadoras, frotas, autônomos. É só indicar." },
+  { icon: <IcShield />, title: "Advogados", desc: "Indique, acompanhe o resultado, receba. Sem precisar atuar na área." },
+  { icon: <IcStar />, title: "Corretores e Seguradoras", desc: "Seguro e multa andam juntos. Mais uma solução pra sua carteira." },
+  { icon: <IcPlusC />, title: "Qualquer pessoa com rede", desc: "Grupo de WhatsApp, vizinho, colega. Conhece alguém com multa? Já pode indicar." },
 ];
 
 function ParaQuem() {
@@ -382,24 +382,35 @@ function ParaQuem() {
 function PersonaCard({ icon, title, desc, featured, delay }: typeof PERSONAS[0] & { delay: number }) {
   const { ref, inView } = useInView();
   const [hover, setHover] = useState(false);
+  const active = hover || featured;
   return (
     <div
       ref={ref as React.RefObject<HTMLDivElement>}
-      className={`rounded-2xl p-6 transition-all duration-700 cursor-default ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+      className={`relative rounded-2xl p-6 transition-all duration-300 cursor-default overflow-hidden ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
       style={{
         transitionDelay: `${delay}ms`,
-        background: hover || featured ? `${GOLD}07` : `${OFFWHITE}04`,
-        border: `1px solid ${hover || featured ? GOLD + "40" : OFFWHITE + "10"}`,
+        background: active ? `linear-gradient(135deg, ${GOLD}22, ${GOLD}0A)` : `${OFFWHITE}0D`,
+        border: `1.5px solid ${active ? GOLD + "80" : OFFWHITE + "26"}`,
+        boxShadow: active ? `0 12px 32px -10px ${GOLD}50` : "none",
       }}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      <div className="flex items-center justify-center w-11 h-11 rounded-xl mb-4"
-        style={{ background: `${GOLD}18`, color: GOLD }}>
+      {featured && (
+        <div className="absolute top-0 left-0 right-0 h-1" style={{ background: GOLD }} />
+      )}
+      {featured && (
+        <span className="inline-block mb-3 px-2.5 py-1 rounded-full text-[10px] font-display font-bold uppercase tracking-wide"
+          style={{ background: GOLD, color: NAVY_DEEP }}>
+          + procurado
+        </span>
+      )}
+      <div className="flex items-center justify-center w-12 h-12 rounded-xl mb-4"
+        style={{ background: GOLD, color: NAVY_DEEP }}>
         {icon}
       </div>
-      <h3 className="font-display font-bold text-base mb-2" style={{ color: OFFWHITE }}>{title}</h3>
-      <p className="text-sm leading-relaxed" style={{ color: MUTED }}>{desc}</p>
+      <h3 className="font-display font-bold text-lg mb-2" style={{ color: OFFWHITE }}>{title}</h3>
+      <p className="text-sm leading-relaxed" style={{ color: `${OFFWHITE}CC` }}>{desc}</p>
     </div>
   );
 }
@@ -979,19 +990,23 @@ function ComoFunciona() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
-          <div className="hidden md:block absolute top-10 left-[22%] right-[22%] h-px"
-            style={{ background: `linear-gradient(to right, ${GOLD}, ${GOLD}20)` }}
+          <div className="hidden md:block absolute top-10 left-[22%] right-[22%] h-[2px]"
+            style={{ background: `linear-gradient(to right, ${GOLD}, ${GOLD}50)` }}
           />
           {STEPS.map((s, i) => (
             <div key={s.n}
               className={`text-center p-8 rounded-2xl transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-              style={{ transitionDelay: `${i * 120}ms`, background: `${OFFWHITE}04`, border: `1px solid ${OFFWHITE}08` }}>
+              style={{ transitionDelay: `${i * 120}ms`, background: `${OFFWHITE}0D`, border: `1.5px solid ${OFFWHITE}26`, boxShadow: `0 10px 28px -14px ${NAVY_DEEP}` }}>
               <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5 relative z-10 font-display font-black text-2xl"
-                style={{ background: NAVY, border: `2px solid ${GOLD}`, color: GOLD }}>
+                style={{ background: GOLD, color: NAVY_DEEP, boxShadow: `0 0 0 6px ${GOLD}1F` }}>
                 {s.n}
               </div>
-              <h3 className="font-display font-bold text-base mb-3" style={{ color: OFFWHITE }}>{s.title}</h3>
-              <p className="text-sm leading-relaxed" style={{ color: MUTED }}>{s.desc}</p>
+              <div className="flex items-center justify-center w-10 h-10 rounded-lg mx-auto mb-3"
+                style={{ background: `${GOLD}1F`, color: GOLD }}>
+                {s.icon}
+              </div>
+              <h3 className="font-display font-bold text-lg mb-2" style={{ color: OFFWHITE }}>{s.title}</h3>
+              <p className="text-sm leading-relaxed" style={{ color: `${OFFWHITE}CC` }}>{s.desc}</p>
             </div>
           ))}
         </div>
