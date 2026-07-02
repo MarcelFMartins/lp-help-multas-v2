@@ -8,7 +8,7 @@
  *   - inputCls / labelCls / CustomSelect padronizados
  *   - Máscara WhatsApp
  *   - Validação inline (sem alert())
- *   - Campos: nome, email, whatsapp, cidade, uf, capital, ocupacao, horario
+ *   - Campos: nome, email, whatsapp, cidade, uf, capital
  *
  * Backend: 100% preservado
  *   - Web3Forms substituído por n8n + Resend
@@ -32,23 +32,6 @@ const CAPITAL_OPTIONS = [
   { value: "50.000", label: "De R$ 30 mil a R$ 50 mil" },
   { value: "70.000", label: "De R$ 50 mil a R$ 70 mil" },
   { value: "100.000", label: "Acima de R$ 70 mil" },
-];
-
-const OCUPACAO_OPTIONS = [
-  { value: "clt",             label: "Empregado (CLT)"          },
-  { value: "autonomo",        label: "Autônomo / Freelancer"     },
-  { value: "empresario",      label: "Empresário / Empreendedor" },
-  { value: "funcionario_pub", label: "Funcionário Público"       },
-  { value: "desempregado",    label: "Desempregado"              },
-  { value: "estudante",       label: "Estudante"                 },
-  { value: "aposentado",      label: "Aposentado / Pensionista"  },
-];
-
-const HORARIO_OPTIONS = [
-  { value: "manha",    label: "Manhã (8h – 12h)"  },
-  { value: "tarde",    label: "Tarde (12h – 18h)" },
-  { value: "noite",    label: "Noite (18h – 21h)" },
-  { value: "qualquer", label: "Qualquer horário"   },
 ];
 
 /* ─── FORMATTERS ─── */
@@ -165,8 +148,6 @@ export default function CTASection() {
     cidade:   "",
     uf:       "",
     capital:  "",
-    ocupacao: "",
-    horario:  "",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -187,14 +168,14 @@ export default function CTASection() {
   /* ─────────────────────────────────────────────────────────
      BACKEND — preservado exatamente como no original
      Adicionados apenas: máscara WA, validação inline,
-     labels ocupacao/horario nos payloads
+     Ocupação e horário removidos do formulário
   ───────────────────────────────────────────────────────── */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus(null);
 
     /* Validação (nova — sem alterar o que é enviado) */
-    const required = ["nome", "email", "whatsapp", "cidade", "uf", "capital", "ocupacao", "horario"];
+    const required = ["nome", "email", "whatsapp", "cidade", "uf", "capital"];
     for (const key of required) {
       if (!formData[key as keyof typeof formData]) {
         setStatus({ type: "error", text: "Preencha todos os campos antes de continuar." });
@@ -215,8 +196,6 @@ export default function CTASection() {
       const tracking = window.getTrackingData();
 
       const capitalLabel  = CAPITAL_OPTIONS.find((o) => o.value === formData.capital)?.label  || formData.capital;
-      const ocupacaoLabel = OCUPACAO_OPTIONS.find((o) => o.value === formData.ocupacao)?.label || formData.ocupacao;
-      const horarioLabel  = HORARIO_OPTIONS.find((o) => o.value === formData.horario)?.label   || formData.horario;
 
       /* 1. N8N — notificação por e-mail via Resend (fire-and-forget) */
       fetch("https://n8n.helpmultas.com/webhook/forms-email", {
@@ -230,8 +209,6 @@ export default function CTASection() {
           cidade:   formData.cidade,
           uf:       formData.uf,
           capital:  capitalLabel,
-          ocupacao: ocupacaoLabel,
-          horario:  horarioLabel,
           fbp:      meta?.fbp    || "",
           fbc:      meta?.fbc    || "",
           fbclid:   meta?.fbclid || "",
@@ -474,24 +451,6 @@ export default function CTASection() {
                   value={formData.capital}
                   onChange={(v) => setFormData((p) => ({ ...p, capital: v }))}
                 />
-
-                {/* Ocupação + Horário */}
-                <div className="grid grid-cols-2 gap-3">
-                  <CustomSelect
-                    label="Ocupação atual"
-                    placeholder="Selecione"
-                    options={OCUPACAO_OPTIONS}
-                    value={formData.ocupacao}
-                    onChange={(v) => setFormData((p) => ({ ...p, ocupacao: v }))}
-                  />
-                  <CustomSelect
-                    label="Melhor horário"
-                    placeholder="Selecione"
-                    options={HORARIO_OPTIONS}
-                    value={formData.horario}
-                    onChange={(v) => setFormData((p) => ({ ...p, horario: v }))}
-                  />
-                </div>
 
                 {/* Status */}
                 {status && (

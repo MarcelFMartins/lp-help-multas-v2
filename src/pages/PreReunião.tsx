@@ -1284,7 +1284,7 @@ export default function ThankYouPage() {
                             <div className="relative">
                                 <div className="absolute -top-4 -left-4 w-20 h-20 bg-gold rounded-2xl -z-10" />
                                 <div className="rounded-3xl overflow-hidden shadow-2xl border-2 border-white/10">
-                                    <Img webp="/image/equipe_help.webp" fallback="/image/logotipo.png" alt="Equipe Help Multas" className="w-full h-auto object-cover" />
+                                    <Img webp="/image/TIME.jpg" fallback="/image/logotipo.png" alt="Equipe Help Multas" className="w-full h-auto object-cover" />
                                 </div>
                                 <div className="absolute -bottom-4 -right-4 w-28 h-28 bg-[#D4A017] rounded-full -z-10 opacity-10" />
                             </div>

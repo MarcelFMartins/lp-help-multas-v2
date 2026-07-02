@@ -19,6 +19,7 @@
 
 import AnnouncementBar from "@/components/AnnouncementBar";
 import HeroSection from "@/components/HeroSection";
+import InvestmentModelsSection from "@/components/InvestmentModelsSection";
 import MarketSection from "@/components/MarketSection";
 import GrowthSection from "@/components/GrowthSection";
 import ModelSection from "@/components/ModelSection";
@@ -44,10 +45,15 @@ export default function Home() {
       {/* 2. Hero: headline + form */}
       <HeroSection />
 
+      
+
       {/* 3. Market data: the opportunity */}
       <MarketSection />
 
       <TechSection />
+
+      {/* 2.5. Investment models: Home Based vs Loja Física */}
+      <InvestmentModelsSection />
       
       {/* 3.5. Growth factors: why the market grows */}
       <GrowthSection />
