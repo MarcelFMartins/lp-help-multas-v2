@@ -220,24 +220,7 @@ export default function HeroSection() {
       }).catch(() => { });
 
       /* 2. CRM */
-      const crmPayload = {
-        fullName: formData.nome.trim(),
-        phone: formData.whatsapp,
-        email: formData.email.trim(),
-        cidade: formData.cidade.trim(),
-        uf: formData.uf,
-        capital: formData.capital,
-        capitalLabel,
-        fbp: meta?.fbp || "",
-        fbc: meta?.fbc || "",
-        fbclid: meta?.fbclid || "",
-        utmSource: tracking?.utm_source || "",
-        utmMedium: tracking?.utm_medium || "",
-        utmCampaign: tracking?.utm_campaign || "",
-        utmContent: tracking?.utm_content || "",
-        utmTerm: tracking?.utm_term || "",
-        utmId: tracking?.utm_id || "",
-      };
+      
 
       console.log("CRM PAYLOAD:", crmPayload);
 

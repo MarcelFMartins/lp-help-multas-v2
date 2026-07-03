@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useInView, useCounter } from "../hooks/useInView";
 import { useScrollTracker } from "../hooks/useScrollTracker";
+import { Car } from "lucide-react";
 
 /* ─── Color tokens ─── */
 const NAVY_DEEP = "oklch(0.1998 0.0403 258.29)";
@@ -45,7 +46,6 @@ const IcUsers = ({ c = "w-5 h-5" }) => <svg className={c} viewBox="0 0 24 24" {.
 const IcMonitor = ({ c = "w-5 h-5" }) => <svg className={c} viewBox="0 0 24 24" {...S}><rect x="2" y="3" width="20" height="14" rx="2" /><line x1="8" y1="21" x2="16" y2="21" /><line x1="12" y1="17" x2="12" y2="21" /></svg>;
 const IcShield = ({ c = "w-5 h-5" }) => <svg className={c} viewBox="0 0 24 24" {...S}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>;
 const IcStar = ({ c = "w-5 h-5" }) => <svg className={c} viewBox="0 0 24 24" {...S}><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" /></svg>;
-const IcPlusC = ({ c = "w-5 h-5" }) => <svg className={c} viewBox="0 0 24 24" {...S}><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="16" /><line x1="8" y1="12" x2="16" y2="12" /></svg>;
 const IcCheck = ({ c = "w-3 h-3" }) => <svg className={c} viewBox="0 0 24 24" {...S}><polyline points="20 6 9 17 4 12" /></svg>;
 const IcArrow = ({ c = "w-4 h-4" }) => <svg className={c} viewBox="0 0 24 24" {...S}><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>;
 const IcTrophy = ({ c = "w-5 h-5" }) => <svg className={c} viewBox="0 0 24 24" {...S}><path d="M6 9H4.5a2.5 2.5 0 010-5H6" /><path d="M18 9h1.5a2.5 2.5 0 000-5H18" /><path d="M4 22h16" /><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" /><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" /><path d="M18 2H6v7a6 6 0 0012 0V2Z" /></svg>;
@@ -188,9 +188,9 @@ function Hero() {
               className="font-display font-black leading-[.98] mb-6"
               style={{ fontSize: "clamp(3.5rem, 7vw, 6rem)", color: OFFWHITE }}
             >
-              Indique.<br />
-              <span style={{ color: GOLD }}>Ganhe.</span><br />
-              <span style={{ color: GREEN_LT }}>Repita.</span>
+              Indicou.<br />
+              <span style={{ color: GOLD }}>Fechou.</span><br />
+              <span style={{ color: GREEN_LT }}>Ganhou.</span>
             </h1>
 
             <p className="text-base lg:text-lg leading-relaxed mb-8 max-w-md" style={{ color: MUTED }}>
@@ -318,7 +318,7 @@ function EarningsWidget({
         {[
           { lbl: "Ticket médio", val: `R$ ${TICKET.toLocaleString("pt-BR")}` },
           { lbl: "Sua comissão", val: `${(COMMISSION * 100).toFixed(0)}%` },
-          { lbl: "Taxa de conversão", val: `~${(CONVERSION * 100).toFixed(0)}%` },
+          { lbl: "Taxa de conversão", val: `Aproximadamente ${(CONVERSION * 100).toFixed(0)}%` },
           { lbl: "Estimativa mensal", val: fmtBRL(earn), green: true },
         ].map(({ lbl, val, green }) => (
           <div key={lbl} className="p-4" style={{ background: `${OFFWHITE}05` }}>
@@ -345,12 +345,13 @@ function EarningsWidget({
    PARA QUEM É
    ════════════════════════════════════ */
 const PERSONAS = [
-  { icon: <IcFile />, title: "Despachantes", desc: "Você já mexe com documento de veículo. O cliente já tem multa — falta só indicar.",  featured: true },
+  { icon: <IcFile />, title: "Despachantes", desc: "Você já mexe com documento de veículo. O cliente já tem multa — falta só indicar.", featured: true },
+  { icon: <Car className="w-5 h-5" />, title: "Autoescolas", desc: "Se você já atua no mercado de autoescolas, já está conectado diariamente ao universo do trânsito e pode aproveitar essa rede para gerar novas oportunidades com a Help Multas." },
+  { icon: <IcStar />, title: "Corretores e Seguradoras", desc: "Seguro e multa andam juntos. Mais uma solução pra sua carteira." },
+  { icon: <IcShield />, title: "Advogados", desc: "Indique, acompanhe o resultado, receba. Sem precisar atuar na área." },
   { icon: <IcUsers />, title: "Gestores de RH e Frotas", desc: "Frota grande acumula multa toda semana. Você já fala direto com quem decide." },
   { icon: <IcMonitor />, title: "Contadores e Assessores", desc: "Você já tem a carteira: transportadoras, frotas, autônomos. É só indicar." },
-  { icon: <IcShield />, title: "Advogados", desc: "Indique, acompanhe o resultado, receba. Sem precisar atuar na área." },
-  { icon: <IcStar />, title: "Corretores e Seguradoras", desc: "Seguro e multa andam juntos. Mais uma solução pra sua carteira." },
-  { icon: <IcPlusC />, title: "Qualquer pessoa com rede", desc: "Grupo de WhatsApp, vizinho, colega. Conhece alguém com multa? Já pode indicar." },
+
 ];
 
 function ParaQuem() {
@@ -362,7 +363,7 @@ function ParaQuem() {
           className={`mb-12 md:mb-14 transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
           <span className="font-display font-bold text-[11px] uppercase tracking-[.18em] block mb-3" style={{ color: GOLD }}>Para quem é</span>
           <h2 className="font-display font-black leading-tight mb-4" style={{ fontSize: "clamp(2rem, 4vw, 3.25rem)", color: OFFWHITE }}>
-            Você tem uma rede?<br />
+            Você tem um negócio?<br />
             Então tem uma <em className="not-italic" style={{ color: GOLD }}>fonte de receita.</em>
           </h2>
           <p className="text-base leading-relaxed max-w-lg" style={{ color: MUTED }}>
@@ -419,7 +420,7 @@ function PersonaCard({ icon, title, desc, featured, delay }: typeof PERSONAS[0] 
    STATS — sem comparação 7K vs 100K
    ════════════════════════════════════ */
 const STATS = [
-  { value: 100, suffix: "K+", label: "motoristas atendidos em todo o Brasil", gold: true },
+  { value: 100, suffix: "K+", label: "motoristas defendidos em todo o Brasil", gold: true },
   { value: 80, suffix: "+", label: "franqueados ativos em todo o país" },
   { value: 27, suffix: "", label: "estados com atuação ativa", green: true },
   { value: 10, suffix: "+", label: "anos de experiência no mercado" },
@@ -498,7 +499,7 @@ function BancoMultas() {
               <div className="relative z-10 mb-7">
                 <p className="font-display font-black leading-none"
                   style={{ fontSize: "clamp(3.5rem, 7vw, 5.5rem)", color: GOLD }}>
-                  10<span style={{ fontSize: "60%", color: `${GOLD}BB` }}>+ anos</span>
+                  10<span style={{ fontSize: "60%", color: `${GOLD}BB` }}> anos</span>
                 </p>
                 <p className="text-sm mt-1" style={{ color: MUTED }}>
                   defendendo motoristas em todo o Brasil
@@ -515,7 +516,7 @@ function BancoMultas() {
                   Atuação direta em
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  {["DETRAN", "DER", "SENATRAN", "CONTRAN", "PRF"].map(org => (
+                  {["DETRAN", "DER", "SENATRAN", "CONTRAN", "PRF", "DNIT"].map(org => (
                     <span key={org}
                       className="px-3 py-1.5 rounded-lg font-display font-bold text-xs"
                       style={{ background: `${GOLD}12`, color: GOLD, border: `1px solid ${GOLD}28` }}>
@@ -536,12 +537,12 @@ function BancoMultas() {
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   {[
-                    "Multa por radar",
+                    "Recusa ao Bafômetro",
+                    "Multa por Radar",
+                    "Multa por Estacionamento",
+                    "Multa por Celular",
                     "Suspensão de CNH",
-                    "Excesso de velocidade",
-                    "Frota corporativa",
-                    "Infração por pontuação",
-                    "Licenciamento e documentação",
+                    "Entre outras",
                   ].map(tipo => (
                     <div key={tipo} className="flex items-center gap-2">
                       <div className="w-1.5 h-1.5 rounded-full flex-shrink-0"
@@ -566,7 +567,7 @@ function BancoMultas() {
               O argumento que<br />fecha a <em className="not-italic" style={{ color: GOLD }}>indicação.</em>
             </h2>
             <p className="text-base leading-relaxed mb-8" style={{ color: MUTED }}>
-              Quando alguém hesita com o "mas funciona mesmo?",
+              Quando alguém hesita com o "pq as pessoas devem recorrer das suas multas?",
               você tem documentação real para mostrar. Cada número representa
               um recurso fundamentado, trabalhado e ganho — e isso é o que
               faz sua indicação chegar com credibilidade.
@@ -971,9 +972,9 @@ function Depoimentos() {
    COMO FUNCIONA
    ════════════════════════════════════ */
 const STEPS = [
-  { n: "1", title: "Cadastre-se grátis", desc: "Crie sua conta no programa de parceiros em menos de 2 minutos. Sem taxa, sem mensalidade.", icon: <IcTrophy /> },
-  { n: "2", title: "Faça a indicação", desc: "Compartilhe com quem tem multa. Cada indicado fica vinculado ao seu perfil, rastreável.", icon: <IcUsers /> },
-  { n: "3", title: "Receba a comissão", desc: "Quando o recurso for ganho, você recebe. Sem burocracia, sem surpresas.", icon: <IcDollar /> },
+  { n: "1", title: "Cadastre-se grátis", desc: "Crie sua conta em menos de 2 minutos no programa de parceiros. Sem taxa, sem mensalidade.", icon: <IcTrophy /> },
+  { n: "2", title: "Faça a indicação", desc: "Indique amigos/clientes que foram multados. Cada indicado fica vinculado ao seu perfile voce acompanha o processo em tempo real.", icon: <IcUsers /> },
+  { n: "3", title: "Receba a comissão", desc: "Indicou. Fechou. Você recebe a comissão com base no contrato realizado. Sem burocracia, sem surpresas.", icon: <IcDollar /> },
 ];
 
 function ComoFunciona() {
@@ -1242,7 +1243,7 @@ function FormSection() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {[
                 { icon: <IcTrophy c="w-5 h-5" />, title: "Histórico real", sub: "7K+ multas deferidas" },
-                { icon: <IcTrend c="w-5 h-5" />, title: "Resultado comprovado", sub: "10+ anos de mercado" },
+                { icon: <IcTrend c="w-5 h-5" />, title: "Resultado comprovado", sub: "10 anos de mercado" },
                 { icon: <IcDollar c="w-5 h-5" />, title: "Comissão garantida", sub: "Pago a cada caso ganho" },
               ].map(({ icon, title, sub }) => (
                 <div key={title} className="rounded-xl p-4"
@@ -1405,6 +1406,11 @@ function IndicaFooter() {
   return (
     <footer className="py-8 text-center"
       style={{ background: "oklch(0.12 0.025 258)", borderTop: `1px solid ${OFFWHITE}08` }}>
+      <h4 className="font-display font-black leading-tight mb-6"
+        style={{ fontSize: "clamp(1rem, 4vw, 2rem)", color: OFFWHITE }}>
+        FAÇA PARTE DA <em className="not-italic" style={{ color: GOLD }}>MAIOR FRANQUIA DE RECURSO DE MULTAS</em> DO BRASIL.
+      </h4>
+      <br />
       <img src="/image/logotipo.png" alt="Help Multas" className="h-8 w-auto mx-auto mb-3 opacity-70" />
       <p className="text-xs" style={{ color: `${MUTED}80` }}>
         © 2025 Help Multas · Programa de Parceiros · Todos os direitos reservados.
