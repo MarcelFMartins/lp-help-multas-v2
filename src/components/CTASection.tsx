@@ -18,10 +18,21 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useInView } from "../hooks/useInView";
+import SearchableSelect from "./SearchableSelect";
+import { useCidadesPorUf } from "../hooks/useCidadesPorUf";
 
 const CTA_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663612015267/7JPeai9Kn6mqwVB3QeEreq/cta-bg-KQ56VgudmidAHQMcjAgWNg.webp";
 
 /* ─── OPTIONS ─── */
+const UF_NOMES: Record<string, string> = {
+  AC: "Acre", AL: "Alagoas", AP: "Amapá", AM: "Amazonas", BA: "Bahia", CE: "Ceará",
+  DF: "Distrito Federal", ES: "Espírito Santo", GO: "Goiás", MA: "Maranhão",
+  MT: "Mato Grosso", MS: "Mato Grosso do Sul", MG: "Minas Gerais", PA: "Pará",
+  PB: "Paraíba", PR: "Paraná", PE: "Pernambuco", PI: "Piauí", RJ: "Rio de Janeiro",
+  RN: "Rio Grande do Norte", RS: "Rio Grande do Sul", RO: "Rondônia", RR: "Roraima",
+  SC: "Santa Catarina", SP: "São Paulo", SE: "Sergipe", TO: "Tocantins",
+};
+
 const UF_OPTIONS = [
   "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG",
   "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO",
@@ -153,17 +164,8 @@ export default function CTASection() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [status, setStatus] = useState<{ type: "error" | "success"; text: string } | null>(null);
 
-  /* UF — dropdown próprio (compacto) */
-  const [ufOpen, setUfOpen] = useState(false);
-  const ufRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    function handler(e: MouseEvent) {
-      if (ufRef.current && !ufRef.current.contains(e.target as Node)) setUfOpen(false);
-    }
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, []);
+  const { cidades, loading: loadingCidades } = useCidadesPorUf(formData.uf);
+  const cidadeOptions = cidades.map((c) => ({ value: c, label: c }));
 
   /* ─────────────────────────────────────────────────────────
      BACKEND — preservado exatamente como no original
@@ -377,70 +379,25 @@ export default function CTASection() {
                   </div>
                 </div>
 
-                {/* Cidade + UF */}
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="flex flex-col gap-[7px]">
-                    <label className={labelCls} htmlFor="cta-cidade">Cidade</label>
-                    <input
-                      id="cta-cidade" name="cidade" type="text"
-                      placeholder="Sua cidade"
-                      value={formData.cidade}
-                      onChange={(e) => setFormData({ ...formData, cidade: e.target.value })}
-                      className={inputCls} required
-                    />
-                  </div>
+                {/* UF + Cidade */}
+                <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] gap-3">
+                  <SearchableSelect
+                    label="UF"
+                    placeholder="Selecione"
+                    options={UF_OPTIONS.map((uf) => ({ value: uf, label: uf, keywords: UF_NOMES[uf] }))}
+                    value={formData.uf}
+                    onChange={(uf) => setFormData((p) => ({ ...p, uf, cidade: "" }))}
+                  />
 
-                  {/* UF — dropdown compacto próprio */}
-                  <div className="flex flex-col gap-[7px]" ref={ufRef}>
-                    <label className={labelCls}>UF</label>
-                    <div className="relative">
-                      <button
-                        type="button"
-                        onClick={() => setUfOpen((o) => !o)}
-                        aria-haspopup="listbox"
-                        aria-expanded={ufOpen}
-                        className={`w-full min-h-[50px] border rounded-[14px] px-4 pr-10 text-left text-[15px] outline-none transition-all duration-200 relative
-                          ${formData.uf ? "text-[oklch(0.1998_0.0403_258.29)]" : "text-[#98a2b3]"}
-                          ${ufOpen
-                            ? "border-[#D4A017] ring-4 ring-[#D4A017]/20 bg-white"
-                            : "border-[#D9E1E8] bg-white"
-                          }`}
-                      >
-                        {formData.uf || "UF"}
-                        <span className={`absolute right-4 top-1/2 w-2 h-2 border-r-2 border-b-2 border-[oklch(0.1998_0.0403_258.29)]/50 transition-transform duration-200 ${
-                          ufOpen ? "-translate-y-1/3 rotate-[225deg]" : "-translate-y-2/3 rotate-45"
-                        }`} />
-                      </button>
-
-                      {ufOpen && (
-                        <div
-                          role="listbox"
-                          className="absolute top-[calc(100%+6px)] left-0 right-0 z-30 max-h-56 overflow-y-auto overscroll-contain rounded-[14px] border border-[#D9E1E8] bg-white shadow-[0_18px_34px_rgba(36,55,70,0.16)] p-1.5 flex flex-col gap-0.5"
-                        >
-                          <button
-                            type="button"
-                            className="w-full text-left px-3 py-2.5 rounded-[10px] text-[#98a2b3] text-[15px] hover:bg-[#edf2f6]"
-                            onClick={() => { setFormData((p) => ({ ...p, uf: "" })); setUfOpen(false); }}
-                          >
-                            Selecione
-                          </button>
-                          {UF_OPTIONS.map((uf) => (
-                            <button
-                              key={uf} type="button" role="option" aria-selected={formData.uf === uf}
-                              className={`w-full text-left px-3 py-2.5 rounded-[10px] text-[15px] transition-colors duration-150
-                                ${formData.uf === uf
-                                  ? "bg-[#D4A017]/15 text-[#D4A017] font-bold"
-                                  : "text-[oklch(0.1998_0.0403_258.29)] hover:bg-[#edf2f6]"
-                                }`}
-                              onClick={() => { setFormData((p) => ({ ...p, uf })); setUfOpen(false); }}
-                            >
-                              {uf}
-                            </button>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
+                  <SearchableSelect
+                    label="Cidade"
+                    placeholder={loadingCidades ? "Carregando..." : "Sua cidade"}
+                    disabledPlaceholder="Selecione a UF"
+                    disabled={!formData.uf || loadingCidades}
+                    options={cidadeOptions}
+                    value={formData.cidade}
+                    onChange={(cidade) => setFormData((p) => ({ ...p, cidade }))}
+                  />
                 </div>
 
                 {/* Capital */}
