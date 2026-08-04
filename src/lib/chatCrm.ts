@@ -1,11 +1,3 @@
-/*
- * Cliente do CRM para o /chat — chamado direto do navegador (SPA sem backend).
- * Mesma base/API key já usadas em HeroSection/CTASection, mas endpoint
- * `/leads/lp` (upsert por leadIdLp, contrato do protótipo lp-chat) retornou
- * 404 nos testes — usamos o endpoint que já funciona em produção,
- * `/leads/create-by-api-key`. Confirmar com o dev do CRM antes de subir.
- */
-
 const CRM_ENDPOINT = "https://crm.helprecurso.com.br/leads/lp";
 const CRM_API_KEY = import.meta.env.VITE_CRM_API_KEY as string | undefined;
 const N8N_WEBHOOK = "https://n8n.helpmultas.com/webhook/forms-email";
