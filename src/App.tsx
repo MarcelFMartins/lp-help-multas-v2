@@ -9,11 +9,14 @@ import ThankYouPage from "@/pages/ThankYouPage";
 import PreReuniao from "@/pages/PreReunião";
 import HelpIndica from "@/pages/IndicaLP"
 import Sucesso from "@/pages/Success"
+import ChatLP from "@/pages/ChatLP";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+
+      <Route path="/chat" component={ChatLP} />
 
       <Route path="/obrigado" component={ThankYouPage} />
 

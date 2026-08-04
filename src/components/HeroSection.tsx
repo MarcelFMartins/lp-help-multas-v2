@@ -39,11 +39,11 @@ const CAPITAL_OPTIONS = [
 ];
 
 /* ─── FORMATTERS ─── */
-function onlyNumbers(v: string) {
+export function onlyNumbers(v: string) {
   return v.replace(/\D/g, "");
 }
 
-function formatWhatsapp(v: string) {
+export function formatWhatsapp(v: string) {
   let n = onlyNumbers(v);
 
   // Remove o código do país (55), se existir
