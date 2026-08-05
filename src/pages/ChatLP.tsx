@@ -57,21 +57,21 @@ export default function ChatLP() {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, typing]);
 
-  async function pushBotMessages(texts: string[]) {
+  async function pushBotMessages(texts: string[], speedMultiplier = 1) {
     for (const text of texts) {
       setTyping(true);
-      await wait(500 + Math.min(text.length * 8, 700));
+      await wait((500 + Math.min(text.length * 8, 700)) / speedMultiplier);
       setTyping(false);
       setMessages((prev) => [...prev, { id: crypto.randomUUID(), from: "bot", text }]);
-      await wait(250);
+      await wait(250 / speedMultiplier);
     }
   }
 
   async function playIntro() {
     setInputReady(false);
-    await wait(400);
-    await pushBotMessages(INTRO_MESSAGES);
-    await pushBotMessages(CHAT_STEPS[0].botText);
+    await wait(400 / 3);
+    await pushBotMessages(INTRO_MESSAGES, 3);
+    await pushBotMessages(CHAT_STEPS[0].botText, 3);
     setInputReady(true);
   }
 
