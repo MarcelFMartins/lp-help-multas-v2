@@ -214,7 +214,7 @@ export default function ChatLP() {
                     key={opt.value}
                     type="button"
                     onClick={() => handleSubmit(opt.value, opt.label)}
-                    className="w-full text-left font-body font-bold text-[14px] bg-white text-[oklch(0.1998_0.0403_258.29)] border-2 border-[#D4A017] rounded-2xl px-4 py-3 hover:bg-[#D4A017]/10 active:scale-[0.98] transition-all duration-150"
+                    className="w-full text-left font-body font-bold text-[14px] bg-white text-[oklch(0.1998_0.0403_258.29)] border-2 border-[#D4A017] rounded-2xl px-4 py-3 hover:bg-[#FBF6E8] active:scale-[0.98] transition-all duration-150"
                   >
                     {opt.label}
                   </button>
