@@ -51,8 +51,10 @@
 
     (function () {
       const path = window.location.pathname;
+      const params = new URLSearchParams(window.location.search);
 
       const isPartner = path.startsWith('/indica') || path.startsWith('/sucesso');
+      const isChat = path.startsWith('/chat') || (path === '/obrigado' && params.get('origem') === 'chat');
 
       if (isPartner) {
         // PIXEL PARCEIROS (Help Indica)
@@ -61,6 +63,11 @@
         // PIXELS FRANQUIAS
         fbq('init', '2376156952875118');
         fbq('init', '1552879123068423');
+
+        if (isChat) {
+          // PIXEL TESTE A/B LP CHAT
+          fbq('init', '1634899154941979');
+        }
       }
 
       const pvId = Date.now() + '-' + Math.random().toString(36).slice(2, 9);

@@ -45,18 +45,6 @@ export default function ChatLP() {
   const { cidades, loading: loadingCidades } = useCidadesPorUf(answers.uf || "");
   const cidadeOptions = cidades.map((c) => ({ value: c, label: c }));
 
-  useEffect(() => {
-    leadIdRef.current = getLeadIdLp();
-    if (startedRef.current) return;
-    startedRef.current = true;
-    void playIntro();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
-  }, [messages, typing]);
-
   async function pushBotMessages(texts: string[], speedMultiplier = 1) {
     for (const text of texts) {
       setTyping(true);
@@ -74,6 +62,27 @@ export default function ChatLP() {
     await pushBotMessages(CHAT_STEPS[0].botText, 3);
     setInputReady(true);
   }
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("origem") !== "chat") {
+      params.set("origem", "chat");
+      const newUrl = `${window.location.pathname}?${params.toString()}${window.location.hash}`;
+      window.history.replaceState(null, "", newUrl);
+    }
+  }, []);
+
+  useEffect(() => {
+    leadIdRef.current = getLeadIdLp();
+    if (startedRef.current) return;
+    startedRef.current = true;
+    void playIntro();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
+  }, [messages, typing]);
 
   async function handleSubmit(rawValue: string, displayLabel?: string) {
     const step = CHAT_STEPS[stepIndex];
@@ -108,7 +117,7 @@ export default function ChatLP() {
         /* sessionStorage indisponível; /obrigado apenas não personaliza */
       }
       await wait(500);
-      setLocation("/obrigado");
+      setLocation("/obrigado?origem=chat");
       return;
     }
 
@@ -147,7 +156,7 @@ export default function ChatLP() {
           {messages.map((m) => (
             <div
               key={m.id}
-              className={`flex items-end ${m.from === "bot" ? "justify-start" : "justify-end"}`}
+              className={`flex items-end shrink-0 ${m.from === "bot" ? "justify-start" : "justify-end"}`}
             >
               {m.from === "bot" && (
                 <img
@@ -169,7 +178,7 @@ export default function ChatLP() {
           ))}
 
           {typing && (
-            <div className="flex items-end justify-start">
+            <div className="flex items-end justify-start shrink-0">
               <img
                 src="/image/helpinho 3d.png"
                 alt=""
@@ -202,7 +211,7 @@ export default function ChatLP() {
                     key={opt.value}
                     type="button"
                     onClick={() => handleSubmit(opt.value, opt.label)}
-                    className="w-full text-left font-body font-bold text-[14px] bg-white text-[oklch(0.1998_0.0403_258.29)] border-2 border-gold rounded-2xl px-4 py-3 hover:bg-gold/10 active:scale-[0.98] transition-all duration-150"
+                    className="w-full text-left font-body font-bold text-[14px] bg-white text-[oklch(0.1998_0.0403_258.29)] border-2 border-[#D4A017] rounded-2xl px-4 py-3 hover:bg-[#D4A017]/10 active:scale-[0.98] transition-all duration-150"
                   >
                     {opt.label}
                   </button>
