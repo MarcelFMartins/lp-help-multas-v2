@@ -15,5 +15,6 @@ declare global {
       utm_term: string | null;
       utm_id: string | null;
     };
+    fbq?: (...args: unknown[]) => void;
   }
 }

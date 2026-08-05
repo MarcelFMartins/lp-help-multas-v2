@@ -118,6 +118,9 @@ export default function ChatLP() {
       }
       await wait(500);
       setLocation("/obrigado?origem=chat");
+      if (typeof window.fbq === "function") {
+        window.fbq("track", "PageView", {}, { eventID: crypto.randomUUID() });
+      }
       return;
     }
 
