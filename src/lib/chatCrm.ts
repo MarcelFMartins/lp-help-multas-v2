@@ -25,10 +25,6 @@ export function getLeadIdLp(): string {
   return id;
 }
 
-/*
- * Nunca lança exceção — falha de CRM não pode travar o chat.
- * Loga sempre no console (leadIdLp + step) para diagnosticar em produção pelo F12.
- */
 export async function sendLeadToCrm(leadIdLp: string, answers: ChatAnswers, stepLabel: string) {
   if (!answers.nome) return;
 
