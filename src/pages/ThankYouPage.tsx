@@ -173,6 +173,14 @@ export default function ThankYouPage() {
   return (
     <div className="overflow-x-hidden">
 
+      {/* Faixa de confirmação — topo da página */}
+      <div className="w-full bg-gold/15 border-b border-gold/25 py-4 sm:py-3 px-4">
+        <p className="flex items-center justify-center gap-2 text-center font-body text-base sm:text-sm font-semibold text-[oklch(0.1998_0.0403_258.29)]">
+          <CheckCircle className="w-5 h-5 sm:w-4 sm:h-4 text-gold shrink-0" />
+          Cadastro concluído — em até 24h um consultor falará com você.
+        </p>
+      </div>
+
       {/* ══════════════════════════════════════════
           1. Hero
          ══════════════════════════════════════════ */}
@@ -191,7 +199,7 @@ export default function ThankYouPage() {
           style={{ background: "radial-gradient(ellipse 80% 60% at 50% 50%, rgba(212,160,23,0.12), transparent)" }}
         />
 
-        <div className="relative z-10 w-full flex flex-col items-center gap-8">
+        <div className="relative z-10 w-full flex flex-col items-center gap-5">
 
           {/* Logo */}
           <div className="animate-fade-up" style={{ animationDelay: "0.1s" }}>
@@ -200,9 +208,9 @@ export default function ThankYouPage() {
 
           {/* Ícone + texto — container estreito */}
           <div className="max-w-2xl w-full text-center animate-fade-up" style={{ animationDelay: "0.2s" }}>
-            <div className="flex justify-center mb-6">
-              <div className="bg-gold/20 p-4 rounded-full border border-gold/30 animate-pulse inline-block">
-                <CheckCircle className="w-14 h-14 text-gold" />
+            <div className="flex justify-center mb-3">
+              <div className="bg-gold/20 p-2 rounded-full border border-gold/30 animate-pulse inline-block">
+                <CheckCircle className="w-7 h-7 text-gold" />
               </div>
             </div>
             <h1 className="font-display text-4xl lg:text-6xl font-black text-white leading-tight mb-3">
