@@ -382,7 +382,7 @@ export default function CTASection() {
                 {/* UF + Cidade */}
                 <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] gap-3">
                   <SearchableSelect
-                    label="UF"
+                    label="UF *"
                     placeholder="Selecione"
                     options={UF_OPTIONS.map((uf) => ({ value: uf, label: uf, keywords: UF_NOMES[uf] }))}
                     value={formData.uf}
@@ -390,7 +390,7 @@ export default function CTASection() {
                   />
 
                   <SearchableSelect
-                    label="Cidade"
+                    label="Cidade *"
                     placeholder={loadingCidades ? "Carregando..." : "Sua cidade"}
                     disabledPlaceholder="Selecione a UF"
                     disabled={!formData.uf || loadingCidades}
@@ -402,7 +402,7 @@ export default function CTASection() {
 
                 {/* Capital */}
                 <CustomSelect
-                  label="Capital disponível para investimento"
+                  label="Capital disponível para investimento *"
                   placeholder="Selecione uma faixa"
                   options={CAPITAL_OPTIONS}
                   value={formData.capital}

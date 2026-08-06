@@ -388,7 +388,7 @@ export default function HeroSection() {
 
                 {/* Nome */}
                 <div className="flex flex-col gap-[7px]">
-                  <label className={labelCls} htmlFor="hero-nome">Nome completo</label>
+                  <label className={labelCls} htmlFor="hero-nome">Nome completo *</label>
                   <input
                     id="hero-nome"
                     name="nome"
@@ -404,7 +404,7 @@ export default function HeroSection() {
                 {/* Email + WhatsApp — lado a lado */}
                 <div className="grid grid-cols-2 gap-3">
                   <div className="flex flex-col gap-[7px]">
-                    <label className={labelCls} htmlFor="hero-email">E-mail</label>
+                    <label className={labelCls} htmlFor="hero-email">E-mail *</label>
                     <input
                       id="hero-email"
                       name="email"
@@ -418,7 +418,7 @@ export default function HeroSection() {
                   </div>
 
                   <div className="flex flex-col gap-[7px]">
-                    <label className={labelCls} htmlFor="hero-whatsapp">WhatsApp</label>
+                    <label className={labelCls} htmlFor="hero-whatsapp">WhatsApp *</label>
                     <input
                       id="hero-whatsapp"
                       name="whatsapp"
@@ -440,7 +440,7 @@ export default function HeroSection() {
                 {/* UF + Cidade */}
                 <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] gap-3">
                   <SearchableSelect
-                    label="UF"
+                    label="UF *"
                     placeholder="Selecione"
                     options={UF_OPTIONS.map((uf) => ({ value: uf, label: uf, keywords: UF_NOMES[uf] }))}
                     value={formData.uf}
@@ -448,7 +448,7 @@ export default function HeroSection() {
                   />
 
                   <SearchableSelect
-                    label="Cidade"
+                    label="Cidade *"
                     placeholder={loadingCidades ? "Carregando..." : "Sua cidade"}
                     disabledPlaceholder="Selecione a UF"
                     disabled={!formData.uf || loadingCidades}
@@ -460,7 +460,7 @@ export default function HeroSection() {
 
                 {/* Capital */}
                 <CustomSelect
-                  label="Capital disponível para investimento"
+                  label="Capital disponível para investimento *"
                   placeholder="Selecione uma faixa"
                   options={CAPITAL_OPTIONS}
                   value={formData.capital}
