@@ -27,7 +27,7 @@ function Router() {
 
       <Route path="/indica" component={HelpIndica} />
 
-      <Route path="/grupo" component={GrupoWhatsApp} />
+      <Route path="/WhatsApp" component={GrupoWhatsApp} />
       
       <Route path="/404" component={NotFound} />
 
