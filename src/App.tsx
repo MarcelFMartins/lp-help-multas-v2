@@ -10,6 +10,7 @@ import PreReuniao from "@/pages/PreReunião";
 import HelpIndica from "@/pages/IndicaLP"
 import Sucesso from "@/pages/Success"
 import ChatLP from "@/pages/ChatLP";
+import GrupoWhatsApp from "@/pages/GrupoWhatsApp";
 
 function Router() {
   return (
@@ -25,6 +26,8 @@ function Router() {
       <Route path="/prereuniao" component={PreReuniao} />
 
       <Route path="/indica" component={HelpIndica} />
+
+      <Route path="/grupo" component={GrupoWhatsApp} />
       
       <Route path="/404" component={NotFound} />
 
