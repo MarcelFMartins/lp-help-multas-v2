@@ -201,7 +201,7 @@ export default function HeroSection() {
     setIsSubmitting(true);
 
     try {
-      
+      const meta = window.getMetaTrackingData?.() || {};
       const tracking = window.getTrackingData?.() || {};
 
       const capitalLabel = CAPITAL_OPTIONS.find((o) => o.value === formData.capital)?.label || formData.capital;
@@ -223,29 +223,31 @@ export default function HeroSection() {
 
       /* 2. CRM */
       const crmPayload = {
-        name: formData.nome.trim(),
+        fullName: formData.nome.trim(),
         phone: formData.whatsapp,
         email: formData.email.trim(),
-        city: formData.cidade.trim(),
-        state: formData.uf,
-
-
-
-        utm_source: tracking?.utm_source || "",
-        utm_medium: tracking?.utm_medium || "",
-        utm_campaign: tracking?.utm_campaign || "",
-        utm_content: tracking?.utm_content || "",
-        utm_term: tracking?.utm_term || "",
-        utm_id: tracking?.utm_id || "",
+        cidade: formData.cidade.trim(),
+        uf: formData.uf,
+        capital: formData.capital,
+        capitalLabel,
+        fbp: meta?.fbp || "",
+        fbc: meta?.fbc || "",
+        fbclid: meta?.fbclid || "",
+        utmSource: tracking?.utm_source || "",
+        utmMedium: tracking?.utm_medium || "",
+        utmCampaign: tracking?.utm_campaign || "",
+        utmContent: tracking?.utm_content || "",
+        utmTerm: tracking?.utm_term || "",
+        utmId: tracking?.utm_id || "",
       };
 
       console.log("CRM PAYLOAD:", crmPayload);
 
-      const crmResponse = await fetch("https://crmbackend.helptechbr.com.br/intake/493270a6-6788-4291-9fad-5251ce24fabe", {
+      const crmResponse = await fetch("https://crm.helprecurso.com.br/leads/create-by-api-key", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "x-intake-secret": "e0b5931c51be616363bb4ff15bbd74765fe1fe5e0ad228d6",
+          "x-api-key": "93wkn371eaEbl6P41RlNWhM1xrFGSXdRVjDf3AGC",
         },
         body: JSON.stringify(crmPayload),
       });
