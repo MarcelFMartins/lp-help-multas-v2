@@ -1,43 +1,18 @@
 import { useEffect } from "react";
 
-/*
-==================================================
-CONFIGURAÇÕES
-==================================================
-*/
-
-// URL do seu Google Apps Script
 const GOOGLE_SHEETS_URL =
   "https://script.google.com/macros/s/AKfycbyXsFEYPl6M2LnExhlPTdjXHtEi21eqkmt6mIdRGdDu6lRQPdixkV3e5omd2KXzsb3_/exec";
 
-// Número do WhatsApp
-// +55 42 9867-3007
 const WHATSAPP_NUMBER = "554298673007";
 
-// Mensagem que aparecerá preenchida no WhatsApp
 const MENSAGEM =
   "Olá! Vim do Grupo do Evento. Gostaria de mais informações!";
 
-// Tempo antes do redirecionamento
-const TEMPO_REDIRECIONAMENTO = 500;
-
-
-/*
-==================================================
-COMPONENTE
-==================================================
-*/
+const TEMPO_REDIRECIONAMENTO = 300;
 
 export default function GrupoWhatsApp() {
 
   useEffect(() => {
-
-    /*
-    ==================================================
-    CAPTURA DOS PARÂMETROS DA URL
-    ==================================================
-    */
-
     const parametros =
       new URLSearchParams(window.location.search);
 
@@ -60,13 +35,6 @@ export default function GrupoWhatsApp() {
     const identificador =
       pegarParametro("id");
 
-
-    /*
-    ==================================================
-    INFORMAÇÕES DA VISITA
-    ==================================================
-    */
-
     const urlAtual =
       window.location.href;
 
@@ -75,13 +43,6 @@ export default function GrupoWhatsApp() {
 
     const userAgent =
       navigator.userAgent;
-
-
-    /*
-    ==================================================
-    MONTA URL DO GOOGLE SHEETS
-    ==================================================
-    */
 
     const query = new URLSearchParams({
       origem,
@@ -97,13 +58,6 @@ export default function GrupoWhatsApp() {
     const urlRastreamento =
       `${GOOGLE_SHEETS_URL}?${query.toString()}`;
 
-
-    /*
-    ==================================================
-    REGISTRA ACESSO
-    ==================================================
-    */
-
     fetch(urlRastreamento, {
       method: "GET",
       mode: "no-cors",
@@ -117,24 +71,10 @@ export default function GrupoWhatsApp() {
 
     });
 
-
-    /*
-    ==================================================
-    CRIA LINK DO WHATSAPP
-    ==================================================
-    */
-
     const whatsappUrl =
       `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
         MENSAGEM
       )}`;
-
-
-    /*
-    ==================================================
-    REDIRECIONA
-    ==================================================
-    */
 
     const timer =
       window.setTimeout(() => {
@@ -145,13 +85,6 @@ export default function GrupoWhatsApp() {
 
       }, TEMPO_REDIRECIONAMENTO);
 
-
-    /*
-    ==================================================
-    LIMPEZA
-    ==================================================
-    */
-
     return () => {
 
       window.clearTimeout(timer);
@@ -159,13 +92,6 @@ export default function GrupoWhatsApp() {
     };
 
   }, []);
-
-
-  /*
-  ==================================================
-  TELA DE CARREGAMENTO
-  ==================================================
-  */
 
   return (
 
