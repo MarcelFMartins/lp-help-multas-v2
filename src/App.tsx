@@ -11,6 +11,7 @@ import HelpIndica from "@/pages/IndicaLP"
 import Sucesso from "@/pages/Success"
 import ChatLP from "@/pages/ChatLP";
 import GrupoWhatsApp from "@/pages/GrupoWhatsApp";
+import Evento from "@/pages/Evento";
 
 function Router() {
   return (
@@ -28,6 +29,8 @@ function Router() {
       <Route path="/indica" component={HelpIndica} />
 
       <Route path="/WhatsApp" component={GrupoWhatsApp} />
+
+      <Route path="/evento" component={Evento} />
       
       <Route path="/404" component={NotFound} />
 
