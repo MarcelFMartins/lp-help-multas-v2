@@ -215,10 +215,10 @@ export default function Evento() {
                 </h1>
 
                 <p className="hero__subtitle">
-                  Participe de uma aula ao vivo com <strong>Roberson Alvarenga</strong> e descubra
-                  como funciona o mercado de defesa de multas, por que ele continua crescendo e
-                  como pessoas comuns estão construindo negócios nesse setor, mesmo sem serem
-                  advogadas ou especialistas em trânsito.
+                  Descubra
+                  como funciona o <strong>mercado de defesa de multas</strong>, por que ele continua <strong>crescendo</strong> e
+                  como pessoas comuns estão construindo negócios nesse setor, <strong>mesmo sem serem
+                  advogadas ou especialistas em trânsito.</strong>
                 </p>
 
                 <div className="hero__meta">
