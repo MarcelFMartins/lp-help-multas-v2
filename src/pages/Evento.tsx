@@ -185,25 +185,26 @@ export default function Evento() {
 
   return (
     <div className="evento-page" ref={pageRef}>
-      <header className="top-bar">
-        <div className="container top-bar__inner">
-          <img
-            src="/image/LogotipoHelpinho.png"
-            alt="Help Multas"
-            className="top-bar__logo"
-            width={150}
-            height={44}
-          />
-          <span className="top-bar__badge">
-            <span className="dot" aria-hidden="true" />
-            Aula ao vivo gratuita
-          </span>
-        </div>
-      </header>
-
       <main>
-        {/* ═══════════════ DOBRA 1 — HERO + FORMULÁRIO ═══════════════ */}
-        <section className="hero" aria-labelledby="hero-title">
+        <div className="hero-fold">
+          <header className="top-bar">
+            <div className="container top-bar__inner">
+              <img
+                src="/image/LogotipoHelpinho.png"
+                alt="Help Multas"
+                className="top-bar__logo"
+                width={150}
+                height={44}
+              />
+              <span className="top-bar__badge">
+                <span className="dot" aria-hidden="true" />
+                Aula ao vivo gratuita
+              </span>
+            </div>
+          </header>
+
+          {/* ═══════════════ DOBRA 1 — HERO + FORMULÁRIO ═══════════════ */}
+          <section className="hero" aria-labelledby="hero-title">
           <div className="hero__overlay" aria-hidden="true" />
           <div className="container hero__content">
             <div className="hero__grid">
@@ -396,7 +397,8 @@ export default function Evento() {
               </aside>
             </div>
           </div>
-        </section>
+          </section>
+        </div>
 
         {/* ═══════════════ DOBRA 2 — A OPORTUNIDADE ═══════════════ */}
         <section className="section opportunity" aria-labelledby="opportunity-title">
@@ -804,8 +806,17 @@ export default function Evento() {
 
 .evento-page .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
+/* ─── Hero fold (top bar + hero = 100vh) ─── */
+.evento-page .hero-fold {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
 /* ─── Top bar ─── */
 .evento-page .top-bar {
+  flex-shrink: 0;
   background: var(--navy-deep);
   padding-block: 0.875rem;
 }
@@ -848,6 +859,11 @@ export default function Evento() {
 .evento-page .hero {
   position: relative;
   overflow: hidden;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 0;
   background: var(--navy-deep) url("/image/fundo.webp") center / cover no-repeat;
 }
 
@@ -861,7 +877,8 @@ export default function Evento() {
 .evento-page .hero__content {
   position: relative;
   z-index: 1;
-  padding-block: clamp(2.5rem, 6vw, 4.5rem);
+  width: 100%;
+  padding-block: clamp(1.5rem, 4vw, 3rem);
 }
 
 .evento-page .hero__grid {
