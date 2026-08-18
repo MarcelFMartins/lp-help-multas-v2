@@ -27,6 +27,55 @@ function isValidEmail(v: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
 }
 
+/* ─── Rastreamento de UTMs ───
+ * Captura utm_source/medium/campaign/content/term da URL na primeira
+ * visita e guarda em sessionStorage, para não perder a origem do lead
+ * mesmo que o formulário seja enviado depois de o usuário navegar pela
+ * página (a query string não muda ao rolar até #inscricao).
+ */
+const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"] as const;
+
+function initTracking() {
+  const params = new URLSearchParams(window.location.search);
+  UTM_KEYS.forEach((key) => {
+    const value = params.get(key);
+    if (value) {
+      try {
+        sessionStorage.setItem(key, value);
+      } catch {
+        // sessionStorage indisponível (modo privado, etc.) — ignora
+      }
+    }
+  });
+}
+
+function getUtmParams() {
+  const params = new URLSearchParams(window.location.search);
+  const result: Record<(typeof UTM_KEYS)[number], string> = {
+    utm_source: "",
+    utm_medium: "",
+    utm_campaign: "",
+    utm_content: "",
+    utm_term: "",
+  };
+  UTM_KEYS.forEach((key) => {
+    let value = params.get(key);
+    if (!value) {
+      try {
+        value = sessionStorage.getItem(key);
+      } catch {
+        value = null;
+      }
+    }
+    result[key] = value || "";
+  });
+  return result;
+}
+
+function getSubmissionTimestamp() {
+  return new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
+}
+
 type FieldErrors = {
   nome?: string;
   email?: string;
@@ -52,6 +101,10 @@ export default function Evento() {
     return () => {
       document.title = previousTitle;
     };
+  }, []);
+
+  useEffect(() => {
+    initTracking();
   }, []);
 
   useEffect(() => {
@@ -110,7 +163,18 @@ export default function Evento() {
     return next;
   }
 
-  async function submitLead(data: { nome: string; email: string; whatsapp: string }) {
+  async function submitLead(data: {
+    nome: string;
+    email: string;
+    whatsapp: string;
+    dataHora: string;
+    utmSource: string;
+    utmMedium: string;
+    utmCampaign: string;
+    utmContent: string;
+    utmTerm: string;
+    pageUrl: string;
+  }) {
     try {
       await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
         method: "POST",
@@ -145,10 +209,18 @@ export default function Evento() {
 
     setSubmitting(true);
 
+    const utm = getUtmParams();
     const result = await submitLead({
       nome: nome.trim(),
       email: email.trim(),
       whatsapp: whatsapp.trim(),
+      dataHora: getSubmissionTimestamp(),
+      utmSource: utm.utm_source,
+      utmMedium: utm.utm_medium,
+      utmCampaign: utm.utm_campaign,
+      utmContent: utm.utm_content,
+      utmTerm: utm.utm_term,
+      pageUrl: window.location.href,
     });
 
     if (result.ok) {
