@@ -13,6 +13,7 @@ import { useState, useEffect, useRef } from "react";
 import { ChevronDown, BadgeCheck  } from "lucide-react";
 import SearchableSelect from "./SearchableSelect";
 import { useCidadesPorUf } from "../hooks/useCidadesPorUf";
+import { sendToTestCrm } from "../lib/testCrm";
 
 const HERO_BG = "/image/fundo.webp";
 
@@ -242,6 +243,26 @@ export default function HeroSection() {
       };
 
       console.log("CRM PAYLOAD:", crmPayload);
+
+      /* 2.1 CRM de teste (fire-and-forget, não bloqueia o fluxo) */
+      sendToTestCrm({
+        name: formData.nome.trim(),
+        email: formData.email.trim(),
+        phone: formData.whatsapp,
+        city: formData.cidade.trim(),
+        state: formData.uf,
+        capital: formData.capital,
+        capitalLabel,
+        fbp: meta?.fbp || "",
+        fbc: meta?.fbc || "",
+        fbclid: meta?.fbclid || "",
+        utm_source: tracking?.utm_source || "",
+        utm_medium: tracking?.utm_medium || "",
+        utm_campaign: tracking?.utm_campaign || "",
+        utm_content: tracking?.utm_content || "",
+        utm_term: tracking?.utm_term || "",
+        utm_id: tracking?.utm_id || "",
+      });
 
       const crmResponse = await fetch("https://crm.helprecurso.com.br/leads/create-by-api-key", {
         method: "POST",

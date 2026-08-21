@@ -20,6 +20,7 @@ import { useState, useEffect, useRef } from "react";
 import { useInView } from "../hooks/useInView";
 import SearchableSelect from "./SearchableSelect";
 import { useCidadesPorUf } from "../hooks/useCidadesPorUf";
+import { sendToTestCrm } from "../lib/testCrm";
 
 const CTA_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663612015267/7JPeai9Kn6mqwVB3QeEreq/cta-bg-KQ56VgudmidAHQMcjAgWNg.webp";
 
@@ -216,6 +217,26 @@ export default function CTASection() {
           fbclid:   meta?.fbclid || "",
         }),
       }).catch(() => { });
+
+      /* 2.1 CRM de teste (fire-and-forget, não bloqueia o fluxo) */
+      sendToTestCrm({
+        name: formData.nome,
+        email: formData.email,
+        phone: formData.whatsapp,
+        city: formData.cidade,
+        state: formData.uf,
+        capital: formData.capital,
+        capitalLabel,
+        fbp: meta?.fbp || "",
+        fbc: meta?.fbc || "",
+        fbclid: meta?.fbclid || "",
+        utm_source: tracking?.utm_source || "",
+        utm_medium: tracking?.utm_medium || "",
+        utm_campaign: tracking?.utm_campaign || "",
+        utm_content: tracking?.utm_content || "",
+        utm_term: tracking?.utm_term || "",
+        utm_id: tracking?.utm_id || "",
+      });
 
       /* 2. CRM — em try-catch próprio, erro só loga (preservado do original) */
       try {
