@@ -226,6 +226,13 @@ export default function EventoChat() {
 
     if (isLast) {
       setDone(true);
+
+      // event_id para deduplicação Meta (mesmo padrão do fbq disparado no botão da LP normal)
+      const eventId = `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+      if (window.fbq) {
+        window.fbq("track", "Lead", { content_name: "Landing Page Evento — Chat" }, { eventID: eventId });
+      }
+
       await pushBotMessages(["Inscrição recebida! Te levando para o grupo do WhatsApp..."]);
       await submitToSheet(merged as Required<Answers>);
       await wait(600);
