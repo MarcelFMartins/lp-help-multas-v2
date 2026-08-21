@@ -12,6 +12,7 @@ import Sucesso from "@/pages/Success"
 import ChatLP from "@/pages/ChatLP";
 import GrupoWhatsApp from "@/pages/GrupoWhatsApp";
 import Evento from "@/pages/Evento";
+import EventoChat from "@/pages/EventoChat";
 
 function Router() {
   return (
@@ -31,7 +32,9 @@ function Router() {
       <Route path="/WhatsApp" component={GrupoWhatsApp} />
 
       <Route path="/evento" component={Evento} />
-      
+
+      <Route path="/evento-chat" component={EventoChat} />
+
       <Route path="/404" component={NotFound} />
 
       <Route component={NotFound} />
