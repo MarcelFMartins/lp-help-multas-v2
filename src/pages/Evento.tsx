@@ -535,13 +535,13 @@ export default function Evento() {
 
 .evento-page .hero__media-wrap {
   position: relative;
-  width: calc(100% - 2rem);
-  max-width: 480px;
-  margin: 1.5rem auto 0;
-  border-radius: var(--radius-xl);
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  border-radius: 0;
   overflow: hidden;
   aspect-ratio: 4 / 3;
-  box-shadow: var(--shadow-soft);
+  box-shadow: none;
   flex-shrink: 0;
 }
 
@@ -555,7 +555,13 @@ export default function Evento() {
 .evento-page .hero__media-gradient {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(6, 13, 22, 0.65) 0%, rgba(6, 13, 22, 0) 45%);
+  background: linear-gradient(
+    180deg,
+    rgba(6, 13, 22, 0.65) 0%,
+    rgba(6, 13, 22, 0) 28%,
+    rgba(6, 13, 22, 0) 58%,
+    var(--navy-deep) 100%
+  );
   pointer-events: none;
 }
 
