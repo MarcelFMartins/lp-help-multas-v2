@@ -236,11 +236,19 @@ export default function Evento() {
       <section className="hero" aria-labelledby="hero-title">
         <div className="hero__media-wrap">
           <img
+            className="hero__media-backdrop"
+            src="/image/fundo-evento.png"
+            alt=""
+            aria-hidden="true"
+            width={1672}
+            height={941}
+          />
+          <img
             className="hero__media"
             src="/image/fundo-evento.png"
             alt="Roberson Alvarenga, fundador da Help Multas"
-            width={1000}
-            height={1481}
+            width={1672}
+            height={941}
           />
           <div className="hero__media-gradient" aria-hidden="true" />
 
@@ -254,7 +262,7 @@ export default function Evento() {
             />
             <span className="hero__live-badge">
               <span className="dot" aria-hidden="true" />
-              AO VIVO: 26 de agosto · 12h
+              AO VIVO: 02 de setembro · 12h
             </span>
           </div>
         </div>
@@ -263,7 +271,7 @@ export default function Evento() {
           <div className="hero__copy">
             <h1 id="hero-title" className="hero__title">
               Como faturar com as{" "}
-              <span className="highlight">250 milhões de multas aplicadas por ano</span> que quase
+              <span className="highlight">74,9 milhões de multas aplicadas por ano</span> que quase
               ninguém explora <span className="highlight">na sua cidade</span>.
             </h1>
             <p className="hero__subtitle">
@@ -299,7 +307,7 @@ export default function Evento() {
       <footer className="mini-footer">
         <div className="container mini-footer__inner">
           <p>Copyright © Help Multas, 2026</p>
-          <a href="https://www.helpmultas.com/termos-de-uso" target="_blanck">Termos de Uso</a>
+          <a href="https://www.helpmultas.com/termos-de-uso" target="_blank" rel="noopener noreferrer">Termos de Uso</a>
         </div>
       </footer>
 
@@ -534,33 +542,49 @@ export default function Evento() {
 }
 
 .evento-page .hero__media-wrap {
-  position: relative;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
   width: 100%;
-  max-width: none;
-  margin: 0;
-  border-radius: 0;
+  height: 100%;
   overflow: hidden;
-  aspect-ratio: 4 / 3;
-  box-shadow: none;
-  flex-shrink: 0;
 }
 
-.evento-page .hero__media {
+.evento-page .hero__media-backdrop {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: top center;
+  object-position: center 18%;
+  filter: blur(60px) brightness(0.75) saturate(1.15);
+  transform: scale(1.2);
+  z-index: 0;
+}
+
+.evento-page .hero__media {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 84vh;
+  height: 84dvh;
+  object-fit: cover;
+  object-position: center 18%;
+  z-index: 1;
 }
 
 .evento-page .hero__media-gradient {
   position: absolute;
   inset: 0;
+  z-index: 2;
   background: linear-gradient(
     180deg,
-    rgba(6, 13, 22, 0.65) 0%,
-    rgba(6, 13, 22, 0) 28%,
-    rgba(6, 13, 22, 0) 58%,
-    var(--navy-deep) 100%
+    rgba(6, 13, 22, 0.35) 0%,
+    rgba(6, 13, 22, 0.2) 22%,
+    rgba(6, 13, 22, 0.55) 48%,
+    rgba(6, 13, 22, 0.86) 68%,
+    rgba(6, 13, 22, 0.94) 100%
   );
   pointer-events: none;
 }
@@ -569,7 +593,7 @@ export default function Evento() {
   position: absolute;
   top: 1rem;
   left: 1rem;
-  z-index: 2;
+  z-index: 3;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -610,63 +634,52 @@ export default function Evento() {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 2rem;
-  padding: 2rem 1.25rem clamp(2rem, 6vw, 3rem);
+  align-items: center;
+  justify-content: flex-end;
+  gap: clamp(0.75rem, 2vh, 1.25rem);
+  text-align: center;
+  padding: 4.5rem 1.25rem clamp(3rem, 10vh, 4.5rem);
 }
 
-.evento-page .hero__copy { max-width: 640px; }
+.evento-page .hero__copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(0.75rem, 2vh, 1.25rem);
+  max-width: 680px;
+}
 
 .evento-page .hero__title {
-  font-size: clamp(1.75rem, 4.6vw, 3rem);
+  font-size: clamp(1.875rem, 4.2vw, 3rem);
   font-weight: 900;
   color: var(--white);
   letter-spacing: -0.02em;
-  margin-bottom: 1rem;
 }
 
 .evento-page .hero__subtitle {
-  font-size: clamp(0.9375rem, 1.4vw, 1.0625rem);
-  color: rgba(255, 255, 255, 0.7);
-  line-height: 1.7;
+  font-size: clamp(1.0625rem, 1.4vw, 1.0625rem);
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.6;
   max-width: 560px;
 }
 
-.evento-page .hero__cta { flex-shrink: 0; }
+.evento-page .hero__cta { display: flex; flex-direction: column; align-items: center; }
 
-.evento-page .hero__cta-caption {
-  font-size: 0.9375rem;
-  color: rgba(255, 255, 255, 0.75);
-  margin-bottom: 0.75rem;
-  line-height: 1.5;
-}
-
-.evento-page .hero__cta-caption strong {
-  color: var(--gold-hex);
-  text-transform: uppercase;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-}
+.evento-page .hero__cta-caption { display: none; }
 
 .evento-page .hero__cta-btn { width: 100%; }
 
-@media (min-width: 640px) {
+@media (min-width: 480px) {
   .evento-page .hero__cta-btn { width: auto; }
 }
 
 @media (min-width: 1024px) {
-  .evento-page .hero__media-wrap {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    max-width: none;
-    margin: 0;
-    border-radius: 0;
-    aspect-ratio: auto;
-    box-shadow: none;
-  }
+  .evento-page .hero__media-backdrop { display: none; }
 
-  .evento-page .hero__media { object-position: 70% 22%; }
+  .evento-page .hero__media {
+    height: 100%;
+    object-position: 70% 22%;
+  }
 
   .evento-page .hero__media-gradient {
     background: linear-gradient(
@@ -695,9 +708,32 @@ export default function Evento() {
     justify-content: space-between;
     gap: 3rem;
     padding: 2rem clamp(1rem, 4vw, 2rem) clamp(3rem, 7vw, 5rem);
+    text-align: left;
   }
 
-  .evento-page .hero__cta { text-align: right; max-width: 340px; }
+  .evento-page .hero__copy { align-items: flex-start; gap: 1.5rem; max-width: 640px; }
+
+  .evento-page .hero__cta {
+    align-items: flex-end;
+    text-align: right;
+    max-width: 340px;
+    flex-shrink: 0;
+  }
+
+  .evento-page .hero__cta-caption {
+    display: block;
+    font-size: 0.9375rem;
+    color: rgba(255, 255, 255, 0.75);
+    margin-bottom: 0.75rem;
+    line-height: 1.5;
+  }
+
+  .evento-page .hero__cta-caption strong {
+    color: var(--gold-hex);
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+  }
 }
 
 /* ─── Mini footer ─── */
