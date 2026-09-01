@@ -55,8 +55,12 @@
 
       const isPartner = path.startsWith('/indica') || path.startsWith('/sucesso');
       const isChat = path.startsWith('/chat') || (path === '/obrigado' && params.get('origem') === 'chat');
+      const isEvento = path.startsWith('/evento');
 
-      if (isPartner) {
+      if (isEvento) {
+        // PIXEL LP EVENTO
+        fbq('init', '1558928198671104');
+      } else if (isPartner) {
         // PIXEL PARCEIROS (Help Indica)
         fbq('init', '948091398277124');
       } else {
