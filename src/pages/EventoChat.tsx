@@ -230,6 +230,9 @@ export default function EventoChat() {
       // event_id para deduplicação Meta (mesmo padrão do fbq disparado no botão da LP normal)
       const eventId = `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
       if (window.fbq) {
+        // Pixel exclusivo do evento-chat: só é inicializado quando o lead envia o formulário completo
+        window.fbq("init", "924662103561102");
+        window.fbq("track", "PageView");
         window.fbq("track", "Lead", { content_name: "Landing Page Evento — Chat" }, { eventID: eventId });
       }
 
