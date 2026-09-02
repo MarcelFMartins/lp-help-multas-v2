@@ -237,8 +237,7 @@ export default function EventoChat() {
       }
 
       await pushBotMessages(["Inscrição recebida! Te levando para o grupo do WhatsApp..."]);
-      await submitToSheet(merged as Required<Answers>);
-      await wait(600);
+      void submitToSheet(merged as Required<Answers>);
       window.location.href = WHATSAPP_GROUP_URL;
       return;
     }
