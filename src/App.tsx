@@ -1,7 +1,8 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
-import { Route, Switch } from "wouter";
+import { Route, Switch, useLocation } from "wouter";
+import { useEffect } from "react";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import Home from "@/pages/Home";
@@ -13,8 +14,16 @@ import ChatLP from "@/pages/ChatLP";
 import GrupoWhatsApp from "@/pages/GrupoWhatsApp";
 import Evento from "@/pages/Evento";
 import EventoChat from "@/pages/EventoChat";
+import Logs from "@/pages/Logs";
+import { logEvent, initGlobalErrorLogging } from "@/lib/logger";
 
 function Router() {
+  const [location] = useLocation();
+
+  useEffect(() => {
+    logEvent(location || "/", "pageview", "Página visitada");
+  }, [location]);
+
   return (
     <Switch>
       <Route path="/" component={Home} />
@@ -35,6 +44,8 @@ function Router() {
 
       <Route path="/evento-chat" component={EventoChat} />
 
+      <Route path="/logs" component={Logs} />
+
       <Route path="/404" component={NotFound} />
 
       <Route component={NotFound} />
@@ -48,6 +59,10 @@ function Router() {
 // - If you want to make theme switchable, pass `switchable` ThemeProvider and use `useTheme` hook
 
 function App() {
+  useEffect(() => {
+    initGlobalErrorLogging(window.location.pathname || "/");
+  }, []);
+
   return (
     <ErrorBoundary>
       <ThemeProvider

@@ -2,6 +2,7 @@
 import { AlertTriangle, RotateCcw } from "lucide-react";
 import { Component, type ReactNode } from "react";
 import { cn } from "../lib/utils";
+import { logEvent } from "../lib/logger";
 
 interface Props {
   children: ReactNode;
@@ -19,6 +20,9 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   static getDerivedStateFromError(error: Error): State {
+    logEvent(window.location.pathname || "/", "error", `Erro de renderização: ${error.message}`, {
+      stack: error.stack,
+    });
     return { hasError: true, error };
   }
 

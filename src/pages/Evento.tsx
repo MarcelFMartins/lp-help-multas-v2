@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import { logEvent } from "@/lib/logger";
 
 const GOOGLE_SHEETS_WEBHOOK_URL =
   "https://script.google.com/macros/s/AKfycbzsRnL3wUdKJA9JMIp9xP-Yzg09GmOa3gaYSknUPdsIlkvFO_-vu5QqP7GnZmDhAltucg/exec";
@@ -169,9 +170,13 @@ export default function Evento() {
         headers: { "Content-Type": "text/plain;charset=utf-8" },
         body: JSON.stringify(data),
       });
+      logEvent("Evento", "crm_success", "Envio para Google Sheets concluído");
       return { ok: true };
     } catch (err) {
       console.error("[lead-form] Erro de rede ao enviar para o Google Sheets:", err);
+      logEvent("Evento", "crm_error", "Erro ao enviar para o Google Sheets", {
+        error: err instanceof Error ? err.message : String(err),
+      });
       return { ok: false };
     }
   }
@@ -195,6 +200,7 @@ export default function Evento() {
     }
 
     setSubmitting(true);
+    logEvent("Evento", "action", "Formulário enviado", { nome, email });
 
     const utm = getUtmParams();
     const result = await submitLead({

@@ -7,6 +7,7 @@ import { useState, useEffect, useRef } from "react";
 import { Play, X } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
 import { Img } from "@/components/Img";
+import { logEvent } from "@/lib/logger";
 
 const HERO_BG = "/image/fundo.webp";
 
@@ -203,6 +204,7 @@ function LeadFormSection() {
         };
 
         setLoading(true);
+        logEvent("Pré-reunião", "action", "Formulário enviado", { nome: fields.nome, email: fields.email });
         try {
             const response = await fetch(N8N_WEBHOOK_URL, {
                 method: "POST",
@@ -210,11 +212,13 @@ function LeadFormSection() {
                 body: JSON.stringify(leadData),
             });
             if (!response.ok) throw new Error(`Erro HTTP ${response.status}`);
+            logEvent("Pré-reunião", "crm_success", "Webhook n8n respondeu com sucesso", { status: response.status });
             setStatus({ type: "success", text: "Dados enviados com sucesso. Os materiais foram liberados abaixo." });
             setShowDownload(true);
             setFields({ nome: "", email: "", whatsapp: "", cpf: "", nascimento: "", cidade: "", uf: "", cep: "", aceite: false });
         } catch (err: unknown) {
             const msg = err instanceof Error ? err.message : "Erro desconhecido";
+            logEvent("Pré-reunião", "crm_error", "Erro ao enviar para webhook n8n", { error: msg });
             setStatus({ type: "error", text: `Não foi possível enviar os dados. Detalhe: ${msg}` });
         } finally {
             setLoading(false);

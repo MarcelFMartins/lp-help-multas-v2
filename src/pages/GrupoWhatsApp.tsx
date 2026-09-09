@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { logEvent } from "@/lib/logger";
 
 const GOOGLE_SHEETS_URL =
   "https://script.google.com/macros/s/AKfycbyXsFEYPl6M2LnExhlPTdjXHtEi21eqkmt6mIdRGdDu6lRQPdixkV3e5omd2KXzsb3_/exec";
@@ -68,6 +69,9 @@ export default function GrupoWhatsApp() {
         "Erro ao registrar acesso:",
         erro
       );
+      logEvent("Grupo WhatsApp", "crm_error", "Erro ao registrar acesso no Google Sheets", {
+        error: erro instanceof Error ? erro.message : String(erro),
+      });
 
     });
 

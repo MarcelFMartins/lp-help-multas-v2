@@ -14,6 +14,7 @@ import { ChevronDown, BadgeCheck  } from "lucide-react";
 import SearchableSelect from "./SearchableSelect";
 import { useCidadesPorUf } from "../hooks/useCidadesPorUf";
 import { sendToTestCrm } from "../lib/testCrm";
+import { logEvent } from "../lib/logger";
 
 const HERO_BG = "/image/fundo.webp";
 
@@ -200,6 +201,12 @@ export default function HeroSection() {
     }
 
     setIsSubmitting(true);
+    logEvent("Home (Hero)", "action", "Formulário enviado", {
+      nome: formData.nome,
+      email: formData.email,
+      cidade: formData.cidade,
+      uf: formData.uf,
+    });
 
     try {
       const meta = window.getMetaTrackingData?.() || {};
@@ -280,16 +287,32 @@ export default function HeroSection() {
       console.log("CRM RESPONSE:", crmResult);
 
       if (!crmResponse.ok) {
+        logEvent("Home (Hero)", "crm_error", `Erro CRM: status ${crmResponse.status}`, {
+          status: crmResponse.status,
+          response: crmResult,
+        });
         throw new Error(`Erro CRM: ${crmResult?.message || crmResult?.error || `Status ${crmResponse.status}`}`);
       }
 
+      logEvent("Home (Hero)", "crm_success", "CRM respondeu com sucesso", {
+        status: crmResponse.status,
+        response: crmResult,
+      });
+
       /* 2.2 Meta Pixel — Lead disparado somente após sucesso no CRM */
       window.fbq?.("trackSingle", "1552879123068423", "Lead");
+      logEvent("Home (Hero)", "pixel_event", "fbq trackSingle Lead disparado", {
+        pixelId: "1552879123068423",
+        event: "Lead",
+      });
 
       /* 3. REDIRECT */
       window.location.href = "https://franquias.helpmultas.com.br/obrigado";
     } catch (error) {
       console.error("ERRO COMPLETO:", error);
+      logEvent("Home (Hero)", "error", error instanceof Error ? error.message : "Erro ao enviar formulário", {
+        stack: error instanceof Error ? error.stack : undefined,
+      });
       setStatus({
         type: "error",
         text: error instanceof Error ? error.message : "Erro ao enviar formulário.",

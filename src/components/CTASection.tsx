@@ -21,6 +21,7 @@ import { useInView } from "../hooks/useInView";
 import SearchableSelect from "./SearchableSelect";
 import { useCidadesPorUf } from "../hooks/useCidadesPorUf";
 import { sendToTestCrm } from "../lib/testCrm";
+import { logEvent } from "../lib/logger";
 
 const CTA_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663612015267/7JPeai9Kn6mqwVB3QeEreq/cta-bg-KQ56VgudmidAHQMcjAgWNg.webp";
 
@@ -192,6 +193,12 @@ export default function CTASection() {
     }
 
     setIsSubmitting(true);
+    logEvent("Home (CTA final)", "action", "Formulário enviado", {
+      nome: formData.nome,
+      email: formData.email,
+      cidade: formData.cidade,
+      uf: formData.uf,
+    });
 
     try {
       /* tracking — sem optional chaining, preservado do original */
@@ -266,14 +273,33 @@ export default function CTASection() {
           body: JSON.stringify(crmPayload),
         });
 
+        let crmResult: any = null;
+        try { crmResult = await crmResponse.json(); } catch { crmResult = null; }
+
         if (!crmResponse.ok) {
           console.error("Erro CRM");
+          logEvent("Home (CTA final)", "crm_error", `Erro CRM: status ${crmResponse.status}`, {
+            status: crmResponse.status,
+            response: crmResult,
+          });
         } else {
+          logEvent("Home (CTA final)", "crm_success", "CRM respondeu com sucesso", {
+            status: crmResponse.status,
+            response: crmResult,
+          });
+
           /* Meta Pixel — Lead disparado somente após sucesso no CRM */
           window.fbq?.("trackSingle", "1552879123068423", "Lead");
+          logEvent("Home (CTA final)", "pixel_event", "fbq trackSingle Lead disparado", {
+            pixelId: "1552879123068423",
+            event: "Lead",
+          });
         }
       } catch (crmError) {
         console.error("Erro CRM:", crmError);
+        logEvent("Home (CTA final)", "crm_error", crmError instanceof Error ? crmError.message : "Erro CRM desconhecido", {
+          stack: crmError instanceof Error ? crmError.stack : undefined,
+        });
       }
 
       /* 3. REDIRECT — idêntico ao original */
@@ -281,6 +307,9 @@ export default function CTASection() {
 
     } catch (error) {
       console.error(error);
+      logEvent("Home (CTA final)", "error", error instanceof Error ? error.message : "Erro ao enviar formulário", {
+        stack: error instanceof Error ? error.stack : undefined,
+      });
       /* alert() substituído por status inline */
       setStatus({ type: "error", text: "Erro ao enviar formulário. Tente novamente." });
     } finally {

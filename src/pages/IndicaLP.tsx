@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useInView, useCounter } from "../hooks/useInView";
 import { useScrollTracker } from "../hooks/useScrollTracker";
 import { Car } from "lucide-react";
+import { logEvent } from "../lib/logger";
 
 /* ─── Color tokens ─── */
 const NAVY_DEEP = "oklch(0.1998 0.0403 258.29)";
@@ -1150,6 +1151,7 @@ function FormSection() {
 
     setSending(true);
     setError("");
+    logEvent("Indica (Parceiro)", "action", "Formulário enviado", { nome, email, cidade, estado });
 
     // ── event_id para deduplicação Meta (pixel browser + CAPI servidor)
     const eventId = `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
@@ -1157,6 +1159,7 @@ function FormSection() {
     // ── Dispara Lead no pixel do browser COM eventID
     if ((window as any).fbq) {
       (window as any).fbq('track', 'Lead', { content_name: 'Landing Page Parceiro' }, { eventID: eventId });
+      logEvent("Indica (Parceiro)", "pixel_event", "fbq track Lead disparado", { event: "Lead", eventId });
     }
 
     const payload = {
@@ -1178,7 +1181,11 @@ function FormSection() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      if (!n8nRes.ok) throw new Error("Erro no webhook");
+      if (!n8nRes.ok) {
+        logEvent("Indica (Parceiro)", "crm_error", "Erro no webhook n8n", { status: n8nRes.status });
+        throw new Error("Erro no webhook");
+      }
+      logEvent("Indica (Parceiro)", "crm_success", "Webhook n8n respondeu com sucesso", { status: n8nRes.status });
 
       // ── Web3Forms
       fetch("https://api.web3forms.com/submit", {
@@ -1195,7 +1202,10 @@ function FormSection() {
       }).catch(() => { });
 
       window.location.href = "/sucesso";
-    } catch {
+    } catch (err) {
+      logEvent("Indica (Parceiro)", "error", "Erro ao enviar formulário", {
+        error: err instanceof Error ? err.message : String(err),
+      });
       setError("Erro ao enviar. Tente novamente.");
       setSending(false);
     }

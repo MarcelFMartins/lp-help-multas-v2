@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { formatWhatsapp } from "@/components/HeroSection";
+import { logEvent } from "@/lib/logger";
 
 const GOOGLE_SHEETS_WEBHOOK_URL =
   "https://script.google.com/macros/s/AKfycbzsRnL3wUdKJA9JMIp9xP-Yzg09GmOa3gaYSknUPdsIlkvFO_-vu5QqP7GnZmDhAltucg/exec";
@@ -199,9 +200,13 @@ export default function EventoChat() {
           pageUrl: window.location.href,
         }),
       });
+      logEvent("Evento Chat", "crm_success", "Envio para Google Sheets concluído");
       return { ok: true };
     } catch (err) {
       console.error("[evento-chat] Erro de rede ao enviar para o Google Sheets:", err);
+      logEvent("Evento Chat", "crm_error", "Erro ao enviar para o Google Sheets", {
+        error: err instanceof Error ? err.message : String(err),
+      });
       return { ok: false };
     }
   }
@@ -234,6 +239,10 @@ export default function EventoChat() {
         window.fbq("init", "924662103561102");
         window.fbq("track", "PageView");
         window.fbq("track", "Lead", { content_name: "Landing Page Evento — Chat" }, { eventID: eventId });
+        logEvent("Evento Chat", "pixel_event", "fbq track Lead disparado", {
+          pixelId: "924662103561102",
+          event: "Lead",
+        });
       }
 
       await pushBotMessages(["Inscrição recebida! Te levando para o grupo do WhatsApp..."]);
