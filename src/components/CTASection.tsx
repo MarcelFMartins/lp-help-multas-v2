@@ -266,7 +266,12 @@ export default function CTASection() {
           body: JSON.stringify(crmPayload),
         });
 
-        if (!crmResponse.ok) console.error("Erro CRM");
+        if (!crmResponse.ok) {
+          console.error("Erro CRM");
+        } else {
+          /* Meta Pixel — Lead disparado somente após sucesso no CRM */
+          window.fbq?.("trackSingle", "1552879123068423", "Lead");
+        }
       } catch (crmError) {
         console.error("Erro CRM:", crmError);
       }

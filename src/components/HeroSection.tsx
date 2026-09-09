@@ -283,6 +283,9 @@ export default function HeroSection() {
         throw new Error(`Erro CRM: ${crmResult?.message || crmResult?.error || `Status ${crmResponse.status}`}`);
       }
 
+      /* 2.2 Meta Pixel — Lead disparado somente após sucesso no CRM */
+      window.fbq?.("trackSingle", "1552879123068423", "Lead");
+
       /* 3. REDIRECT */
       window.location.href = "https://franquias.helpmultas.com.br/obrigado";
     } catch (error) {
