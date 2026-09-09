@@ -299,12 +299,20 @@ export default function HeroSection() {
         response: crmResult,
       });
 
-      /* 2.2 Meta Pixel — Lead disparado somente após sucesso no CRM */
-      window.fbq?.("trackSingle", "1552879123068423", "Lead");
-      logEvent("Home (Hero)", "pixel_event", "fbq trackSingle Lead disparado", {
-        pixelId: "1552879123068423",
-        event: "Lead",
-      });
+      /* 2.2 Meta Pixel — Lead disparado somente após sucesso no CRM e se o lead veio de campanha (utm_source ig/fb) */
+      const utmSource = (tracking?.utm_source || "").toLowerCase();
+      if (utmSource === "ig" || utmSource === "fb") {
+        window.fbq?.("trackSingle", "1552879123068423", "Lead");
+        logEvent("Home (Hero)", "pixel_event", "fbq trackSingle Lead disparado", {
+          pixelId: "1552879123068423",
+          event: "Lead",
+          utmSource,
+        });
+      } else {
+        logEvent("Home (Hero)", "action", "Lead não disparado no pixel — utm_source não é de campanha (ig/fb)", {
+          utmSource,
+        });
+      }
 
       /* 3. REDIRECT */
       window.location.href = "https://franquias.helpmultas.com.br/obrigado";

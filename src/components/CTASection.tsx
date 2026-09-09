@@ -288,12 +288,20 @@ export default function CTASection() {
             response: crmResult,
           });
 
-          /* Meta Pixel — Lead disparado somente após sucesso no CRM */
-          window.fbq?.("trackSingle", "1552879123068423", "Lead");
-          logEvent("Home (CTA final)", "pixel_event", "fbq trackSingle Lead disparado", {
-            pixelId: "1552879123068423",
-            event: "Lead",
-          });
+          /* Meta Pixel — Lead disparado somente após sucesso no CRM e se o lead veio de campanha (utm_source ig/fb) */
+          const utmSource = (tracking?.utm_source || "").toLowerCase();
+          if (utmSource === "ig" || utmSource === "fb") {
+            window.fbq?.("trackSingle", "1552879123068423", "Lead");
+            logEvent("Home (CTA final)", "pixel_event", "fbq trackSingle Lead disparado", {
+              pixelId: "1552879123068423",
+              event: "Lead",
+              utmSource,
+            });
+          } else {
+            logEvent("Home (CTA final)", "action", "Lead não disparado no pixel — utm_source não é de campanha (ig/fb)", {
+              utmSource,
+            });
+          }
         }
       } catch (crmError) {
         console.error("Erro CRM:", crmError);
