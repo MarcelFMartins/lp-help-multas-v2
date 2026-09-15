@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { formatWhatsapp } from "@/components/HeroSection";
 import { logEvent } from "@/lib/logger";
+import { sendEventLeadToCrm } from "@/lib/eventCrm";
 
 const GOOGLE_SHEETS_WEBHOOK_URL =
   "https://script.google.com/macros/s/AKfycbzsRnL3wUdKJA9JMIp9xP-Yzg09GmOa3gaYSknUPdsIlkvFO_-vu5QqP7GnZmDhAltucg/exec";
@@ -9,7 +10,7 @@ const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/K56JiM8uHTi0n8GcdyKwM8";
 
 const PAGE_TITLE = "Aula Gratuita | Mercado de Defesa de Multas — Help Multas";
 
-const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"] as const;
+const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "utm_id"] as const;
 
 function onlyDigits(v: string) {
   return v.replace(/\D/g, "");
@@ -41,6 +42,7 @@ function getUtmParams() {
     utm_campaign: "",
     utm_content: "",
     utm_term: "",
+    utm_id: "",
   };
   UTM_KEYS.forEach((key) => {
     let value = params.get(key);
@@ -247,6 +249,25 @@ export default function EventoChat() {
 
       await pushBotMessages(["Inscrição recebida! Te levando para o grupo do WhatsApp..."]);
       void submitToSheet(merged as Required<Answers>);
+
+      const finalAnswers = merged as Required<Answers>;
+      const utm = getUtmParams();
+      const meta = window.getMetaTrackingData?.() || {};
+      sendEventLeadToCrm({
+        name: finalAnswers.nome.trim(),
+        email: finalAnswers.email.trim(),
+        phone: onlyDigits(finalAnswers.whatsapp),
+        fbp: meta.fbp || "",
+        fbc: meta.fbc || "",
+        fbclid: meta.fbclid || "",
+        utm_source: utm.utm_source,
+        utm_medium: utm.utm_medium,
+        utm_campaign: utm.utm_campaign,
+        utm_content: utm.utm_content,
+        utm_term: utm.utm_term,
+        utm_id: utm.utm_id,
+      });
+
       window.location.href = WHATSAPP_GROUP_URL;
       return;
     }

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { logEvent } from "@/lib/logger";
+import { sendEventLeadToCrm } from "@/lib/eventCrm";
 
 const GOOGLE_SHEETS_WEBHOOK_URL =
   "https://script.google.com/macros/s/AKfycbzsRnL3wUdKJA9JMIp9xP-Yzg09GmOa3gaYSknUPdsIlkvFO_-vu5QqP7GnZmDhAltucg/exec";
@@ -33,7 +34,7 @@ function isValidEmail(v: string) {
  * visita e guarda em sessionStorage, para não perder a origem do lead
  * mesmo que o formulário seja enviado depois de o usuário abrir o modal.
  */
-const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"] as const;
+const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "utm_id"] as const;
 
 function initTracking() {
   const params = new URLSearchParams(window.location.search);
@@ -57,6 +58,7 @@ function getUtmParams() {
     utm_campaign: "",
     utm_content: "",
     utm_term: "",
+    utm_id: "",
   };
   UTM_KEYS.forEach((key) => {
     let value = params.get(key);
@@ -203,6 +205,23 @@ export default function Evento() {
     logEvent("Evento", "action", "Formulário enviado", { nome, email });
 
     const utm = getUtmParams();
+
+    const meta = window.getMetaTrackingData?.() || {};
+    sendEventLeadToCrm({
+      name: nome.trim(),
+      email: email.trim(),
+      phone: onlyDigits(whatsapp),
+      fbp: meta.fbp || "",
+      fbc: meta.fbc || "",
+      fbclid: meta.fbclid || "",
+      utm_source: utm.utm_source,
+      utm_medium: utm.utm_medium,
+      utm_campaign: utm.utm_campaign,
+      utm_content: utm.utm_content,
+      utm_term: utm.utm_term,
+      utm_id: utm.utm_id,
+    });
+
     const result = await submitLead({
       nome: nome.trim(),
       email: email.trim(),
