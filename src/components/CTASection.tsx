@@ -21,6 +21,7 @@ import { useInView } from "../hooks/useInView";
 import SearchableSelect from "./SearchableSelect";
 import { useCidadesPorUf } from "../hooks/useCidadesPorUf";
 import { sendToTestCrm } from "../lib/testCrm";
+import { sendToGoogleSheets } from "../lib/googleSheets";
 import { logEvent } from "../lib/logger";
 
 const CTA_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663612015267/7JPeai9Kn6mqwVB3QeEreq/cta-bg-KQ56VgudmidAHQMcjAgWNg.webp";
@@ -232,6 +233,27 @@ export default function CTASection() {
         phone: formData.whatsapp,
         city: formData.cidade,
         state: formData.uf,
+        capital: formData.capital,
+        capitalLabel,
+        fbp: meta?.fbp || "",
+        fbc: meta?.fbc || "",
+        fbclid: meta?.fbclid || "",
+        utm_source: tracking?.utm_source || "",
+        utm_medium: tracking?.utm_medium || "",
+        utm_campaign: tracking?.utm_campaign || "",
+        utm_content: tracking?.utm_content || "",
+        utm_term: tracking?.utm_term || "",
+        utm_id: tracking?.utm_id || "",
+      });
+
+      /* 2.2 Google Sheets (fire-and-forget, não bloqueia o fluxo) */
+      sendToGoogleSheets({
+        origem: "Home (CTA final)",
+        nome: formData.nome,
+        email: formData.email,
+        whatsapp: formData.whatsapp,
+        cidade: formData.cidade,
+        uf: formData.uf,
         capital: formData.capital,
         capitalLabel,
         fbp: meta?.fbp || "",

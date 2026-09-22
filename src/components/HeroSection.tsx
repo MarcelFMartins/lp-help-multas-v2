@@ -14,6 +14,7 @@ import { ChevronDown, BadgeCheck  } from "lucide-react";
 import SearchableSelect from "./SearchableSelect";
 import { useCidadesPorUf } from "../hooks/useCidadesPorUf";
 import { sendToTestCrm } from "../lib/testCrm";
+import { sendToGoogleSheets } from "../lib/googleSheets";
 import { logEvent } from "../lib/logger";
 
 const HERO_BG = "/image/fundo.webp";
@@ -258,6 +259,27 @@ export default function HeroSection() {
         phone: formData.whatsapp,
         city: formData.cidade.trim(),
         state: formData.uf,
+        capital: formData.capital,
+        capitalLabel,
+        fbp: meta?.fbp || "",
+        fbc: meta?.fbc || "",
+        fbclid: meta?.fbclid || "",
+        utm_source: tracking?.utm_source || "",
+        utm_medium: tracking?.utm_medium || "",
+        utm_campaign: tracking?.utm_campaign || "",
+        utm_content: tracking?.utm_content || "",
+        utm_term: tracking?.utm_term || "",
+        utm_id: tracking?.utm_id || "",
+      });
+
+      /* 2.2 Google Sheets (fire-and-forget, não bloqueia o fluxo) */
+      sendToGoogleSheets({
+        origem: "Home (Hero)",
+        nome: formData.nome.trim(),
+        email: formData.email.trim(),
+        whatsapp: formData.whatsapp,
+        cidade: formData.cidade.trim(),
+        uf: formData.uf,
         capital: formData.capital,
         capitalLabel,
         fbp: meta?.fbp || "",
