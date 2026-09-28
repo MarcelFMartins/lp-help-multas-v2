@@ -12,6 +12,7 @@ import HelpIndica from "@/pages/IndicaLP"
 import Sucesso from "@/pages/Success"
 import ChatLP from "@/pages/ChatLP";
 import GrupoWhatsApp from "@/pages/GrupoWhatsApp";
+import ContatoWhatsApp from "@/pages/ContatoWhatsApp";
 import Evento from "@/pages/Evento";
 import EventoChat from "@/pages/EventoChat";
 import Logs from "@/pages/Logs";
@@ -39,6 +40,8 @@ function Router() {
       <Route path="/indica" component={HelpIndica} />
 
       <Route path="/WhatsApp" component={GrupoWhatsApp} />
+
+      <Route path="/contato-whatsapp" component={ContatoWhatsApp} />
 
       <Route path="/evento" component={Evento} />
 
