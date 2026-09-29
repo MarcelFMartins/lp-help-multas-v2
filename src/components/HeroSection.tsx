@@ -14,6 +14,7 @@ import { ChevronDown, BadgeCheck  } from "lucide-react";
 import SearchableSelect from "./SearchableSelect";
 import { useCidadesPorUf } from "../hooks/useCidadesPorUf";
 import { sendToTestCrm } from "../lib/testCrm";
+import { sendToMarketingHub } from "../lib/marketingHubLeads";
 import { sendToGoogleSheets } from "../lib/googleSheets";
 import { logEvent } from "../lib/logger";
 
@@ -254,6 +255,26 @@ export default function HeroSection() {
 
       /* 2.1 CRM de teste (fire-and-forget, não bloqueia o fluxo) */
       sendToTestCrm({
+        name: formData.nome.trim(),
+        email: formData.email.trim(),
+        phone: formData.whatsapp,
+        city: formData.cidade.trim(),
+        state: formData.uf,
+        capital: formData.capital,
+        capitalLabel,
+        fbp: meta?.fbp || "",
+        fbc: meta?.fbc || "",
+        fbclid: meta?.fbclid || "",
+        utm_source: tracking?.utm_source || "",
+        utm_medium: tracking?.utm_medium || "",
+        utm_campaign: tracking?.utm_campaign || "",
+        utm_content: tracking?.utm_content || "",
+        utm_term: tracking?.utm_term || "",
+        utm_id: tracking?.utm_id || "",
+      });
+
+      /* 2.1b Marketing Hub — Tráfego Pago (fire-and-forget, não bloqueia o fluxo) */
+      sendToMarketingHub({
         name: formData.nome.trim(),
         email: formData.email.trim(),
         phone: formData.whatsapp,
