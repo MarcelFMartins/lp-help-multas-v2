@@ -249,6 +249,7 @@ export default function CTASection() {
 
       /* 2.1b Marketing Hub — Tráfego Pago (fire-and-forget, não bloqueia o fluxo) */
       sendToMarketingHub({
+        page_origin: "home",
         name: formData.nome,
         email: formData.email,
         phone: formData.whatsapp,

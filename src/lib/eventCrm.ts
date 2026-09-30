@@ -27,7 +27,7 @@ export interface EventLeadData {
 export function sendEventLeadToCrm(lead: EventLeadData) {
   // Em paralelo, sem depender do CRM: casa o lead com o anúncio (via UTM) no
   // Marketing Hub, igual ao Hero/CTA da home.
-  sendToMarketingHub({ ...lead, source: "evento" });
+  sendToMarketingHub({ ...lead, page_origin: "evento" });
 
   fetch(EVENT_CRM_URL, {
     method: "POST",

@@ -19,8 +19,8 @@ export interface MarketingHubLead {
   state?: string;
   capital?: string;
   capitalLabel?: string;
-  /** Página de origem do lead (ex: "evento"); fica guardada no payload cru do Hub. */
-  source?: string;
+  /** Página da LP onde o formulário foi preenchido ("home", "evento"). NÃO é utm_source. */
+  page_origin?: string;
   fbp?: string;
   fbc?: string;
   fbclid?: string;
