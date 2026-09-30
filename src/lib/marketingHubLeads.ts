@@ -17,8 +17,10 @@ export interface MarketingHubLead {
   phone: string;
   city?: string;
   state?: string;
-  capital: string;
-  capitalLabel: string;
+  capital?: string;
+  capitalLabel?: string;
+  /** Página de origem do lead (ex: "evento"); fica guardada no payload cru do Hub. */
+  source?: string;
   fbp?: string;
   fbc?: string;
   fbclid?: string;
