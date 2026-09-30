@@ -273,8 +273,8 @@ export default function HeroSection() {
         utm_id: tracking?.utm_id || "",
       });
 
-      /* 2.1b Marketing Hub — Tráfego Pago (fire-and-forget, não bloqueia o fluxo) */
-      sendToMarketingHub({
+      /* 2.1b Marketing Hub — Tráfego Pago (roda em paralelo; aguardado antes do redirect) */
+      const hubPromise = sendToMarketingHub({
         page_origin: "home",
         name: formData.nome.trim(),
         email: formData.email.trim(),
@@ -358,7 +358,11 @@ export default function HeroSection() {
         });
       }
 
-      /* 3. REDIRECT */
+      /* 3. REDIRECT — só depois do Marketing Hub concluir (evita cancelar o envio) */
+      const hubOk = await hubPromise;
+      if (!hubOk) {
+        logEvent("Home (Hero)", "error", "Marketing Hub não gravou o lead após retries", {});
+      }
       window.location.href = "https://franquias.helpmultas.com.br/obrigado";
     } catch (error) {
       console.error("ERRO COMPLETO:", error);

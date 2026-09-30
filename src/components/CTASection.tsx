@@ -247,8 +247,8 @@ export default function CTASection() {
         utm_id: tracking?.utm_id || "",
       });
 
-      /* 2.1b Marketing Hub — Tráfego Pago (fire-and-forget, não bloqueia o fluxo) */
-      sendToMarketingHub({
+      /* 2.1b Marketing Hub — Tráfego Pago (roda em paralelo; aguardado antes do redirect) */
+      const hubPromise = sendToMarketingHub({
         page_origin: "home",
         name: formData.nome,
         email: formData.email,
@@ -355,6 +355,7 @@ export default function CTASection() {
       }
 
       /* 3. REDIRECT — idêntico ao original */
+      await hubPromise; // só redireciona depois do Marketing Hub concluir
       window.location.href = "https://franquias.helpmultas.com.br/obrigado";
 
     } catch (error) {
