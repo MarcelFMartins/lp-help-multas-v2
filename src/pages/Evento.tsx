@@ -287,7 +287,7 @@ export default function Evento() {
             />
             <span className="hero__live-badge">
               <span className="dot" aria-hidden="true" />
-              AO VIVO: 09 de setembro · 19h
+              AO VIVO: 30 de setembro · 19h
             </span>
           </div>
         </div>
