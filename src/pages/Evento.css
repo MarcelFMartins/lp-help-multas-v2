@@ -1,0 +1,261 @@
+.evento-page { --event-navy: #0b1726; --event-yellow: #f5bf23; background: #f4f2eb; color: #152130; font-family: Montserrat, Arial, sans-serif; }
+.evento-page *, .evento-page *::before, .evento-page *::after { box-sizing: border-box; }
+.evento-page h1, .evento-page h2, .evento-page h3, .evento-page p, .evento-page figure, .evento-page dl { margin: 0; }
+.evento-page button, .evento-page input { font: inherit; }
+.evento-page button, .evento-page a { -webkit-tap-highlight-color: transparent; }
+.evento-page button { cursor: pointer; }
+.evento-page a { color: inherit; text-decoration: none; }
+.evento-page .icon { width: 19px; height: 19px; flex-shrink: 0; }
+.evento-page .event-wrap { width: min(1280px, calc(100% - 80px)); margin-inline: auto; }
+.evento-page .event-header { background: var(--event-navy); color: #f4f2eb; }
+.evento-page .event-header__inner { height: 92px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #ffffff24; }
+.evento-page .event-header img { width: 140px; height: auto; }
+.evento-page .event-header__label { font-size: 10px; letter-spacing: 2px; color: #bac1c9; }
+.evento-page .event-header__link { display: flex; align-items: center; gap: 24px; background: transparent; border: 0; color: #f4f2eb; font-size: 12px; padding: 12px 0; }
+.evento-page .event-header__link .icon { color: var(--event-yellow); }
+.evento-page .event-hero { background: var(--event-navy); color: #f4f2eb; }
+.evento-page .event-hero__layout { display: grid; grid-template-columns: minmax(0, 1fr) 350px; gap: 36px; padding-block: 32px 40px; }
+.evento-page .event-hero__story { position: relative; isolation: isolate; min-height: 550px; }
+.evento-page .event-hero__photo { position: absolute; inset: 0 -20px 0 0; z-index: -2; overflow: hidden; }
+.evento-page .event-hero__photo img { width: 100%; height: 100%; object-fit: cover; object-position: 0% center; }
+.evento-page .event-hero__story::after { content: ''; position: absolute; inset: 0 -21px 0 -1px; z-index: -1; background: linear-gradient(90deg, #0b1726 0%, #0b1726f5 20%, #0b1726b3 39%, #0b172600 65%), linear-gradient(0deg, #0b1726 0%, #0b172600 26%); }
+.evento-page .event-hero__copy { position: relative; padding-top: 35px; max-width: 470px; }
+.evento-page .event-kicker { font-size: 10px; line-height: 1.6; font-weight: 600; letter-spacing: 1.7px; display: flex; align-items: center; gap: 10px; }
+.evento-page .event-kicker > span { width: 6px; height: 6px; background: var(--event-yellow); border-radius: 50%; }
+.evento-page .event-hero h1 { font-size: clamp(44px, 4.5vw, 64px); font-weight: 650; letter-spacing: -3.2px; line-height: 1.04; margin-top: 25px; }
+.evento-page em { font-family: Georgia, 'Times New Roman', serif; font-weight: 400; }
+.evento-page .event-hero h1 em { color: var(--event-yellow); }
+.evento-page .event-hero__intro { max-width: 310px; margin-top: 28px; font-size: 14px; line-height: 1.8; color: #d3d7dc; }
+.evento-page .event-hero__caption { display: block; padding-left: 14px; border-left: 2px solid var(--event-yellow); margin-top: 34px; font-size: 11px; line-height: 1.8; color: #aeb7c2; }
+.evento-page .event-hero__host { position: absolute; right: 14px; bottom: 24px; display: flex; flex-direction: column; border-left: 2px solid var(--event-yellow); padding-left: 12px; }
+.evento-page .event-hero__host strong { font-size: 12px; font-weight: 600; }
+.evento-page .event-hero__host span { font-size: 10px; color: #bdc5cf; margin-top: 5px; }
+.evento-page .signup { background: #f4f2eb; color: #152130; align-self: center; padding: 28px; border-radius: 3px; scroll-margin-top: 24px; }
+.evento-page .signup__head { margin-bottom: 22px; }
+.evento-page .signup__title { font-size: 22px; line-height: 1.25; font-weight: 650; letter-spacing: -.8px; }
+.evento-page .signup__hint { font-size: 11px; margin-top: 9px; color: #697078; }
+.evento-page .lead-form { display: grid; gap: 10px; }
+.evento-page .field label { display: block; font-size: 11px; font-weight: 600; margin-bottom: 7px; }
+.evento-page .field input { width: 100%; min-width: 0; height: 46px; background: transparent; border: 1px solid #c8cac5; border-radius: 2px; padding: 0 12px; font-size: 12px; color: #152130; }
+.evento-page .field input::placeholder { color: #787d82; }
+.evento-page .field input[aria-invalid=true] { border-color: #a22e23; }
+.evento-page :is(button, a, input, summary):focus-visible { outline: 3px solid #cf9604; outline-offset: 4px; }
+.evento-page .field__error { display: block; font-size: 10px; color: #a22e23; min-height: 8px; margin-top: 3px; }
+.evento-page .phone-input { display: flex; border: 1px solid #c8cac5; border-radius: 2px; align-items: center; }
+.evento-page .phone-input__prefix { font-size: 11px; padding: 0 10px; border-right: 1px solid #c8cac5; }
+.evento-page .phone-input input { border: 0; }
+.evento-page .phone-input:has(input[aria-invalid=true]) { border-color: #a22e23; }
+.evento-page .btn { min-height: 48px; padding: 13px 16px; display: flex; justify-content: space-between; align-items: center; gap: 12px; border: 0; border-radius: 2px; font-size: 11px; font-weight: 700; transition: background .2s; }
+.evento-page .btn--primary { background: var(--event-yellow); color: #152130; }
+.evento-page .btn--primary:hover { background: #e8af11; }
+.evento-page .btn:disabled { opacity: .65; cursor: wait; }
+.evento-page .btn--block { width: 100%; }
+.evento-page .signup__note { display: flex; align-items: flex-start; gap: 7px; font-size: 10px; line-height: 1.7; margin-top: 16px; color: #62696e; }
+.evento-page .signup__note .icon { width: 13px; height: 13px; margin-top: 3px; }
+.evento-page .signup__note strong { font-weight: 600; }
+.evento-page .field__status { color: #a22e23; font-size: 12px; line-height: 1.5; }
+.evento-page .success__icon { color: #346947; }
+.evento-page .success__title { font-size: 24px; margin-block: 14px; }
+.evento-page .success__text { font-size: 13px; line-height: 1.7; margin-bottom: 20px; }
+.evento-page .btn--whatsapp { background: #275d42; color: white; }
+.evento-page .countdown { margin-top: 16px; padding-top: 12px; border-top: 1px solid #d6d6ce; }
+.evento-page .countdown__title { font-size: 10px; }
+.evento-page .countdown__units { display: flex; gap: 17px; margin-top: 5px; }
+.evento-page .countdown__unit { display: flex; align-items: baseline; gap: 4px; }
+.evento-page .countdown__unit strong { font-size: 16px; }
+.evento-page .countdown__unit span { font-size: 9px; }
+.evento-page .event-datebar { background: var(--event-yellow); color: #152130; }
+.evento-page .event-datebar__inner { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.evento-page .event-datebar__inner > span { display: flex; gap: 10px; align-items: center; font-size: 12px; }
+.evento-page .event-datebar strong { font-weight: 650; }
+.evento-page .event-datebar small { font-size: 9px; }
+.evento-page .event-datebar__free { border-left: 1px solid #1521304d; padding-left: 30px; }
+.evento-page .event-datebar__free > span { font-size: 22px; margin-left: 14px; }
+.evento-page .event-program { display: grid; grid-template-columns: 1fr 1.15fr; gap: 80px; padding-block: 72px; }
+.evento-page h2 { font-size: clamp(28px, 3vw, 40px); line-height: 1.16; letter-spacing: -1.5px; font-weight: 600; }
+.evento-page .event-program h2 { margin-block: 18px 20px; }
+.evento-page .event-program__intro > p:last-of-type { font-size: 13px; line-height: 1.8; color: #606970; max-width: 355px; }
+.evento-page .event-text-link { background: transparent; border: 0; border-bottom: 1px solid #152130; display: flex; align-items: center; justify-content: space-between; gap: 40px; font-size: 12px; font-weight: 600; padding: 12px 0; margin-top: 24px; }
+.evento-page .event-program__item { display: grid; grid-template-columns: 30px 1fr 20px; gap: 15px; padding-block: 24px; border-top: 1px solid #c9ccc6; }
+.evento-page .event-program__item:last-child { border-bottom: 1px solid #c9ccc6; }
+.evento-page .event-program__item > span:first-child { font-size: 11px; color: #7a807e; padding-top: 4px; }
+.evento-page .event-program__item h3 { font-size: 17px; font-weight: 650; letter-spacing: -.5px; }
+.evento-page .event-program__item p { font-size: 12px; color: #606970; line-height: 1.8; max-width: 375px; margin-top: 9px; }
+.evento-page .event-program__arrow { font-size: 22px; }
+.evento-page .event-about { background: var(--event-navy); color: #f4f2eb; padding-block: 60px 45px; }
+.evento-page .event-about__top { display: grid; grid-template-columns: 1.1fr 1fr; gap: 90px; align-items: center; }
+.evento-page .event-about .event-kicker { color: #a9b3be; }
+.evento-page .event-about h2 { margin-block: 17px 20px; }
+.evento-page .event-about h2 em { color: var(--event-yellow); }
+.evento-page .event-about__copy > p:last-of-type { font-size: 13px; color: #b7c0ca; line-height: 1.85; max-width: 465px; }
+.evento-page .event-numbers { display: flex; gap: 35px; margin-top: 30px; }
+.evento-page .event-numbers dt { font-size: 29px; font-weight: 500; letter-spacing: -1px; }
+.evento-page .event-numbers dd { margin: 5px 0 0; color: #a9b3be; font-size: 10px; }
+.evento-page .event-team img { width: 100%; height: 270px; object-fit: cover; object-position: center 61%; border-radius: 2px; }
+.evento-page .event-team figcaption { display: flex; justify-content: space-between; font-size: 11px; padding-top: 13px; }
+.evento-page .event-team figcaption span { font-size: 9px; color: #a9b3be; }
+.evento-page .event-questions { display: grid; grid-template-columns: 1fr 1.15fr; gap: 80px; margin-top: 50px; padding-top: 30px; border-top: 1px solid #ffffff26; }
+.evento-page .event-questions h3 { font-size: 21px; font-weight: 500; letter-spacing: -.5px; margin-top: 12px; }
+.evento-page .event-questions details { border-bottom: 1px solid #ffffff26; }
+.evento-page .event-questions summary { list-style: none; display: flex; align-items: center; justify-content: space-between; padding: 15px 0; font-size: 12px; cursor: pointer; }
+.evento-page .event-questions summary::-webkit-details-marker { display: none; }
+.evento-page .event-questions summary > span::before { content: '+'; color: var(--event-yellow); font-size: 22px; line-height: 1; }
+.evento-page .event-questions details[open] summary > span::before { content: '−'; }
+.evento-page .event-questions details p { color: #b7c0ca; font-size: 12px; line-height: 1.8; padding: 0 25px 18px 0; }
+.evento-page .event-footer { background: var(--event-navy); color: #a9b3be; }
+.evento-page .event-footer > div { display: flex; justify-content: space-between; gap: 20px; padding-block: 22px; border-top: 1px solid #ffffff26; font-size: 10px; }
+.evento-page .sticky-cta { display: none; }
+@media (min-width: 1500px) { .evento-page .event-hero__story { min-height: 570px; } }
+@media (min-width: 801px) {
+  /* The header and opening section together fill the first viewport. */
+  .evento-page .event-hero { min-height: calc(100vh - 92px); display: flex; flex-direction: column; }
+  .evento-page .event-hero__layout { flex: 1; align-items: center; }
+  .evento-page .event-hero__story { align-self: stretch; min-height: 480px; display: flex; align-items: center; }
+  .evento-page .event-hero__copy { padding-top: 0; }
+  .evento-page .event-datebar { background: var(--event-navy); color: #d3d7dc; border-top: 1px solid #ffffff24; }
+  .evento-page .event-datebar .icon { color: var(--event-yellow); }
+  .evento-page .event-datebar__free { border-left-color: #ffffff24; }
+}
+@media (max-width: 1100px) {
+  .evento-page .event-wrap { width: calc(100% - 48px); }
+  .evento-page .event-hero__layout { grid-template-columns: minmax(0, 1fr) 315px; gap: 24px; }
+  .evento-page .signup { padding: 23px; }
+  .evento-page .event-hero h1 { font-size: 46px; letter-spacing: -2.5px; }
+  .evento-page .event-hero__intro { max-width: 240px; font-size: 12px; }
+  .evento-page .event-hero__photo { inset: 0 -12px 0 0; }
+  .evento-page .event-hero__host { right: 0; bottom: 15px; }
+  .evento-page .event-datebar small { display: none; }
+  .evento-page .event-program, .evento-page .event-about__top, .evento-page .event-questions { gap: 40px; }
+}
+@media (max-width: 800px) {
+  .evento-page .event-header__inner { height: 72px; }
+  .evento-page .event-header__label { display: none; }
+  .evento-page .event-hero__layout { grid-template-columns: 1fr; gap: 15px; padding-top: 0; }
+  .evento-page .event-hero__story { min-height: 450px; }
+  .evento-page .event-hero__copy { padding-top: 35px; }
+  .evento-page .event-hero h1 { font-size: 54px; }
+  .evento-page .event-hero__intro { max-width: 300px; }
+  .evento-page .event-hero__caption { margin-top: 25px; }
+  .evento-page .event-hero__photo { inset: 0 -24px; }
+  .evento-page .event-hero__story::after { inset: 0 -24px; }
+  .evento-page .signup { padding: 26px; }
+  .evento-page .lead-form { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .evento-page .field--full { grid-column: 1 / -1; }
+  .evento-page .event-datebar__inner { display: grid; grid-template-columns: 1fr 1fr; padding-block: 20px; gap: 18px; }
+  .evento-page .event-datebar__free { border: 0; padding: 0; }
+  .evento-page .event-datebar__free > span { display: none; }
+  .evento-page .event-program { padding-block: 45px; gap: 30px; grid-template-columns: 1fr; }
+  .evento-page .event-program__intro > p:last-of-type { max-width: 440px; }
+  .evento-page .event-about { padding-block: 45px 30px; }
+  .evento-page .event-about__top { grid-template-columns: 1fr; gap: 30px; }
+  .evento-page .event-team img { height: 280px; }
+  .evento-page .event-questions { grid-template-columns: 1fr; gap: 18px; margin-top: 35px; }
+  .evento-page .event-footer > div { flex-wrap: wrap; padding-bottom: 100px; }
+  .evento-page .event-footer > div > span { display: none; }
+  .evento-page .sticky-cta { display: flex; position: fixed; bottom: 0; left: 0; right: 0; z-index: 40; background: #0b1726; border-top: 1px solid #ffffff30; color: white; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 24px calc(12px + env(safe-area-inset-bottom)); transform: translateY(110%); visibility: hidden; transition: transform .2s, visibility .2s; }
+  .evento-page .sticky-cta.is-visible { transform: translateY(0); visibility: visible; }
+  .evento-page .sticky-cta > div { display: flex; flex-direction: column; gap: 4px; }
+  .evento-page .sticky-cta strong { font-size: 11px; }
+  .evento-page .sticky-cta span { font-size: 9px; color: #b7c0ca; }
+}
+@media (max-width: 480px) {
+  .evento-page .event-wrap { width: calc(100% - 36px); }
+  .evento-page .event-header img { width: 118px; }
+  .evento-page .event-header__link { font-size: 10px; gap: 12px; }
+  .evento-page .event-hero__story { min-height: 485px; }
+  .evento-page .event-hero__photo { inset: 110px -18px 0; }
+  .evento-page .event-hero__photo img { object-position: 0% center; }
+  .evento-page .event-hero__story::after { inset: 0 -18px; background: linear-gradient(90deg, #0b1726ed, #0b1726b3 38%, #0b17261a 80%), linear-gradient(0deg, #0b1726 0%, #0b172600 45%); }
+  .evento-page .event-hero h1 { font-size: 40px; margin-top: 22px; letter-spacing: -2px; }
+  .evento-page .event-hero__copy .event-kicker { font-size: 8px; letter-spacing: 1px; }
+  .evento-page .event-hero__intro { max-width: 185px; margin-top: 22px; }
+  .evento-page .event-hero__caption { font-size: 10px; max-width: 190px; }
+  .evento-page .event-hero__host { bottom: 14px; right: 0; }
+  .evento-page .event-hero__host strong { font-size: 10px; }
+  .evento-page .event-hero__host span { font-size: 8px; }
+  .evento-page .signup { padding: 24px; }
+  .evento-page .lead-form { grid-template-columns: 1fr; }
+  .evento-page .event-datebar__inner > span { font-size: 10px; gap: 7px; }
+  .evento-page .event-datebar .icon { width: 15px; height: 15px; }
+  .evento-page h2 { font-size: 31px; }
+  .evento-page .event-numbers { gap: 25px; }
+  .evento-page .event-numbers dt { font-size: 25px; }
+  .evento-page .event-numbers dd { font-size: 9px; }
+  .evento-page .event-team img { height: 235px; }
+  .evento-page .sticky-cta { padding-inline: 18px; }
+}
+@media (min-width: 801px) {
+  .evento-page .event-hero { position: relative; isolation: isolate; }
+  .evento-page .event-hero__story { position: static; isolation: auto; }
+  .evento-page .event-hero__photo { inset: 0; }
+  .evento-page .event-hero__photo img { object-position: center 35%; }
+  .evento-page .event-hero__story::after {
+    inset: 0;
+    background: linear-gradient(90deg, #0b1726f2 0%, #0b1726b3 24%, #0b172600 48%, #0b17266b 63%, #0b1726ed 79%, #0b1726f5 100%), linear-gradient(0deg, #0b1726 0%, #0b172600 30%, #0b172600 78%, #0b1726 100%);
+  }
+  .evento-page .event-hero__layout { grid-template-columns: minmax(0, 1fr) 340px; gap: 48px; padding-block: 36px; }
+  .evento-page .event-hero__copy { max-width: 440px; }
+  .evento-page .event-hero__host { left: 52%; right: auto; bottom: 112px; }
+  .evento-page .signup { background: rgba(255, 255, 255, .86); color: #152130; border-radius: 12px; padding: 26px; border: 1px solid #ffffff70; backdrop-filter: blur(18px) saturate(.8); -webkit-backdrop-filter: blur(18px) saturate(.8); box-shadow: 0 16px 40px #00000018; }
+  .evento-page .signup__head { margin-bottom: 24px; }
+  .evento-page .signup__title { font-size: 25px; font-weight: 500; line-height: 1.2; letter-spacing: -.7px; max-width: 260px; }
+  .evento-page .signup__hint { color: #596575; font-size: 12px; margin-top: 12px; }
+  .evento-page .lead-form { gap: 12px; }
+  .evento-page .field label { font-size: 11px; color: #263547; font-weight: 600; }
+  .evento-page .field input { height: 48px; color: #152130; background: #ffffff55; border-color: #15213026; border-radius: 5px; font-size: 12px; }
+  .evento-page .field input::placeholder { color: #657080; }
+  .evento-page .phone-input { border-color: #15213026; border-radius: 5px; background: #ffffff55; }
+  .evento-page .phone-input input { background: transparent; border: 0; }
+  .evento-page .phone-input__prefix { border-right-color: #15213026; color: #596575; }
+  .evento-page .signup .btn { min-height: 50px; margin-top: 4px; }
+  .evento-page .signup__note { color: #596575; font-size: 10px; }
+  .evento-page .field__error, .evento-page .field__status { color: #a22e23; }
+  .evento-page .field input[aria-invalid=true], .evento-page .phone-input:has(input[aria-invalid=true]) { border-color: #a22e23; }
+  .evento-page .countdown { border-top-color: #15213026; }
+  .evento-page .event-datebar { background: transparent; }
+}
+@media (min-width: 801px) and (max-width: 1100px) {
+  .evento-page .event-hero__layout { grid-template-columns: minmax(0, 1fr) 290px; gap: 24px; }
+  .evento-page .signup { padding-left: 24px; }
+  .evento-page .event-hero__copy { max-width: 320px; }
+  .evento-page .event-hero__host { left: 43%; }
+}
+@media (max-width: 800px) {
+  .evento-page .signup { background: rgba(255, 255, 255, .86); color: #152130; border: 1px solid #ffffff70; border-radius: 12px; backdrop-filter: blur(18px) saturate(.8); -webkit-backdrop-filter: blur(18px) saturate(.8); box-shadow: 0 16px 40px #00000018; }
+  .evento-page .signup__head { margin-bottom: 24px; }
+  .evento-page .signup__title { font-size: 25px; font-weight: 500; line-height: 1.2; letter-spacing: -.7px; }
+  .evento-page .signup__hint { color: #596575; font-size: 12px; margin-top: 12px; }
+  .evento-page .field label { color: #263547; }
+  .evento-page .field input { height: 48px; background: #ffffff55; border-color: #15213026; border-radius: 5px; }
+  .evento-page .field input::placeholder { color: #657080; }
+  .evento-page .phone-input { border-color: #15213026; border-radius: 5px; background: #ffffff55; }
+  .evento-page .phone-input input { background: transparent; border: 0; }
+  .evento-page .phone-input__prefix { border-right-color: #15213026; color: #596575; }
+  .evento-page .signup .btn { min-height: 50px; margin-top: 4px; }
+  .evento-page .signup__note { color: #596575; }
+  .evento-page .field input[aria-invalid=true], .evento-page .phone-input:has(input[aria-invalid=true]) { border-color: #a22e23; }
+  .evento-page .event-hero__photo img { transform: scale(1.06); transform-origin: 75% center; }
+}
+@media (max-width: 480px) {
+  .evento-page .event-hero__photo { top: 130px; }
+  .evento-page .event-hero__photo img { transform: scale(1.1); }
+}
+@media (max-width: 360px) {
+  .evento-page .event-hero__photo img { object-position: 16% center; }
+}
+@media (max-width: 800px) {
+  .evento-page .event-datebar { background: #132b45; color: #f4f7fb; border-top: 1px solid #ffffff18; border-bottom: 1px solid #ffffff18; }
+  .evento-page .event-datebar__inner { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 0; padding-block: 24px 18px; }
+  .evento-page .event-datebar__inner > span { min-height: 44px; gap: 6px; font-size: 12px; line-height: 1.4; }
+  .evento-page .event-datebar__inner > span:nth-child(-n+2) { flex-direction: column; align-items: flex-start; justify-content: flex-start; }
+  .evento-page .event-datebar__inner > span:nth-child(-n+2) .icon { display: none; }
+  .evento-page .event-datebar__inner > span:nth-child(-n+2) strong { font-size: 17px; font-weight: 650; letter-spacing: -.4px; }
+  .evento-page .event-datebar__inner > span:first-child::after { content: 'Data da aula'; color: #b9cadd; font-size: 10px; }
+  .evento-page .event-datebar__inner > span:nth-child(2) { padding-left: 18px; border: 0; }
+  .evento-page .event-datebar__inner > span:nth-child(3), .evento-page .event-datebar__inner > .event-datebar__free { grid-column: auto; margin-top: 16px; padding-top: 16px; border-top: 1px solid #ffffff26; min-height: 36px; }
+  .evento-page .event-datebar__inner > span:nth-child(3) { gap: 8px; font-size: 11px; }
+  .evento-page .event-datebar .icon { width: 15px; height: 15px; color: #c3d7ec; }
+  .evento-page .event-datebar small { display: block; padding: 0; font-size: 10px; color: #b9cadd; }
+  .evento-page .event-datebar__inner > .event-datebar__free { padding-left: 18px; padding-bottom: 0; font-size: 11px; color: #d4e1ef; }
+}
+@media (prefers-reduced-motion: reduce) { .evento-page *, .evento-page *::before, .evento-page *::after { transition: none !important; scroll-behavior: auto !important; } }
