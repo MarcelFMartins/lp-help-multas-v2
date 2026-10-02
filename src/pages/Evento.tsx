@@ -147,6 +147,13 @@ type FieldErrors = {
 /* ─── Ícones (SVG inline, herdam currentColor) ─── */
 const ICON_PATHS = {
   check: <polyline points="20 6 9 17 4 12" />,
+  close: <path d="m6 6 12 12M18 6 6 18" />,
+  arrowUpRight: (
+    <>
+      <path d="M7 17 17 7" />
+      <path d="M7 7h10v10" />
+    </>
+  ),
   arrow: (
     <>
       <line x1="5" y1="12" x2="19" y2="12" />
@@ -302,6 +309,7 @@ export default function Evento() {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
+    if (submitting) return;
     setStatus(null);
 
     const fieldErrors = validate();
@@ -375,7 +383,28 @@ export default function Evento() {
 
   /* Barra fixa de CTA no mobile: aparece quando o formulário sai da tela. */
   const [showStickyCta, setShowStickyCta] = useState(false);
+  const [formModalOpen, setFormModalOpen] = useState(false);
   const formRef = useRef<HTMLDivElement>(null);
+  const formModalRef = useRef<HTMLDialogElement>(null);
+  const [inlineFormHeight, setInlineFormHeight] = useState(0);
+
+  useEffect(() => {
+    const dialog = formModalRef.current;
+    if (!dialog) return;
+    if (formModalOpen && !dialog.open) {
+      dialog.showModal();
+      nomeRef.current?.focus({ preventScroll: true });
+    } else if (!formModalOpen && dialog.open) {
+      dialog.close();
+    }
+  }, [formModalOpen]);
+
+  useEffect(() => {
+    if (!formModalOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = previousOverflow; };
+  }, [formModalOpen]);
 
   useEffect(() => {
     const el = formRef.current;
@@ -387,36 +416,14 @@ export default function Evento() {
     return () => io.disconnect();
   }, []);
 
-  function goToForm() {
-    logEvent("Evento", "action", "CTA para o formulário");
-    formRef.current?.scrollIntoView({
-      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
-      block: "center",
-    });
-    window.setTimeout(() => nomeRef.current?.focus({ preventScroll: true }), 450);
+  function openFormModal() {
+    logEvent("Evento", "action", "CTA para o formulário em modal");
+    setInlineFormHeight(formRef.current?.getBoundingClientRect().height ?? 0);
+    setFormModalOpen(true);
   }
 
-  return (
-    <div className="evento-page">
-      <header className="event-header"><div className="event-wrap event-header__inner">
-        <a href="/evento" aria-label="Help Multas — início"><img src="/image/LogotipoHelpinho.png" alt="Help Multas" width={150} height={44} /></a>
-        <span className="event-header__label">ENCONTRO ONLINE / AULA GRATUITA</span>
-        <button type="button" className="event-header__link" onClick={goToForm}>Inscreva-se <Icon name="arrow" /></button>
-      </div></header>
-      <main>
-        <section className="event-hero" aria-labelledby="hero-title">
-          <div className="event-wrap event-hero__layout">
-            <div className="event-hero__story">
-              <picture className="event-hero__photo"><source media="(max-width: 600px)" srcSet="/image/fundo-evento-mobile.webp" /><img src="/image/fundo-evento.webp" alt="Roberson Alvarenga em frente à Help Multas" width={1672} height={941} fetchPriority="high" /></picture>
-              <div className="event-hero__copy">
-                <p className="event-kicker"><span /> COM ROBERSON ALVARENGA</p>
-                <h1 id="hero-title">Um mercado<br />que está na<br /><em>sua cidade.</em></h1>
-                <p className="event-hero__intro">Descubra como empreender com a defesa de multas, com quem já construiu uma rede em todo o Brasil.</p>
-                <span className="event-hero__caption">Uma conversa sobre o negócio.<br />A operação. E por onde começar.</span>
-              </div>
-              <div className="event-hero__host"><strong>Roberson Alvarenga</strong><span>Fundador da Help Multas</span></div>
-            </div>
-                        <div className="signup" id="inscricao" ref={formRef}>
+  const signupForm = (
+<div className="signup">
               {status?.type === "success" ? (
                 <div className="success" role="status" aria-live="polite">
                   <span className="success__icon" aria-hidden="true">
@@ -531,35 +538,76 @@ export default function Evento() {
                 </>
               )}
             </div>
+  );
+
+  return (
+    <div className="evento-page">
+      <header className="event-header"><div className="event-wrap event-header__inner">
+        <a href="/evento" aria-label="Help Multas — início"><img src="/image/LogotipoHelpinho.png" alt="Help Multas" width={150} height={44} /></a>
+        <span className="event-header__label">ENCONTRO ONLINE / AULA GRATUITA</span>
+        <button type="button" className="event-header__link" onClick={openFormModal} aria-haspopup="dialog">Inscreva-se <Icon name="arrow" /></button>
+      </div></header>
+      <main>
+        <section className="event-hero" aria-labelledby="hero-title">
+          <div className="event-wrap event-hero__layout">
+            <div className="event-hero__story">
+              <picture className="event-hero__photo"><source media="(max-width: 600px)" srcSet="/image/fundo-evento-mobile.webp" /><img src="/image/fundo-evento.webp" alt="Roberson Alvarenga em frente à Help Multas" width={1672} height={941} fetchPriority="high" /></picture>
+              <div className="event-hero__copy">
+                <p className="event-kicker"><span /> COM ROBERSON ALVARENGA</p>
+                <h1 id="hero-title">Um mercado<br />que está na<br /><em>sua cidade.</em></h1>
+                <p className="event-hero__intro">Descubra como empreender com a defesa de multas, com quem já construiu uma rede em todo o Brasil.</p>
+                <span className="event-hero__caption">Uma conversa sobre o negócio.<br />A operação. E por onde começar.</span>
+              </div>
+              <div className="event-hero__host"><strong>Roberson Alvarenga</strong><span>Fundador da Help Multas</span></div>
+            </div>
+            <div className="event-signup-slot" id="inscricao" ref={formRef} style={{ minHeight: formModalOpen ? inlineFormHeight : undefined }}>{!formModalOpen && signupForm}</div>
           </div>
           <div className="event-datebar"><div className="event-wrap event-datebar__inner">
             <span><Icon name="calendar" /><strong>{EVENT_DATE_LABEL}</strong></span>
             <span><Icon name="clock" /><strong>{EVENT_TIME_LABEL}</strong><small>Horário de Brasília</small></span>
             <span><Icon name="video" /><strong>Online e ao vivo</strong></span>
-            <span className="event-datebar__free">Participação gratuita <span aria-hidden="true">↗</span></span>
+            <span className="event-datebar__free"><button type="button" onClick={openFormModal} aria-haspopup="dialog">Participação gratuita <Icon name="arrowUpRight" /></button></span>
           </div></div>
         </section>
         <section className="event-program event-wrap" aria-labelledby="program-title">
-          <div className="event-program__intro"><p className="event-kicker">01 / A CONVERSA</p><h2 id="program-title">Antes de decidir,<br /><em>entenda o negócio.</em></h2><p>Para quem quer conhecer o mercado de defesa de multas e avaliar a possibilidade de atuar na própria cidade.</p><button className="event-text-link" type="button" onClick={goToForm}>Quero participar <Icon name="arrow" /></button></div>
+          <div className="event-program__intro"><p className="event-kicker">01 / A CONVERSA</p><h2 id="program-title">Antes de decidir,<br /><em>entenda o negócio.</em></h2><p>Para quem quer conhecer o mercado de defesa de multas e avaliar a possibilidade de atuar na própria cidade.</p><button className="event-text-link" type="button" onClick={openFormModal} aria-haspopup="dialog">Quero participar <Icon name="arrow" /></button></div>
           <div className="event-program__list">{[
             { n: "01", title: "O mercado, sem rodeios.", text: "Como funciona a defesa de multas e onde estão as oportunidades para quem quer empreender." },
             { n: "02", title: "A operação por dentro.", text: "Do atendimento ao suporte jurídico: o papel de quem empreende e o trabalho da equipe técnica." },
             { n: "03", title: "O começo na sua cidade.", text: "O que observar para avaliar esse negócio e os primeiros passos para atuar com a Help Multas." },
-          ].map(item => <article className="event-program__item" key={item.n}><span>{item.n}</span><div><h3>{item.title}</h3><p>{item.text}</p></div><span className="event-program__arrow" aria-hidden="true">↗</span></article>)}</div>
+          ].map(item => <article className="event-program__item" key={item.n}><span>{item.n}</span><div><h3>{item.title}</h3><p>{item.text}</p></div><span className="event-program__arrow" aria-hidden="true"><Icon name="arrowUpRight" /></span></article>)}</div>
         </section>
         <section className="event-about" aria-labelledby="about-title"><div className="event-wrap">
           <div className="event-about__top"><div className="event-about__copy"><p className="event-kicker">02 / QUEM ESTÁ DO OUTRO LADO</p><h2 id="about-title">Experiência de quem<br /><em>vive esse mercado.</em></h2><p>Roberson Alvarenga é fundador da Help Multas. Na aula, compartilha a experiência de construir uma rede de franquias e mostra como a operação funciona no dia a dia.</p><dl className="event-numbers"><div><dt>80+</dt><dd>franquias no Brasil</dd></div><div><dt>10 anos</dt><dd>de história da Help</dd></div><div><dt>27</dt><dd>estados atendidos</dd></div></dl></div>
             <figure className="event-team"><img src="/image/TIME.jpg" alt="Equipe Help Multas reunida em frente à loja" width={1080} height={1350} loading="lazy" /><figcaption>A Help é feita de gente.<span>Equipe Help Multas / Brasil</span></figcaption></figure>
           </div>
-          <div className="event-questions"><div><p className="event-kicker">ANTES DE PARTICIPAR</p><h3>O essencial, respondido.</h3></div><div className="event-questions__list">{[
+          <div className="event-questions"><div><p className="event-kicker">ANTES DE PARTICIPAR</p><h3>O essencial, respondido.</h3><button type="button" className="btn btn--primary event-questions__cta" onClick={openFormModal} aria-haspopup="dialog">Garantir minha vaga gratuita <Icon name="arrow" /></button></div><div className="event-questions__list">{[
             { q: "A aula é gratuita?", a: "Sim. Tanto a inscrição quanto a participação na aula são gratuitas." },
             { q: "Como recebo o link?", a: "Depois do cadastro, você é direcionado ao grupo do WhatsApp. Enviamos o link da transmissão e os lembretes por lá." },
             { q: "Preciso ser advogado?", a: "Não. A equipe jurídica da Help Multas cuida da análise, elaboração da defesa e protocolo nos órgãos de trânsito." },
           ].map(item => <details key={item.q}><summary>{item.q}<span aria-hidden="true" /></summary><p>{item.a}</p></details>)}</div></div>
         </div></section>
       </main>
-      <footer className="event-footer"><div className="event-wrap"><p>© {new Date().getFullYear()} Help Multas</p><span>Defender motoristas. Abrir caminhos.</span><a href="https://www.helpmultas.com/termos-de-uso" target="_blank" rel="noopener noreferrer">Termos de uso ↗</a></div></footer>
-      {status?.type !== "success" && <div className={"sticky-cta" + (showStickyCta ? " is-visible" : "")} aria-hidden={!showStickyCta}><div><strong>Aula gratuita</strong><span>{EVENT_DATE_LABEL} · {EVENT_TIME_LABEL}</span></div><button type="button" className="btn btn--primary" onClick={goToForm} tabIndex={showStickyCta ? 0 : -1}>Quero participar <Icon name="arrow" /></button></div>}
+      <dialog
+        ref={formModalRef}
+        className="event-form-modal"
+        aria-label="Inscrição na aula gratuita"
+        onClose={() => setFormModalOpen(false)}
+        onClick={(event) => {
+          if (event.target !== event.currentTarget) return;
+          const bounds = event.currentTarget.getBoundingClientRect();
+          if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) {
+            setFormModalOpen(false);
+          }
+        }}
+      >
+        {formModalOpen && <>
+          <button type="button" className="event-form-modal__close" aria-label="Fechar formulário" onClick={() => setFormModalOpen(false)}><Icon name="close" /></button>
+          {signupForm}
+        </>}
+      </dialog>
+      <footer className="event-footer"><div className="event-wrap"><p>© {new Date().getFullYear()} Help Multas</p><span>Defender motoristas. Abrir caminhos.</span><a href="https://www.helpmultas.com/termos-de-uso" target="_blank" rel="noopener noreferrer">Termos de uso <Icon name="arrowUpRight" /></a></div></footer>
+      {status?.type !== "success" && <div className={"sticky-cta" + (showStickyCta ? " is-visible" : "")} aria-hidden={!showStickyCta}><div><strong>Aula gratuita</strong><span>{EVENT_DATE_LABEL} · {EVENT_TIME_LABEL}</span></div><button type="button" className="btn btn--primary" onClick={openFormModal} aria-haspopup="dialog" tabIndex={showStickyCta ? 0 : -1}>Quero participar <Icon name="arrow" /></button></div>}
     </div>
   );
 }
