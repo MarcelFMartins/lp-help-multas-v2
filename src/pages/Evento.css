@@ -265,14 +265,15 @@
 }
 @media (max-width: 800px) {
   .evento-page .event-datebar { background: #132b45; color: #f4f7fb; border-top: 1px solid #ffffff18; border-bottom: 1px solid #ffffff18; }
-  .evento-page .event-datebar__inner { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 0; padding-block: 24px 18px; }
+  .evento-page .event-datebar__inner { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); grid-template-rows: auto 1px auto; column-gap: 0; row-gap: 16px; padding-block: 24px 18px; align-items: stretch; }
+  .evento-page .event-datebar__inner::before { content: ''; grid-column: 1 / -1; grid-row: 2; border-top: 1px solid #ffffff26; }
   .evento-page .event-datebar__inner > span { min-height: 44px; gap: 6px; font-size: 12px; line-height: 1.4; }
-  .evento-page .event-datebar__inner > span:nth-child(-n+2) { flex-direction: column; align-items: flex-start; justify-content: flex-start; }
+  .evento-page .event-datebar__inner > span:nth-child(-n+2) { grid-row: 1; flex-direction: column; align-items: flex-start; justify-content: flex-start; }
   .evento-page .event-datebar__inner > span:nth-child(-n+2) .icon { display: none; }
   .evento-page .event-datebar__inner > span:nth-child(-n+2) strong { font-size: 17px; font-weight: 650; letter-spacing: -.4px; }
   .evento-page .event-datebar__inner > span:first-child::after { content: 'Data da aula'; color: #b9cadd; font-size: 10px; }
   .evento-page .event-datebar__inner > span:nth-child(2) { padding-left: 18px; border: 0; }
-  .evento-page .event-datebar__inner > span:nth-child(3), .evento-page .event-datebar__inner > .event-datebar__free { grid-column: auto; margin-top: 16px; padding-top: 16px; border-top: 1px solid #ffffff26; min-height: 36px; }
+  .evento-page .event-datebar__inner > span:nth-child(3), .evento-page .event-datebar__inner > .event-datebar__free { grid-column: auto; grid-row: 3; margin-top: 0; padding-top: 0; border-top: 0; min-height: 36px; }
   .evento-page .event-datebar__inner > span:nth-child(3) { gap: 8px; font-size: 11px; }
   .evento-page .event-datebar .icon { width: 15px; height: 15px; color: #c3d7ec; }
   .evento-page .event-datebar small { display: block; padding: 0; font-size: 10px; color: #b9cadd; }
