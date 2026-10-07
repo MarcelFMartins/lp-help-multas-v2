@@ -233,6 +233,13 @@
   .evento-page .countdown { border-top-color: #15213026; }
   .evento-page .event-datebar { background: transparent; }
 }
+@media (min-width: 1101px) {
+  .evento-page .event-hero__photo img { transform: translateX(4%); }
+  .evento-page .event-hero__copy { max-width: 600px; }
+  .evento-page .event-hero h1 { font-size: clamp(40px, 3.7vw, 54px); letter-spacing: -2.4px; text-wrap: balance; }
+  .evento-page .event-hero h1 .hero-br { display: none; }
+  .evento-page .event-hero__intro { max-width: 400px; }
+}
 @media (min-width: 801px) and (max-width: 1100px) {
   .evento-page .event-hero__layout { grid-template-columns: minmax(0, 1fr) 290px; gap: 24px; }
   .evento-page .signup { padding-left: 24px; }
@@ -280,3 +287,47 @@
   .evento-page .event-datebar__inner > .event-datebar__free { padding-left: 18px; padding-bottom: 0; font-size: 11px; color: #d4e1ef; }
 }
 @media (prefers-reduced-motion: reduce) { .evento-page *, .evento-page *::before, .evento-page *::after { transition: none !important; scroll-behavior: auto !important; } }
+
+/* Tablet/mobile: photo stays behind the copy, anchored bottom-right so the speaker is whole and clear of the text. */
+@media (max-width: 800px) {
+  .evento-page .event-hero__story { min-height: 640px; }
+  .evento-page .event-hero__copy { max-width: 56%; }
+  .evento-page .event-hero h1 { font-size: 40px; letter-spacing: -2px; text-wrap: balance; }
+  .evento-page .event-hero h1 .hero-br { display: none; }
+  .evento-page .event-hero__intro { max-width: 300px; }
+  .evento-page .event-hero__photo { inset: 150px -24px 0 34%; -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 22%, #000 68%, transparent 100%), linear-gradient(90deg, transparent 0, #000 28%); -webkit-mask-composite: source-in; mask-image: linear-gradient(180deg, transparent 0, #000 22%, #000 68%, transparent 100%), linear-gradient(90deg, transparent 0, #000 28%); mask-composite: intersect; }
+  .evento-page .event-hero__photo img { object-position: 62% bottom; transform: none; }
+  .evento-page .event-hero__story::after { inset: 0 -24px; background: linear-gradient(90deg, #0b1726 0%, #0b1726c0 35%, #0b172600 62%), linear-gradient(0deg, #0b1726 0%, #0b172600 22%); }
+}
+@media (max-width: 480px) {
+  .evento-page .event-hero__story { min-height: 600px; }
+  .evento-page .event-hero__copy { max-width: 100%; }
+  .evento-page .event-hero h1 { font-size: 34px; letter-spacing: -1.6px; }
+  .evento-page .event-hero__intro { max-width: 160px; font-size: 11.5px; }
+  .evento-page .event-hero__caption { max-width: 175px; }
+  .evento-page .event-hero__photo { inset: 215px -18px 35px 20%; top: 215px; -webkit-mask-image: linear-gradient(180deg, #000 62%, transparent 100%); mask-image: linear-gradient(180deg, #000 62%, transparent 100%); }
+  .evento-page .event-hero__photo img { object-position: 22% bottom; transform: none; }
+  .evento-page .event-hero__story::after { inset: 0 -18px; }
+}
+@media (min-width: 801px) and (max-width: 1100px) {
+  .evento-page .event-hero h1 { font-size: 40px; letter-spacing: -2px; text-wrap: balance; }
+  .evento-page .event-hero h1 .hero-br { display: none; }
+  .evento-page .event-hero__copy { max-width: 400px; }
+  .evento-page .event-hero__photo img { transform: translateX(6%); }
+}
+
+.evento-page .event-hero__intro { text-align: justify; hyphens: auto; -webkit-hyphens: auto; }
+
+/* Hero headline: geometric sans + italic display serif in warm gold. */
+.evento-page .event-hero h1 { font-family: Montserrat, Arial, sans-serif; font-weight: 700; letter-spacing: -.045em; line-height: 1.08; }
+.evento-page .event-hero h1 em { font-family: 'Playfair Display', Georgia, serif; font-style: italic; font-weight: 600; letter-spacing: -.02em; color: #f7c948; background: linear-gradient(95deg, #ffd964 0%, #f5bf23 55%, #e8a812 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+
+/* Desktop/tablet-landscape: the headline column is sized from the viewport so it always ends before the speaker (his left edge is ~43% of the width). */
+@media (min-width: 801px) {
+  .evento-page .event-hero__copy { --hero-left: max(40px, calc((100vw - 1280px) / 2)); --hero-avail-fallback: calc(40vw - var(--hero-left)); max-width: var(--hero-avail, var(--hero-avail-fallback)); }
+  .evento-page .event-hero h1 { font-size: clamp(28px, calc(var(--hero-avail, var(--hero-avail-fallback)) / 10.8), 56px); }
+  .evento-page .event-hero__intro { max-width: min(400px, calc(var(--hero-avail, var(--hero-avail-fallback)) - 36px)); }
+}
+@media (min-width: 801px) and (max-width: 1100px) {
+  .evento-page .event-hero__copy { --hero-left: 24px; }
+}

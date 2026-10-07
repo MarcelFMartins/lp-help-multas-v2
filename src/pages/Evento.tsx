@@ -388,6 +388,32 @@ export default function Evento() {
   const formModalRef = useRef<HTMLDialogElement>(null);
   const [inlineFormHeight, setInlineFormHeight] = useState(0);
 
+  // Keeps the headline column to the left of the speaker: the photo's crop depends on the hero's
+  // width AND height, so measure where he actually is and publish the free width as a CSS variable.
+  useEffect(() => {
+    const hero = document.querySelector<HTMLElement>(".event-hero");
+    const img = hero?.querySelector<HTMLImageElement>(".event-hero__photo img");
+    const copy = hero?.querySelector<HTMLElement>(".event-hero__copy");
+    if (!hero || !img || !copy || typeof ResizeObserver === "undefined") return;
+    const update = () => {
+      if (window.innerWidth <= 800 || !img.naturalWidth) { hero.style.removeProperty("--hero-avail"); return; }
+      const r = img.getBoundingClientRect();
+      const scale = Math.max(r.width / img.naturalWidth, r.height / img.naturalHeight);
+      const cw = img.naturalWidth * scale;
+      const posX = parseFloat(getComputedStyle(img).objectPosition.split(" ")[0]) / 100 || 0.5;
+      const manLeft = r.left + (r.width - cw) * posX + 0.38 * cw;
+      const avail = Math.round(manLeft - 24 - copy.getBoundingClientRect().left);
+      const prev = parseFloat(hero.style.getPropertyValue("--hero-avail"));
+      if (!(Math.abs(prev - avail) < 3)) hero.style.setProperty("--hero-avail", `${Math.max(240, avail)}px`);
+    };
+    const ro = new ResizeObserver(update);
+    ro.observe(hero);
+    img.addEventListener("load", update);
+    window.addEventListener("resize", update);
+    update();
+    return () => { ro.disconnect(); img.removeEventListener("load", update); window.removeEventListener("resize", update); };
+  }, []);
+
   useEffect(() => {
     const dialog = formModalRef.current;
     if (!dialog) return;
@@ -554,7 +580,7 @@ export default function Evento() {
               <picture className="event-hero__photo"><source media="(max-width: 600px)" srcSet="/image/fundo-evento-mobile.webp" /><img src="/image/fundo-evento.webp" alt="Roberson Alvarenga em frente à Help Multas" width={1672} height={941} fetchPriority="high" /></picture>
               <div className="event-hero__copy">
                 <p className="event-kicker"><span /> COM ROBERSON ALVARENGA</p>
-                <h1 id="hero-title">Como faturar com<br />as 80 milhões<br />de multas aplicadas<br />por ano que quase<br /><em>ninguém explora<br />na sua cidade</em></h1>
+                <h1 id="hero-title">Como faturar com<br className="hero-br" /> as 80 milhões<br className="hero-br" /> de multas aplicadas<br className="hero-br" /> por ano<br /><em>que quase<br className="hero-br" /> ninguém explora<br className="hero-br" /> na sua cidade</em></h1>
                 <p className="event-hero__intro">Participe de uma aula ao vivo com Roberson Alvarenga e descubra como funciona o mercado de defesa de multas, por que ele continua crescendo e como pessoas comuns estão construindo negócios nesse setor, mesmo sem serem advogadas ou especialistas em trânsito.</p>
                 <span className="event-hero__caption">Uma conversa sobre o negócio.<br />A operação. E por onde começar.</span>
               </div>
