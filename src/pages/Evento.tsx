@@ -554,7 +554,7 @@ export default function Evento() {
               <picture className="event-hero__photo"><source media="(max-width: 600px)" srcSet="/image/fundo-evento-mobile.webp" /><img src="/image/fundo-evento.webp" alt="Roberson Alvarenga em frente à Help Multas" width={1672} height={941} fetchPriority="high" /></picture>
               <div className="event-hero__copy">
                 <p className="event-kicker"><span /> COM ROBERSON ALVARENGA</p>
-                <h1 id="hero-title">Como faturar com as 100 milhões<br />de multas aplicadas por ano que quase<br /><em>ninguém explora na sua cidade</em></h1>
+                <h1 id="hero-title">Como faturar com<br />as 80 milhões de multas<br />aplicadas por ano que quase<br /><em>ninguém explora<br />na sua cidade</em></h1>
                 <p className="event-hero__intro">Participe de uma aula ao vivo com Roberson Alvarenga e descubra como funciona o mercado de defesa de multas, por que ele continua crescendo e como pessoas comuns estão construindo negócios nesse setor, mesmo sem serem advogadas ou especialistas em trânsito.</p>
                 <span className="event-hero__caption">Uma conversa sobre o negócio.<br />A operação. E por onde começar.</span>
               </div>
