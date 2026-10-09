@@ -16,6 +16,7 @@ import ContatoWhatsApp from "@/pages/ContatoWhatsApp";
 import BioRoberson from "@/pages/BioRoberson";
 import Evento from "@/pages/Evento";
 import EventoChat from "@/pages/EventoChat";
+import EventoNova from "@/pages/EventoNova";
 import Logs from "@/pages/Logs";
 import { logEvent, initGlobalErrorLogging } from "@/lib/logger";
 
@@ -49,6 +50,8 @@ function Router() {
       <Route path="/evento" component={Evento} />
 
       <Route path="/evento-chat" component={EventoChat} />
+
+      <Route path="/evento-nova" component={EventoNova} />
 
       <Route path="/logs" component={Logs} />
 
