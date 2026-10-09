@@ -47,11 +47,11 @@ function Router() {
 
       <Route path="/franquia" component={BioRoberson} />
 
-      <Route path="/evento" component={Evento} />
+      <Route path="/evento-antiga" component={Evento} />
 
       <Route path="/evento-chat" component={EventoChat} />
 
-      <Route path="/evento-nova" component={EventoNova} />
+      <Route path="/evento" component={EventoNova} />
 
       <Route path="/logs" component={Logs} />
 

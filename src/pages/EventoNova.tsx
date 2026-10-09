@@ -7,7 +7,7 @@ import { logEvent } from "@/lib/logger";
 import { sendEventLeadToCrm } from "@/lib/eventCrm";
 
 /*
- * /evento-nova — nova versão da LP da aula gratuita.
+ * /evento — nova versão da LP da aula gratuita.
  * Mesma integração da /evento: Google Sheets + CRM (intake) + Marketing Hub,
  * UTMs/fbp/fbc e redirecionamento para o grupo do WhatsApp.
  */
@@ -50,6 +50,7 @@ const EVENT_TIME_LABEL = (() => {
 
 const PAGE_TITLE = "Aula Gratuita | Mercado de Defesa de Multas | Help Multas";
 const IMG = "/image/evento-nova";
+const META_PIXEL_ID = "1558928198671104";
 
 /* ─── Telefone ─── */
 const DDD = [
@@ -500,7 +501,7 @@ export default function EventoNova() {
     const meta = window.getMetaTrackingData?.() || { fbp: "", fbc: "", fbclid: "" };
 
     // CRM + Marketing Hub (fire-and-forget, nunca lança)
-    sendEventLeadToCrm({
+    const crmPromise = sendEventLeadToCrm({
       name: nome.trim(),
       email: email.trim(),
       phone: digits,
@@ -515,7 +516,7 @@ export default function EventoNova() {
       utm_id: utm.utm_id,
     });
 
-    const ok = await submitToSheets({
+    const sheetsPromise = submitToSheets({
       nome: nome.trim(),
       email: email.trim(),
       whatsapp: formatPhoneForSheet(digits),
@@ -527,6 +528,21 @@ export default function EventoNova() {
       utmTerm: utm.utm_term,
       pageUrl: window.location.href,
     });
+
+    // espera o CRM (no máx. 5s) — o Lead da Meta só sai se o CRM respondeu OK
+    const crmOk = await Promise.race([
+      crmPromise,
+      new Promise<boolean>((resolve) => window.setTimeout(() => resolve(false), 5000)),
+    ]);
+    if (crmOk) {
+      const eventID = `lead-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+      window.fbq?.("trackSingle", META_PIXEL_ID, "Lead", { content_name: "Landing Page Evento" }, { eventID });
+      logEvent(PAGE_NAME, "pixel_event", "fbq trackSingle Lead disparado", { pixelId: META_PIXEL_ID, eventID });
+    } else {
+      logEvent(PAGE_NAME, "error", "Lead não disparado no pixel — CRM não respondeu OK");
+    }
+
+    const ok = await sheetsPromise;
 
     if (ok) {
       sentRef.current = true;

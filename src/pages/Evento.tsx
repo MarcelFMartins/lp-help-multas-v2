@@ -543,7 +543,7 @@ export default function Evento() {
   return (
     <div className="evento-page">
       <header className="event-header"><div className="event-wrap event-header__inner">
-        <a href="/evento" aria-label="Help Multas — início"><img src="/image/LogotipoHelpinho.png" alt="Help Multas" width={150} height={44} /></a>
+        <a href="/evento-antiga" aria-label="Help Multas — início"><img src="/image/LogotipoHelpinho.png" alt="Help Multas" width={150} height={44} /></a>
         <span className="event-header__label">ENCONTRO ONLINE / AULA GRATUITA</span>
         <button type="button" className="event-header__link" onClick={openFormModal} aria-haspopup="dialog">Inscreva-se <Icon name="arrow" /></button>
       </div></header>

@@ -23,13 +23,13 @@ export interface EventLeadData {
   utm_id?: string;
 }
 
-/** Fire-and-forget: nunca lança erro, só loga em caso de falha. */
-export function sendEventLeadToCrm(lead: EventLeadData) {
+/** Nunca lança erro. Resolve `true` somente se o CRM respondeu OK (quem não precisar do resultado pode ignorar a Promise). */
+export function sendEventLeadToCrm(lead: EventLeadData): Promise<boolean> {
   // Em paralelo, sem depender do CRM: casa o lead com o anúncio (via UTM) no
   // Marketing Hub, igual ao Hero/CTA da home.
   sendToMarketingHub({ ...lead, page_origin: "evento" });
 
-  fetch(EVENT_CRM_URL, {
+  return fetch(EVENT_CRM_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -40,9 +40,13 @@ export function sendEventLeadToCrm(lead: EventLeadData) {
     .then(async (res) => {
       if (!res.ok) {
         console.error("Erro CRM evento:", res.status, await res.text().catch(() => ""));
-      } else {
-        console.log("CRM evento OK");
+        return false;
       }
+      console.log("CRM evento OK");
+      return true;
     })
-    .catch((err) => console.error("Erro CRM evento:", err));
+    .catch((err) => {
+      console.error("Erro CRM evento:", err);
+      return false;
+    });
 }
