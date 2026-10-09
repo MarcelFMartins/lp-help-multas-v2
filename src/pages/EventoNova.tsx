@@ -255,7 +255,6 @@ export default function EventoNova() {
   const [touched, setTouched] = useState<Record<FieldKey, boolean>>({ nome: false, email: false, whats: false });
   const [submitting, setSubmitting] = useState(false);
   const [sendError, setSendError] = useState(false);
-  const [sent, setSent] = useState(false);
 
   const [formOpen, setFormOpen] = useState(false);
   const [exitOpen, setExitOpen] = useState(false);
@@ -540,11 +539,29 @@ export default function EventoNova() {
       pageUrl: window.location.href,
     });
 
-    // espera o CRM (no máx. 5s) — o Lead da Meta só sai se o CRM respondeu OK
-    const crmOk = await Promise.race([
-      crmPromise,
-      new Promise<boolean>((resolve) => window.setTimeout(() => resolve(false), 5000)),
-    ]);
+    // espera o CRM (no máx. 10s) — só redireciona se o CRM respondeu OK; uma nova tentativa se falhar
+    const waitCrm = (p: Promise<boolean>) =>
+      Promise.race([p, new Promise<boolean>((resolve) => window.setTimeout(() => resolve(false), 10000))]);
+    let crmOk = await waitCrm(crmPromise);
+    if (!crmOk) {
+      logEvent(PAGE_NAME, "crm_retry", "CRM não respondeu OK — nova tentativa");
+      crmOk = await waitCrm(
+        sendEventLeadToCrm({
+          name: nome.trim(),
+          email: email.trim(),
+          phone: digits,
+          fbp: meta.fbp || "",
+          fbc: meta.fbc || "",
+          fbclid: meta.fbclid || "",
+          utm_source: utm.utm_source,
+          utm_medium: utm.utm_medium,
+          utm_campaign: utm.utm_campaign,
+          utm_content: utm.utm_content,
+          utm_term: utm.utm_term,
+          utm_id: utm.utm_id,
+        }),
+      );
+    }
     if (crmOk) {
       const eventID = `lead-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
       window.fbq?.("trackSingle", META_PIXEL_ID, "Lead", { content_name: "Landing Page Evento" }, { eventID });
@@ -553,16 +570,13 @@ export default function EventoNova() {
       logEvent(PAGE_NAME, "error", "Lead não disparado no pixel — CRM não respondeu OK");
     }
 
-    const ok = await sheetsPromise;
+    // dá uma folga curta à planilha (backup), sem travar o redirecionamento
+    await Promise.race([sheetsPromise, new Promise((resolve) => window.setTimeout(resolve, 1500))]);
 
-    if (ok) {
+    if (crmOk) {
       sentRef.current = true;
-      setSent(true);
-      setSubmitting(false);
-      window.setTimeout(() => {
-        window.location.href = WHATSAPP_GROUP_URL;
-      }, 1200);
-      return;
+      window.location.href = WHATSAPP_GROUP_URL;
+      return; // mantém "submitting" até a página trocar
     }
 
     setSendError(true);
@@ -576,22 +590,7 @@ export default function EventoNova() {
     const p = inModal ? "en" : "en-hero";
     return (
       <>
-    {sent ? (
-      <div className="form-ok" role="status" aria-live="polite">
-        <div className="check">
-          <Icon name="check" strokeWidth={2.4} />
-        </div>
-        <div className="eyebrow">Vaga garantida</div>
-        <h3>Sua vaga está confirmada</h3>
-        <p className="sub">
-          Estamos te levando para o grupo do WhatsApp, onde você recebe o <strong>link da transmissão</strong> e
-          os lembretes.
-        </p>
-        <a className="cta" href={WHATSAPP_GROUP_URL}>
-          <span>Entrar no grupo agora</span>
-        </a>
-      </div>
-    ) : (
+    {(
       <form onSubmit={handleSubmit} noValidate>
         <div className="eyebrow">Inscrição gratuita</div>
         <h3 id={inModal ? "formTitle" : undefined}>Garanta sua vaga na aula</h3>
@@ -728,14 +727,14 @@ export default function EventoNova() {
               <span className="mark">faturar mais de R$ 30 mil por mês</span>
             </h1>
             <p className="lead">
-              <strong>Roberson Alvarenga</strong> abre por dentro como funciona uma operação da Help Multas: pouca
-              estrutura, equipe enxuta e o caminho até os R$ 30 mil por mês,{" "}
+              <strong>Roberson Alvarenga</strong> abre o jogo sobre a operação da Help Multas: pouca estrutura,
+              equipe enxuta e o caminho até os R$ 30 mil por mês,{" "}
               <strong>mesmo que você nunca tenha ouvido falar em recurso de multa.</strong>
             </p>
           </div>
 
           <div className="hero-form" ref={heroActionsRef}>
-            <div className={"form-card" + (sent ? " sent" : "")}>{renderForm("hero")}</div>
+            <div className={"form-card"}>{renderForm("hero")}</div>
           </div>
         </div>
       </section>
@@ -981,7 +980,7 @@ export default function EventoNova() {
       <div className={"modal" + (formOpen ? " open" : "")} id="inscricao" aria-hidden={!formOpen}>
         <div className="modal-bg" onClick={() => setFormOpen(false)} />
         <div
-          className={"form-card" + (sent ? " sent" : "")}
+          className={"form-card"}
           data-lenis-prevent
           role="dialog"
           aria-modal="true"
@@ -1022,7 +1021,7 @@ export default function EventoNova() {
         </div>
       </div>
 
-      {!sent && (
+      {(
         <div className={"sticky" + (showSticky && !anyModal ? " show" : "")} aria-hidden={!showSticky}>
           <a
             href="#inscricao"
