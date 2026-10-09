@@ -174,6 +174,12 @@ const ICONS = {
       <path d="M8 11V7a4 4 0 0 1 8 0v4" />
     </>
   ),
+  clock: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3 2" />
+    </>
+  ),
   close: <path d="M6 6l12 12M18 6L6 18" />,
   check: <path d="M5 12.5l4.5 4.5L19 7.5" />,
 } as const;
@@ -242,8 +248,6 @@ export default function EventoNova() {
   const rootRef = useRef<HTMLDivElement>(null);
   const heroActionsRef = useRef<HTMLDivElement>(null);
   const nomeRef = useRef<HTMLInputElement>(null);
-  const emailRef = useRef<HTMLInputElement>(null);
-  const whatsRef = useRef<HTMLInputElement>(null);
 
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
@@ -420,6 +424,12 @@ export default function EventoNova() {
     if (window.innerWidth > 640) window.setTimeout(() => nomeRef.current?.focus({ preventScroll: true }), 80);
   }, []);
 
+  /* ─── abre o formulário assim que a página carrega ─── */
+  useEffect(() => {
+    const t = window.setTimeout(() => openForm("entrada"), 400);
+    return () => window.clearTimeout(t);
+  }, [openForm]);
+
   /* ─── pop-up de saída: uma vez por visita ─── */
   useEffect(() => {
     let seen = false;
@@ -484,15 +494,16 @@ export default function EventoNova() {
     }
   }
 
-  async function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (submitting) return;
     setSendError(false);
     setTouched({ nome: true, email: true, whats: true });
 
-    if (nomeBad) return void nomeRef.current?.focus();
-    if (emailBad) return void emailRef.current?.focus();
-    if (!whatsOk) return void whatsRef.current?.focus();
+    const focusField = (name: string) => e.currentTarget.querySelector<HTMLInputElement>(`[name="${name}"]`)?.focus();
+    if (nomeBad) return void focusField("nome");
+    if (emailBad) return void focusField("email");
+    if (!whatsOk) return void focusField("whatsapp");
 
     setSubmitting(true);
     logEvent(PAGE_NAME, "action", "Formulário enviado", { nome, email });
@@ -560,6 +571,134 @@ export default function EventoNova() {
 
   const fieldClass = (bad: boolean, good = false) => (bad ? "bad" : good ? "good" : undefined);
 
+  const renderForm = (where: "hero" | "modal") => {
+    const inModal = where === "modal";
+    const p = inModal ? "en" : "en-hero";
+    return (
+      <>
+    {sent ? (
+      <div className="form-ok" role="status" aria-live="polite">
+        <div className="check">
+          <Icon name="check" strokeWidth={2.4} />
+        </div>
+        <div className="eyebrow">Vaga garantida</div>
+        <h3>Sua vaga está confirmada</h3>
+        <p className="sub">
+          Estamos te levando para o grupo do WhatsApp, onde você recebe o <strong>link da transmissão</strong> e
+          os lembretes.
+        </p>
+        <a className="cta" href={WHATSAPP_GROUP_URL}>
+          <span>Entrar no grupo agora</span>
+        </a>
+      </div>
+    ) : (
+      <form onSubmit={handleSubmit} noValidate>
+        <div className="eyebrow">Inscrição gratuita</div>
+        <h3 id={inModal ? "formTitle" : undefined}>Garanta sua vaga na aula</h3>
+        <p className="sub">Preencha seus dados para receber o link da transmissão e os lembretes pelo WhatsApp.</p>
+
+        <div className="form-when">
+          <span>
+            <Icon name="calendar" />
+            {EVENT_DATE_LABEL}
+          </span>
+          <span>
+            <Icon name="clock" />
+            {EVENT_TIME_LABEL} (Brasília)
+          </span>
+          <span>
+            <Icon name="live" />
+            Online
+          </span>
+        </div>
+
+        <div className="field">
+          <label htmlFor={`${p}-nome`}>Nome</label>
+          <input
+            id={`${p}-nome`}
+            name="nome"
+            type="text"
+            placeholder="Seu nome completo"
+            autoComplete="name"
+            required
+            ref={inModal ? nomeRef : undefined}
+            value={nome}
+            className={fieldClass(touched.nome && nomeBad)}
+            onChange={(e) => setNome(e.target.value)}
+            onBlur={() => nome && touch("nome")}
+            aria-invalid={touched.nome && nomeBad ? "true" : undefined}
+          />
+          <span className={"err" + (touched.nome && nomeBad ? " show" : "")} role="alert">
+            Digite seu nome.
+          </span>
+        </div>
+
+        <div className="field">
+          <label htmlFor={`${p}-email`}>E-mail</label>
+          <input
+            id={`${p}-email`}
+            name="email"
+            type="email"
+            placeholder="seuemail@exemplo.com"
+            autoComplete="email"
+            required
+            value={email}
+            className={fieldClass(touched.email && emailBad)}
+            onChange={(e) => setEmail(e.target.value)}
+            onBlur={() => email && touch("email")}
+            aria-invalid={touched.email && emailBad ? "true" : undefined}
+          />
+          <span className={"err" + (touched.email && emailBad ? " show" : "")} role="alert">
+            Digite um e-mail válido.
+          </span>
+        </div>
+
+        <div className="field">
+          <label htmlFor={`${p}-whats`}>WhatsApp</label>
+          <div className="phone-wrap">
+            <input
+              id={`${p}-whats`}
+              name="whatsapp"
+              type="tel"
+              inputMode="numeric"
+              maxLength={19}
+              placeholder="+55 (00) 00000-0000"
+              autoComplete="tel-national"
+              required
+              value={whats}
+              className={fieldClass(!!whatsMsg, whatsOk)}
+              onChange={(e) => setWhats(maskPhone(phoneDigits(e.target.value)))}
+              onBlur={() => whats && touch("whats")}
+              aria-invalid={whatsMsg ? "true" : undefined}
+            />
+            <span className="ok-ic" aria-hidden="true">
+              <Icon name="check" strokeWidth={2.6} />
+            </span>
+          </div>
+          <span className={"err" + (whatsMsg ? " show" : "")} role="alert" aria-live="polite">
+            {whatsMsg}
+          </span>
+        </div>
+
+        {sendError && (
+          <p className="err show send-err" role="alert">
+            Não foi possível enviar seus dados agora. Tente novamente em instantes.
+          </p>
+        )}
+
+        <button type="submit" className="cta" disabled={submitting}>
+          <span>{submitting ? "Enviando..." : "Garantir minha vaga"}</span>
+        </button>
+        <div className="form-note">
+          <Icon name="lock" strokeWidth={2} />
+          Seus dados estão protegidos
+        </div>
+      </form>
+    )}
+      </>
+    );
+  };
+
   const open = (source: string) => (e: { preventDefault: () => void }) => {
     e.preventDefault();
     openForm(source);
@@ -593,47 +732,10 @@ export default function EventoNova() {
               estrutura, equipe enxuta e o caminho até os R$ 30 mil por mês,{" "}
               <strong>mesmo que você nunca tenha ouvido falar em recurso de multa.</strong>
             </p>
-            <div className="hero-actions" ref={heroActionsRef}>
-              <a href="#inscricao" className="cta cta-2l" onClick={open("hero")}>
-                <span>
-                  <b>Garantir minha vaga</b>
-                  <small>Online e gratuito</small>
-                </span>
-              </a>
-            </div>
           </div>
 
-          <div className="hero-photo">
-            <div className="orbit o2" />
-            <div className="orbit o1" />
-            <div className="sun" />
-            <img
-              src={`${IMG}/roberson-hero.webp`}
-              alt="Roberson Alvarenga, fundador da Help Multas"
-              className="cutout"
-              fetchPriority="high"
-            />
-            <div className="bubble bubble-date">
-              <span className="bd-ic">
-                <Icon name="calendar" />
-              </span>
-              <span>{EVENT_DATE_LABEL}</span>
-            </div>
-            <div className="chip c1 live">
-              <span className="ic">
-                <Icon name="live" />
-              </span>
-              <div>
-                <small>Transmissão</small>
-                <b>Ao vivo e online</b>
-              </div>
-            </div>
-            <div className="name-plate">
-              <div>
-                <small>Fundador da Help Multas</small>
-                <b>Roberson Alvarenga</b>
-              </div>
-            </div>
+          <div className="hero-form" ref={heroActionsRef}>
+            <div className={"form-card" + (sent ? " sent" : "")}>{renderForm("hero")}</div>
           </div>
         </div>
       </section>
@@ -889,112 +991,7 @@ export default function EventoNova() {
             <Icon name="close" strokeWidth={2} />
           </button>
 
-          {sent ? (
-            <div className="form-ok" role="status" aria-live="polite">
-              <div className="check">
-                <Icon name="check" strokeWidth={2.4} />
-              </div>
-              <div className="eyebrow">Vaga garantida</div>
-              <h3>Sua vaga está confirmada</h3>
-              <p className="sub">
-                Estamos te levando para o grupo do WhatsApp, onde você recebe o <strong>link da transmissão</strong> e
-                os lembretes.
-              </p>
-              <a className="cta" href={WHATSAPP_GROUP_URL}>
-                <span>Entrar no grupo agora</span>
-              </a>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} noValidate>
-              <div className="eyebrow">Inscrição gratuita</div>
-              <h3 id="formTitle">Garanta sua vaga na aula</h3>
-              <p className="sub">Preencha seus dados para receber o link da transmissão e os lembretes pelo WhatsApp.</p>
-
-              <div className="field">
-                <label htmlFor="en-nome">Nome</label>
-                <input
-                  id="en-nome"
-                  name="nome"
-                  type="text"
-                  placeholder="Seu nome completo"
-                  autoComplete="name"
-                  required
-                  ref={nomeRef}
-                  value={nome}
-                  className={fieldClass(touched.nome && nomeBad)}
-                  onChange={(e) => setNome(e.target.value)}
-                  onBlur={() => nome && touch("nome")}
-                  aria-invalid={touched.nome && nomeBad ? "true" : undefined}
-                />
-                <span className={"err" + (touched.nome && nomeBad ? " show" : "")} role="alert">
-                  Digite seu nome.
-                </span>
-              </div>
-
-              <div className="field">
-                <label htmlFor="en-email">E-mail</label>
-                <input
-                  id="en-email"
-                  name="email"
-                  type="email"
-                  placeholder="seuemail@exemplo.com"
-                  autoComplete="email"
-                  required
-                  ref={emailRef}
-                  value={email}
-                  className={fieldClass(touched.email && emailBad)}
-                  onChange={(e) => setEmail(e.target.value)}
-                  onBlur={() => email && touch("email")}
-                  aria-invalid={touched.email && emailBad ? "true" : undefined}
-                />
-                <span className={"err" + (touched.email && emailBad ? " show" : "")} role="alert">
-                  Digite um e-mail válido.
-                </span>
-              </div>
-
-              <div className="field">
-                <label htmlFor="en-whats">WhatsApp</label>
-                <div className="phone-wrap">
-                  <input
-                    id="en-whats"
-                    name="whatsapp"
-                    type="tel"
-                    inputMode="numeric"
-                    maxLength={19}
-                    placeholder="+55 (00) 00000-0000"
-                    autoComplete="tel-national"
-                    required
-                    ref={whatsRef}
-                    value={whats}
-                    className={fieldClass(!!whatsMsg, whatsOk)}
-                    onChange={(e) => setWhats(maskPhone(phoneDigits(e.target.value)))}
-                    onBlur={() => whats && touch("whats")}
-                    aria-invalid={whatsMsg ? "true" : undefined}
-                  />
-                  <span className="ok-ic" aria-hidden="true">
-                    <Icon name="check" strokeWidth={2.6} />
-                  </span>
-                </div>
-                <span className={"err" + (whatsMsg ? " show" : "")} role="alert" aria-live="polite">
-                  {whatsMsg}
-                </span>
-              </div>
-
-              {sendError && (
-                <p className="err show send-err" role="alert">
-                  Não foi possível enviar seus dados agora. Tente novamente em instantes.
-                </p>
-              )}
-
-              <button type="submit" className="cta" disabled={submitting}>
-                <span>{submitting ? "Enviando..." : "Quero participar da aula gratuita"}</span>
-              </button>
-              <div className="form-note">
-                <Icon name="lock" strokeWidth={2} />
-                Seus dados estão protegidos
-              </div>
-            </form>
-          )}
+          {renderForm("modal")}
         </div>
       </div>
 

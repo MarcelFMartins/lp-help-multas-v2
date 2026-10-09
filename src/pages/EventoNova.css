@@ -563,3 +563,48 @@ html.lenis,html.lenis body{height:auto}
   .evento-nova .steps-line{display:block;left:21px;right:auto;top:22px;bottom:22px;width:2px;height:auto}
   .evento-nova .steps-line i{transform:none!important;background:rgba(245,191,35,.45)}
 }
+
+/* hero com formulário embutido: texto | foto | formulário */
+.evento-nova .hero .wrap.hero-grid{max-width:1380px;grid-template-columns:minmax(0,1fr) minmax(0,380px) 390px;gap:28px;column-gap:64px;align-items:center}
+.evento-nova .hero .hero-photo{align-self:stretch;min-height:560px}
+.evento-nova .hero .sun{width:360px;height:360px}
+.evento-nova .hero .orbit.o1{width:450px;height:450px}
+.evento-nova .hero .orbit.o2{width:540px;height:540px}
+.evento-nova .hero .hero-photo .cutout{max-width:440px;margin-top:16px}
+.evento-nova .hero .hero-photo .chip.c1{left:-30px}
+.evento-nova .hero .hero-photo .bubble{right:-6px}
+.evento-nova .hero-form{position:relative;z-index:6;padding:40px 0}
+.evento-nova .hero-form .form-card{max-width:none;max-height:none;overflow:visible;padding:30px 26px 22px;box-shadow:0 30px 60px -20px rgba(11,23,38,.45);animation:none}
+.evento-nova .hero-form .form-card h3{font-size:22px}
+.evento-nova .hero-form .form-card p.sub{margin-bottom:18px;font-size:14px}
+.evento-nova .hero-form .field{margin-bottom:12px}
+.evento-nova .hero-form .field input{padding:13px 14px}
+
+/* telas médias: sai a foto, fica texto + formulário */
+@media (max-width:1180px){
+  .evento-nova .hero .wrap.hero-grid{grid-template-columns:minmax(0,1fr) 400px;gap:40px}
+  .evento-nova .hero .hero-photo{display:none}
+}
+/* celular/tablet: só texto e formulário, empilhados */
+@media (max-width:980px){
+  .evento-nova .hero .wrap.hero-grid{grid-template-columns:1fr;gap:0}
+  .evento-nova .hero-form{padding:8px 0 48px;max-width:480px;margin:0 auto;width:100%;text-align:left}
+}
+@media (max-width:640px){
+  .evento-nova .hero-form{padding:4px 0 36px}
+  .evento-nova .hero-form .form-card{padding:24px 18px 18px;border-radius:20px}
+}
+
+/* hero sem foto: texto | formulário */
+.evento-nova .hero .wrap.hero-grid{max-width:1200px;grid-template-columns:minmax(0,1fr) 420px;column-gap:72px}
+.evento-nova .hero-form{padding:48px 0}
+/* data e hora no formulário */
+.evento-nova .form-when{display:flex;flex-wrap:wrap;gap:8px;margin:-6px 0 20px}
+.evento-nova .form-when span{display:inline-flex;align-items:center;gap:7px;padding:7px 11px;border-radius:999px;background:rgba(245,191,35,.1);border:1px solid rgba(245,191,35,.3);font-size:13px;font-weight:700;color:var(--cream)}
+.evento-nova .form-when svg{width:15px;height:15px;color:var(--yellow)}
+@media (max-width:1180px){
+  .evento-nova .hero .wrap.hero-grid{grid-template-columns:minmax(0,1fr) 400px;column-gap:40px}
+}
+@media (max-width:980px){
+  .evento-nova .hero .wrap.hero-grid{grid-template-columns:1fr}
+}
