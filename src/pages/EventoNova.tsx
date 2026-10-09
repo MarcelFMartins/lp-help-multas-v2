@@ -604,7 +604,7 @@ export default function EventoNova() {
           </span>
           <span>
             <Icon name="clock" />
-            {EVENT_TIME_LABEL} (Brasília)
+            {EVENT_TIME_LABEL}
           </span>
           <span>
             <Icon name="live" />
