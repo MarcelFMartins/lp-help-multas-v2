@@ -21,7 +21,7 @@ const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/K56JiM8uHTi0n8GcdyKwM8";
 
 /* Única fonte de verdade da data da aula (horário de Brasília).
  * Ao trocar a data, todos os textos da página se atualizam sozinhos. */
-const EVENT_START_ISO = "2026-09-30T19:00:00-03:00";
+const EVENT_START_ISO = "2026-10-14T19:00:00-03:00";
 
 const EVENT_START = new Date(EVENT_START_ISO);
 
