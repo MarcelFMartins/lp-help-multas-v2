@@ -10,7 +10,7 @@ const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/K56JiM8uHTi0n8GcdyKwM8";
 
 /* Única fonte de verdade da data da aula (horário de Brasília).
  * Ao trocar a data, os textos da página e o contador se atualizam sozinhos. */
-const EVENT_START_ISO = "2026-09-30T19:00:00-03:00";
+const EVENT_START_ISO = "2026-10-14T19:00:00-03:00";
 
 const EVENT_START = new Date(EVENT_START_ISO);
 
@@ -388,6 +388,32 @@ export default function Evento() {
   const formModalRef = useRef<HTMLDialogElement>(null);
   const [inlineFormHeight, setInlineFormHeight] = useState(0);
 
+  // Keeps the headline column to the left of the speaker: the photo's crop depends on the hero's
+  // width AND height, so measure where he actually is and publish the free width as a CSS variable.
+  useEffect(() => {
+    const hero = document.querySelector<HTMLElement>(".event-hero");
+    const img = hero?.querySelector<HTMLImageElement>(".event-hero__photo img");
+    const copy = hero?.querySelector<HTMLElement>(".event-hero__copy");
+    if (!hero || !img || !copy || typeof ResizeObserver === "undefined") return;
+    const update = () => {
+      if (window.innerWidth <= 800 || !img.naturalWidth) { hero.style.removeProperty("--hero-avail"); return; }
+      const r = img.getBoundingClientRect();
+      const scale = Math.max(r.width / img.naturalWidth, r.height / img.naturalHeight);
+      const cw = img.naturalWidth * scale;
+      const posX = parseFloat(getComputedStyle(img).objectPosition.split(" ")[0]) / 100 || 0.5;
+      const manLeft = r.left + (r.width - cw) * posX + 0.38 * cw;
+      const avail = Math.round(manLeft - 24 - copy.getBoundingClientRect().left);
+      const prev = parseFloat(hero.style.getPropertyValue("--hero-avail"));
+      if (!(Math.abs(prev - avail) < 3)) hero.style.setProperty("--hero-avail", `${Math.max(240, avail)}px`);
+    };
+    const ro = new ResizeObserver(update);
+    ro.observe(hero);
+    img.addEventListener("load", update);
+    window.addEventListener("resize", update);
+    update();
+    return () => { ro.disconnect(); img.removeEventListener("load", update); window.removeEventListener("resize", update); };
+  }, []);
+
   useEffect(() => {
     const dialog = formModalRef.current;
     if (!dialog) return;
@@ -554,8 +580,8 @@ export default function Evento() {
               <picture className="event-hero__photo"><source media="(max-width: 600px)" srcSet="/image/fundo-evento-mobile.webp" /><img src="/image/fundo-evento.webp" alt="Roberson Alvarenga em frente à Help Multas" width={1672} height={941} fetchPriority="high" /></picture>
               <div className="event-hero__copy">
                 <p className="event-kicker"><span /> COM ROBERSON ALVARENGA</p>
-                <h1 id="hero-title">Um mercado<br />que está na<br /><em>sua cidade.</em></h1>
-                <p className="event-hero__intro">Descubra como empreender com a defesa de multas, com quem já construiu uma rede em todo o Brasil.</p>
+                <h1 id="hero-title">Como faturar com<br className="hero-br" /> as 80 milhões<br className="hero-br" /> de multas aplicadas<br className="hero-br" /> por ano<br /><em>que quase<br className="hero-br" /> ninguém explora<br className="hero-br" /> na sua cidade</em></h1>
+                <p className="event-hero__intro">Participe de uma aula ao vivo com Roberson Alvarenga e descubra como funciona o mercado de defesa de multas, por que ele continua crescendo e como pessoas comuns estão construindo negócios nesse setor, mesmo sem serem advogadas ou especialistas em trânsito.</p>
                 <span className="event-hero__caption">Uma conversa sobre o negócio.<br />A operação. E por onde começar.</span>
               </div>
               <div className="event-hero__host"><strong>Roberson Alvarenga</strong><span>Fundador da Help Multas</span></div>
