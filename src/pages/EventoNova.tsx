@@ -17,7 +17,7 @@ const PAGE_NAME = "EventoNova";
 const GOOGLE_SHEETS_WEBHOOK_URL =
   "https://script.google.com/macros/s/AKfycbzsRnL3wUdKJA9JMIp9xP-Yzg09GmOa3gaYSknUPdsIlkvFO_-vu5QqP7GnZmDhAltucg/exec";
 
-const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/K56JiM8uHTi0n8GcdyKwM8";
+const WHATSAPP_GROUP_URL = "https://sndflw.com/i/PzHr3pZxkSVPXgU40v3t";
 
 /* Única fonte de verdade da data da aula (horário de Brasília).
  * Ao trocar a data, todos os textos da página se atualizam sozinhos. */
