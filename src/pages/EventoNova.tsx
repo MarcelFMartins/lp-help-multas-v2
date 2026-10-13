@@ -479,6 +479,7 @@ export default function EventoNova() {
       await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
         method: "POST",
         mode: "no-cors",
+        keepalive: true, // termina o envio mesmo se a página redirecionar antes da resposta
         headers: { "Content-Type": "text/plain;charset=utf-8" },
         body: JSON.stringify(data),
       });
