@@ -6,7 +6,9 @@ import { sendEventLeadToCrm } from "@/lib/eventCrm";
 const GOOGLE_SHEETS_WEBHOOK_URL =
   "https://script.google.com/macros/s/AKfycbzsRnL3wUdKJA9JMIp9xP-Yzg09GmOa3gaYSknUPdsIlkvFO_-vu5QqP7GnZmDhAltucg/exec";
 
-const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/K56JiM8uHTi0n8GcdyKwM8";
+const META_PIXEL_ID = "1558928198671104";
+
+const WHATSAPP_GROUP_URL = "https://sndflw.com/i/PzHr3pZxkSVPXgU40v3t";
 
 /* Única fonte de verdade da data da aula (horário de Brasília).
  * Ao trocar a data, os textos da página e o contador se atualizam sozinhos. */
@@ -293,14 +295,15 @@ export default function Evento() {
       await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
         method: "POST",
         mode: "no-cors",
+        keepalive: true, // termina o envio mesmo se a página redirecionar antes da resposta
         headers: { "Content-Type": "text/plain;charset=utf-8" },
         body: JSON.stringify(data),
       });
-      logEvent("Evento", "crm_success", "Envio para Google Sheets concluído");
+      logEvent("EventoAntiga", "crm_success", "Envio para Google Sheets concluído");
       return { ok: true };
     } catch (err) {
       console.error("[lead-form] Erro de rede ao enviar para o Google Sheets:", err);
-      logEvent("Evento", "crm_error", "Erro ao enviar para o Google Sheets", {
+      logEvent("EventoAntiga", "crm_error", "Erro ao enviar para o Google Sheets", {
         error: err instanceof Error ? err.message : String(err),
       });
       return { ok: false };
@@ -327,12 +330,12 @@ export default function Evento() {
     }
 
     setSubmitting(true);
-    logEvent("Evento", "action", "Formulário enviado", { nome, email });
+    logEvent("EventoAntiga", "action", "Formulário enviado", { nome, email });
 
     const utm = getUtmParams();
 
     const meta = window.getMetaTrackingData?.() || {};
-    sendEventLeadToCrm({
+    const crmPromise = sendEventLeadToCrm({
       name: nome.trim(),
       email: email.trim(),
       phone: onlyDigits(whatsapp),
@@ -361,6 +364,22 @@ export default function Evento() {
     });
 
     if (result.ok) {
+      /* Meta Pixel — Lead só após CRM OK (espera no máx. 10s) e se o lead veio de campanha (utm_source ig/fb) */
+      const crmOk = await Promise.race([
+        crmPromise,
+        new Promise<boolean>((resolve) => window.setTimeout(() => resolve(false), 10000)),
+      ]);
+      const utmSource = (utm.utm_source || "").toLowerCase();
+      if (crmOk && (utmSource === "ig" || utmSource === "fb")) {
+        const eventID = `lead-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+        window.fbq?.("trackSingle", META_PIXEL_ID, "Lead", { content_name: "Landing Page Evento" }, { eventID });
+        logEvent("EventoAntiga", "pixel_event", "fbq trackSingle Lead disparado", { pixelId: META_PIXEL_ID, eventID, utmSource });
+      } else if (crmOk) {
+        logEvent("EventoAntiga", "action", "Lead não disparado no pixel — utm_source não é de campanha (ig/fb)", { utmSource });
+      } else {
+        logEvent("EventoAntiga", "error", "Lead não disparado no pixel — CRM não respondeu OK");
+      }
+
       setStatus({
         type: "success",
         message: "Inscrição recebida! Redirecionando para o grupo do WhatsApp...",
@@ -443,7 +462,7 @@ export default function Evento() {
   }, []);
 
   function openFormModal() {
-    logEvent("Evento", "action", "CTA para o formulário em modal");
+    logEvent("EventoAntiga", "action", "CTA para o formulário em modal");
     setInlineFormHeight(formRef.current?.getBoundingClientRect().height ?? 0);
     setFormModalOpen(true);
   }
