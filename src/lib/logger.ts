@@ -13,7 +13,8 @@ export type LogType =
   | "error"
   | "pixel_event"
   | "crm_success"
-  | "crm_error";
+  | "crm_error"
+  | "crm_retry";
 
 function getSessionId(): string {
   try {

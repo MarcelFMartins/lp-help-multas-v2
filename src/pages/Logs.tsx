@@ -23,6 +23,7 @@ const TYPE_LABELS: Record<string, string> = {
   pixel_event: "Evento Pixel",
   crm_success: "CRM ✓",
   crm_error: "CRM ✗",
+  crm_retry: "CRM ↻",
 };
 
 const TYPE_COLORS: Record<string, string> = {
@@ -32,6 +33,7 @@ const TYPE_COLORS: Record<string, string> = {
   pixel_event: "#7c3aed",
   crm_success: "#16a34a",
   crm_error: "#dc2626",
+  crm_retry: "#d97706",
 };
 
 function useAuth() {
