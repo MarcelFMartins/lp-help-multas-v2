@@ -562,10 +562,13 @@ export default function EventoNova() {
         }),
       );
     }
-    if (crmOk) {
+    const utmSource = (utm.utm_source || "").toLowerCase();
+    if (crmOk && (utmSource === "ig" || utmSource === "fb")) {
       const eventID = `lead-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
       window.fbq?.("trackSingle", META_PIXEL_ID, "Lead", { content_name: "Landing Page Evento" }, { eventID });
-      logEvent(PAGE_NAME, "pixel_event", "fbq trackSingle Lead disparado", { pixelId: META_PIXEL_ID, eventID });
+      logEvent(PAGE_NAME, "pixel_event", "fbq trackSingle Lead disparado", { pixelId: META_PIXEL_ID, eventID, utmSource });
+    } else if (crmOk) {
+      logEvent(PAGE_NAME, "action", "Lead não disparado no pixel — utm_source não é de campanha (ig/fb)", { utmSource });
     } else {
       logEvent(PAGE_NAME, "error", "Lead não disparado no pixel — CRM não respondeu OK");
     }
