@@ -143,7 +143,7 @@ export default function ModelSection() {
               </p>
 
               <h3 className="font-display text-3xl lg:text-4xl font-black text-white leading-tight">
-                Jurídico e operação técnica
+                Administrativo
               </h3>
             </div>
 
