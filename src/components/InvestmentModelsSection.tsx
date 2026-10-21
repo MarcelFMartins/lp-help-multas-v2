@@ -26,7 +26,7 @@ const MODELS: Record<
   home: {
     label: "Home Based",
     sublabel: "100% Digital",
-    bg: "image/homebased.webp",
+    bg: "/image/homebased.webp",
     investment: "R$ 29.900",
     description:
       "Opere de qualquer lugar, sem ponto físico. Ideal para quem quer começar com o menor investimento e estrutura enxuta.",
@@ -40,7 +40,7 @@ const MODELS: Record<
   loja: {
     label: "Loja Física",
     sublabel: "Presença Local",
-    bg: "image/lojafisica.webp",
+    bg: "/image/lojafisica.webp",
     investment: "R$ 110.000",
     description:
       "Ponto físico com fachada e atendimento presencial. Ideal para quem busca autoridade local e maior volume de captação.",
