@@ -108,9 +108,9 @@ const getItemsPerPage = () => {
 
 /* ══════════════════════════════════════════════ */
 export default function ThankYouPage() {
-  /* Na LP /oportunidade não exibimos os DDDs de contato */
+  /* Na LP /oportunidade: sem DDDs de contato e com vídeo próprio */
   const [location] = useLocation();
-  const hideDdd = location.startsWith("/oportunidade");
+  const isOportunidade = location.startsWith("/oportunidade");
 
   /* ─── carrossel ─── */
   const [activeVideo, setActiveVideo] = useState<number | null>(null);
@@ -173,7 +173,7 @@ export default function ThankYouPage() {
 
   /* ─── vídeo hero ─── */
   const [isPlaying, setIsPlaying] = useState(false);
-  const youtubeId = "uhLKyugkczY";
+  const youtubeId = isOportunidade ? "UfOancwMTv4" : "uhLKyugkczY";
 
   return (
     <div className="overflow-x-hidden">
@@ -501,7 +501,7 @@ export default function ThankYouPage() {
               <div>
                 <p className="font-body font-bold text-white text-base mb-1">Fique atento ao telefone</p>
                 <p className="font-body text-white/60 text-sm leading-relaxed">
-                  {hideDdd ? (
+                  {isOportunidade ? (
                     <>Nosso contato virá por ligação ou WhatsApp. Não perca a ligação!</>
                   ) : (
                     <>Nosso contato virá com DDD <strong className="text-white font-bold">(42)</strong> ou <strong className="text-white font-bold">(11)</strong>. Não perca a ligação!</>
@@ -524,7 +524,7 @@ export default function ThankYouPage() {
               Falar com especialista
             </a>
             <p className="font-body text-white/30 text-xs mt-4">
-              {hideDdd ? "Atendimento via WhatsApp" : "Atendimento via WhatsApp · DDD (42) ou (11)"}
+              {isOportunidade ? "Atendimento via WhatsApp" : "Atendimento via WhatsApp · DDD (42) ou (11)"}
             </p>
           </div>
         </div>
