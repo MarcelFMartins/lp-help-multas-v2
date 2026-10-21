@@ -18,6 +18,7 @@ import Evento from "@/pages/Evento";
 import EventoChat from "@/pages/EventoChat";
 import EventoNova from "@/pages/EventoNova";
 import Logs from "@/pages/Logs";
+import Oportunidade from "@/pages/Oportunidade";
 import { logEvent, initGlobalErrorLogging } from "@/lib/logger";
 
 function Router() {
@@ -30,6 +31,10 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+
+      <Route path="/oportunidade" component={Oportunidade} />
+
+      <Route path="/oportunidade/obrigado" component={ThankYouPage} />
 
       <Route path="/chat" component={ChatLP} />
 

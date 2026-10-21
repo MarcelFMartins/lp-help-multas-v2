@@ -51,7 +51,9 @@ const processSteps = [
   },
 ];
 
-export default function ModelSection() {
+export default function ModelSection({
+  atuacaoTitle = "Administrativo",
+}: { atuacaoTitle?: string }) {
   const { ref: titleRef, inView: titleInView } = useInView();
   const { ref: contentRef, inView: contentInView } = useInView();
 
@@ -143,7 +145,7 @@ export default function ModelSection() {
               </p>
 
               <h3 className="font-display text-3xl lg:text-4xl font-black text-white leading-tight">
-                Administrativo
+                {atuacaoTitle}
               </h3>
             </div>
 

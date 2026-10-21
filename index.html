@@ -33,7 +33,8 @@
   <!-- Meta Pixel Code -->
   <script>
     !function (f, b, e, v, n, t, s) {
-      if (f.fbq) return;
+      // LP /oportunidade não usa Pixel da Meta (campanhas próprias)
+      if (f.fbq || f.location.pathname.startsWith('/oportunidade')) return;
       n = f.fbq = function () {
         n.callMethod ?
           n.callMethod.apply(n, arguments) :
@@ -55,6 +56,8 @@
     (function () {
       const path = window.location.pathname;
       const params = new URLSearchParams(window.location.search);
+
+      if (path.startsWith('/oportunidade')) return;
 
       const isPartner = path.startsWith('/indica') || path.startsWith('/sucesso');
       const isChat = path.startsWith('/chat') || (path === '/obrigado' && params.get('origem') === 'chat');
