@@ -9,7 +9,7 @@ import { ExternalLink } from "lucide-react";
 import { Play } from "lucide-react";
 import { useRef } from "react";
 
-export default function NewsSection() {
+export default function NewsSection({ robustImages = false }: { robustImages?: boolean }) {
   const { ref: titleRef, inView: titleInView } = useInView();
   const { ref: newsRef, inView: newsInView } = useInView();
 
@@ -225,7 +225,15 @@ export default function NewsSection() {
                         <img
                           src={item.image}
                           alt={item.title}
-                          loading="lazy"
+                          loading={robustImages ? "eager" : "lazy"}
+                          onError={robustImages ? (e) => {
+                            // uma nova tentativa com cache-bust caso a primeira requisição falhe
+                            const img = e.currentTarget;
+                            if (!img.dataset.retried) {
+                              img.dataset.retried = "1";
+                              img.src = `${item.image}?r=${Date.now()}`;
+                            }
+                          } : undefined}
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                         />
 
