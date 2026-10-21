@@ -39,7 +39,7 @@ export default function Oportunidade() {
       <GrowthSection />
       <TestimonialsSection />
       <FranchiseeMotivationSection />
-      <ModelSection atuacaoTitle="Administrativo" />
+      <ModelSection />
       <HelpExperienceVideoSection />
       <TeamSection />
       <NewsSection robustImages />

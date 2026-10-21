@@ -52,7 +52,7 @@ const processSteps = [
 ];
 
 export default function ModelSection({
-  atuacaoTitle = "Jurídico e operação técnica",
+  atuacaoTitle = "Administrativo",
 }: { atuacaoTitle?: string }) {
   const { ref: titleRef, inView: titleInView } = useInView();
   const { ref: contentRef, inView: contentInView } = useInView();
