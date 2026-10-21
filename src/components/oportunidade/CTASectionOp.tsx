@@ -6,7 +6,7 @@
 import { useInView } from "../../hooks/useInView";
 import LeadFormCard from "./LeadFormCard";
 
-const CTA_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663612015267/7JPeai9Kn6mqwVB3QeEreq/cta-bg-KQ56VgudmidAHQMcjAgWNg.webp";
+const CTA_BG = "/image/fundo.webp";
 
 const urgencyItems = [
   "Resposta em até 24h",
@@ -23,7 +23,7 @@ export default function CTASectionOp() {
       className="relative py-24 overflow-hidden"
       style={{ backgroundImage: `url(${CTA_BG})`, backgroundSize: "cover", backgroundPosition: "center" }}
     >
-      <div className="absolute inset-0 bg-[oklch(0.1998_0.0403_258.29)]/90" />
+      <div className="absolute inset-0 bg-[oklch(0.1998_0.0403_258.29)]/75 backdrop-blur-[4px]" />
 
       <div className="relative z-10 container mx-auto px-6 lg:px-12">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center max-w-6xl mx-auto">
