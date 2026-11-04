@@ -1,0 +1,160 @@
+/* Faixa Black Help Multas — topo da LP /oportunidade */
+
+.bb {
+  --bb-navy: #0f1a2b;
+  --bb-navy-2: #16243a;
+  --bb-gold: #f5c518;
+  --bb-gold-2: #ffd84d;
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(ellipse 70% 120% at 50% 50%, #1b2c45 0%, var(--bb-navy) 70%);
+  font-family: "Montserrat", sans-serif;
+  color: #fff;
+}
+
+/* ── fitas diagonais (desktop) ── */
+.bb-tapes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.bb-tape {
+  position: absolute;
+  left: -15%;
+  width: 130%;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  white-space: nowrap;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+}
+.bb-tape--gold {
+  background: linear-gradient(180deg, var(--bb-gold-2), var(--bb-gold));
+  color: #111;
+  border-top: 2px solid #111;
+  border-bottom: 2px solid #111;
+}
+.bb-tape--dark {
+  background: #0b0f17;
+  color: rgba(255, 255, 255, 0.92);
+  border-top: 2px solid var(--bb-gold);
+  border-bottom: 2px solid var(--bb-gold);
+}
+.bb-tape--ghost {
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.07);
+  box-shadow: none;
+}
+.bb-tape-track {
+  display: inline-flex;
+  gap: 28px;
+  padding-right: 28px;
+  font-weight: 900;
+  font-size: 19px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  font-style: italic;
+  animation: bb-marquee 40s linear infinite;
+}
+.bb-tape--reverse .bb-tape-track { animation-direction: reverse; }
+.bb-tape-track span { display: inline-flex; align-items: center; gap: 28px; }
+.bb-star { font-style: normal; }
+
+@keyframes bb-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ── card central ── */
+.bb-card {
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(20, 31, 49, 0.96), rgba(12, 20, 33, 0.97));
+  border: 1px solid rgba(245, 197, 24, 0.55);
+  border-radius: 18px;
+  box-shadow: 0 0 0 4px rgba(245, 197, 24, 0.08), 0 24px 60px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(6px);
+}
+
+.bb-live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--bb-gold);
+  box-shadow: 0 0 0 0 rgba(245, 197, 24, 0.7);
+  animation: bb-pulse 1.6s ease-out infinite;
+}
+@keyframes bb-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(245, 197, 24, 0.7); }
+  100% { box-shadow: 0 0 0 8px rgba(245, 197, 24, 0); }
+}
+
+.bb-gold-text {
+  background: linear-gradient(180deg, #ffe680 0%, var(--bb-gold) 55%, #d9a400 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ── contador ── */
+.bb-digit {
+  background: linear-gradient(180deg, #1d2c44, #111b2b);
+  border: 1px solid rgba(245, 197, 24, 0.35);
+  border-radius: 10px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.bb-digit--sec { border-color: rgba(245, 197, 24, 0.7); }
+.bb-digit-num { font-weight: 800; line-height: 1; display: block; }
+.bb-digit-label {
+  display: block;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* ── CTA ── */
+.bb-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, #ffe066, var(--bb-gold) 60%, #e0ab00);
+  color: #111;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-radius: 10px;
+  box-shadow: 0 4px 0 #a87f00, 0 10px 28px rgba(245, 197, 24, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.bb-cta:hover { transform: translateY(-1px); box-shadow: 0 5px 0 #a87f00, 0 14px 34px rgba(245, 197, 24, 0.5); }
+.bb-cta:active { transform: translateY(3px); box-shadow: 0 1px 0 #a87f00, 0 6px 16px rgba(245, 197, 24, 0.3); }
+.bb-cta::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.65), transparent);
+  transform: skewX(-20deg);
+  animation: bb-shine 3.2s ease-in-out infinite;
+}
+@keyframes bb-shine {
+  0%, 60% { left: -60%; }
+  100%    { left: 130%; }
+}
+
+/* ── listras de advertência (mobile) ── */
+.bb-hazard {
+  height: 10px;
+  background: repeating-linear-gradient(-45deg, var(--bb-gold) 0 12px, #111 12px 24px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bb-tape-track, .bb-cta::after, .bb-live-dot { animation: none; }
+}

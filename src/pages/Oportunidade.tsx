@@ -26,11 +26,13 @@ import HeroSectionOp from "@/components/oportunidade/HeroSectionOp";
 import CTASectionOp from "@/components/oportunidade/CTASectionOp";
 import WhatsAppFloat from "@/components/oportunidade/WhatsAppFloat";
 import SignupToast from "@/components/oportunidade/SignupToast";
+import BlackBanner from "@/components/oportunidade/BlackBanner";
 
 export default function Oportunidade() {
   return (
     <div className="min-h-screen">
       <StickyNav />
+      <BlackBanner />
       <AnnouncementBar />
       <HeroSectionOp />
       <MarketSection />

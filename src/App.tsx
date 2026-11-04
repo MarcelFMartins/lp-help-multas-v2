@@ -19,6 +19,8 @@ import EventoChat from "@/pages/EventoChat";
 import EventoNova from "@/pages/EventoNova";
 import Logs from "@/pages/Logs";
 import Oportunidade from "@/pages/Oportunidade";
+import AulaIndica from "@/pages/AulaIndica";
+import ObrigadoBlack from "@/pages/ObrigadoBlack";
 import { logEvent, initGlobalErrorLogging } from "@/lib/logger";
 
 function Router() {
@@ -34,7 +36,7 @@ function Router() {
 
       <Route path="/oportunidade" component={Oportunidade} />
 
-      <Route path="/oportunidade/obrigado" component={ThankYouPage} />
+      <Route path="/oportunidade/obrigado" component={ObrigadoBlack} />
 
       <Route path="/chat" component={ChatLP} />
 
@@ -45,6 +47,8 @@ function Router() {
       <Route path="/prereuniao" component={PreReuniao} />
 
       <Route path="/indica" component={HelpIndica} />
+
+      <Route path="/aula-indica" component={AulaIndica} />
 
       <Route path="/WhatsApp" component={GrupoWhatsApp} />
 

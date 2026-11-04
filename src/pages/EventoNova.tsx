@@ -21,7 +21,7 @@ const WHATSAPP_GROUP_URL = "https://sndflw.com/i/PzHr3pZxkSVPXgU40v3t";
 
 /* Única fonte de verdade da data da aula (horário de Brasília).
  * Ao trocar a data, todos os textos da página se atualizam sozinhos. */
-const EVENT_START_ISO = "2026-10-14T19:00:00-03:00";
+const EVENT_START_ISO = "2026-11-18T19:00:00-03:00";
 
 const EVENT_START = new Date(EVENT_START_ISO);
 

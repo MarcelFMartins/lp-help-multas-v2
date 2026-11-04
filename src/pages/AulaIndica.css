@@ -1,0 +1,193 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&display=swap");
+
+/* /aula-indica — estilos da LP INDICA, todos escopados em .aula-indica. */
+
+.aula-indica{--cream:#f5f1e8;--navy:#102132;--blue:#20364b;--yellow:#ffc928;--muted:#52606b;--line:#d4d3cc;color:var(--navy);background:var(--cream);font-family:Manrope,Arial,sans-serif;font-synthesis:none}
+.aula-indica *{box-sizing:border-box}
+.aula-indica{scroll-behavior:smooth;scroll-padding-top:24px}
+.aula-indica{margin:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23102132' opacity='.025' filter='url(%23n)' d='M0 0h180v180H0z'/%3E%3C/svg%3E");}
+.aula-indica a{color:inherit}
+.aula-indica button,.aula-indica input{font:inherit}
+.aula-indica button,.aula-indica a,.aula-indica input{-webkit-tap-highlight-color:transparent}
+.aula-indica button{cursor:pointer}
+.aula-indica button:disabled{cursor:wait;opacity:.72}
+.aula-indica img{display:block;max-width:100%}
+.aula-indica [hidden]{display:none!important}
+.aula-indica p,.aula-indica h1,.aula-indica h2{margin:0}
+.aula-indica button,.aula-indica a,.aula-indica input{outline-offset:5px}
+.aula-indica :focus-visible{outline:3px solid #127ba5}
+.aula-indica .signup :focus-visible,.aula-indica dialog :focus-visible{outline-color:var(--yellow)}
+.aula-indica .page-shell{width:min(1280px,calc(100% - 96px));margin:0 auto}
+.aula-indica .masthead{height:132px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
+.aula-indica .brand{width:190px;height:auto}
+.aula-indica .edition{font-size:11px;font-weight:700;letter-spacing:1.6px}
+.aula-indica .edition span{margin:0 9px}
+.aula-indica .campaign{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);grid-template-areas:'copy signup' 'proof signup';column-gap:72px;row-gap:32px;align-items:start;padding:52px 0 64px}
+.aula-indica .copy{grid-area:copy}
+.aula-indica .event-meta{display:flex;align-items:center;gap:22px;margin-bottom:31px}
+.aula-indica .date{font-size:31px;line-height:1;letter-spacing:-1.1px;font-weight:700;white-space:nowrap}
+.aula-indica .date span{display:block;font-size:11px;letter-spacing:2.6px;margin-top:7px}
+.aula-indica .event-details{border-left:1px solid #abb1b3;padding-left:22px;display:grid;gap:5px;font-size:13px}
+.aula-indica .event-details strong{font-size:14px}
+.aula-indica .event-details>span{color:var(--muted)}
+.aula-indica h1{font-size:clamp(44px,3.85vw,54px);font-weight:700;line-height:1.085;letter-spacing:-2.35px;text-wrap:balance}
+.aula-indica .highlight{background:linear-gradient(transparent 55%,var(--yellow) 55%,var(--yellow) 94%,transparent 94%);box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.aula-indica .keep-together{white-space:nowrap}
+.aula-indica .signup{grid-area:signup;align-self:start;padding-top:40px}
+.aula-indica .signup-panel{position:relative;background:var(--navy);color:var(--cream);padding:32px 30px 27px;border-radius:4px 4px 12px 12px;box-shadow:0 16px 30px -22px #10213260}
+.aula-indica .form-label{font-size:11px;font-weight:700;letter-spacing:1.65px;margin-bottom:24px}
+.aula-indica .field{margin-bottom:16px}
+.aula-indica .field label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}
+.aula-indica .field label span{font-weight:400;font-size:11px;color:#c0ccd3;margin-left:3px}
+.aula-indica .field input{width:100%;min-width:0;height:50px;border:1px solid #82909b;border-radius:4px;background:#fffefa;color:var(--navy);padding:0 13px;font-size:16px;transition:border-color .15s}
+.aula-indica .field input:focus{border-color:var(--yellow)}
+.aula-indica .consent{display:flex;gap:10px;align-items:flex-start;font-size:10.5px;line-height:1.65;color:#d6dfe5;margin:18px 0 23px}
+.aula-indica .consent input{width:17px;height:17px;accent-color:var(--yellow);flex-shrink:0;margin:2px 0 0}
+.aula-indica .consent a{text-underline-offset:3px}
+.aula-indica .primary-button{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;min-height:65px;padding:15px 12px;border:0;border-radius:4px;background:var(--yellow);color:var(--navy);font-size:13px;line-height:1.45;font-weight:700;text-align:center;text-decoration:none;letter-spacing:.1px;transition:transform .18s,background .18s,box-shadow .18s}
+.aula-indica .primary-button svg{flex-shrink:0}
+.aula-indica .primary-button:hover{background:#ffd555;transform:translateY(-2px);box-shadow:0 5px 14px #0002}
+.aula-indica .primary-button:active{transform:translateY(0)}
+.aula-indica .contact-note{font-size:11px;line-height:1.65;text-align:center;color:#cbd6df;max-width:270px;margin:14px auto 0}
+.aula-indica .form-status{font-size:12px;line-height:1.6;color:#fff1b3}
+.aula-indica .form-status:not(:empty){margin-top:17px;padding:12px;border-left:2px solid var(--yellow);background:#20364b}
+.aula-indica .trap{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
+.aula-indica .proof{grid-area:proof;align-self:start;max-width:570px;padding-top:24px;border-top:1px solid var(--line)}
+.aula-indica .proof-trigger{border:0;background:none;color:var(--navy);display:flex;text-align:left;align-items:center;gap:20px;padding:0;width:100%;border-radius:5px}
+.aula-indica .proof-thumbnail{position:relative;flex:0 0 112px;width:112px;height:91px;overflow:hidden;border-radius:5px;background:var(--blue)}
+.aula-indica .proof-thumbnail>img{width:100%;height:auto;max-width:none;position:absolute;top:-48px}
+.aula-indica .play-symbol{position:absolute;bottom:8px;right:8px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--cream);color:var(--navy);box-shadow:0 1px 5px #0003;transition:transform .2s}
+.aula-indica .play-symbol svg{margin-left:2px;width:10px}
+.aula-indica .proof-trigger:hover .play-symbol{transform:scale(1.1)}
+.aula-indica .proof-copy{display:grid;gap:7px}
+.aula-indica .eyebrow{font-size:9px;letter-spacing:1.6px;font-weight:700;color:var(--muted)}
+.aula-indica .proof-copy strong{font-size:15px;letter-spacing:-.3px}
+.aula-indica .watch-label{font-size:12px;text-decoration:underline;text-underline-offset:4px}
+.aula-indica .watch-label>span{display:inline-block;text-decoration:none;margin-left:6px;font-size:16px}
+.aula-indica .result-note{color:#5a646d;font-size:11px;line-height:1.65;max-width:495px;margin-top:16px}
+.aula-indica .footer{display:flex;align-items:center;gap:24px;min-height:100px;border-top:1px solid var(--line);font-size:10px;color:#5a646d}
+.aula-indica .footer>img{width:100px;height:auto}
+.aula-indica .footer>div{margin-left:auto;display:flex;gap:24px}
+.aula-indica .footer a{text-underline-offset:4px}
+.aula-indica .confirmation{padding:9px 0}
+.aula-indica .confirmation-mark{display:grid;place-items:center;width:45px;height:45px;border:1px solid #637a8d;border-radius:50%;font-size:24px;color:var(--yellow);margin-bottom:22px}
+.aula-indica .confirmation p{font-size:14px;line-height:1.7;margin-bottom:22px}
+.aula-indica .confirmation .confirmation-title{font-weight:700;font-size:27px;line-height:1.15}
+.aula-indica .confirmation a{margin-top:25px}
+.aula-indica .event-closed{padding:22px 0}
+.aula-indica .event-closed p{font-size:16px;line-height:1.7}
+.aula-indica .event-closed .form-label{font-size:12px}
+.aula-indica dialog{margin:auto;border:0;padding:0;border-radius:12px;background:var(--navy);color:var(--cream);width:min(420px,calc(100vw - 32px));max-height:calc(100dvh - 32px);box-shadow:0 25px 90px #0006;overflow:auto}
+.aula-indica dialog[open]{animation:ai-dialog-in .2s ease-out}
+.aula-indica dialog::backdrop{background:#071421bf;backdrop-filter:blur(4px)}
+.aula-indica .dialog-top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px;font-size:12px}
+.aula-indica .dialog-top button{width:40px;height:40px;display:grid;place-items:center;border:0;border-radius:50%;background:var(--blue);color:var(--cream)}
+.aula-indica video{display:block;width:100%;max-height:calc(100dvh - 210px);background:#000}
+.aula-indica .dialog-note{font-size:10px;line-height:1.6;padding:14px 16px;color:#cbd6df}
+.aula-indica .skip-link{position:absolute;top:8px;left:8px;transform:translateY(-150%);background:var(--navy);color:white;padding:12px;z-index:10}
+.aula-indica .skip-link:focus{transform:translateY(0)}
+.aula-indica .copy{animation:ai-enter .6s ease-out both}
+@keyframes ai-enter{from{transform:translateY(12px)}to{transform:translateY(0)}}
+@keyframes ai-dialog-in{from{opacity:.6;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@media(min-width:1450px){.aula-indica .campaign{column-gap:84px}
+.aula-indica h1{font-size:54px}
+}
+@media(max-width:1100px) and (min-width:761px){.aula-indica .page-shell{width:calc(100% - 64px)}
+.aula-indica .campaign{column-gap:38px;grid-template-columns:1.35fr 1fr}
+.aula-indica h1{font-size:44px;letter-spacing:-1.9px}
+.aula-indica .signup-panel{padding:27px 22px}
+.aula-indica .primary-button{font-size:11px;gap:7px}
+.aula-indica .edition{font-size:10px;letter-spacing:1px}
+}
+@media(max-width:760px){.aula-indica .page-shell{width:calc(100% - 44px);max-width:560px}
+.aula-indica .masthead{height:95px;border:0}
+.aula-indica .brand{width:166px}
+.aula-indica .edition{display:none}
+.aula-indica .campaign{grid-template-columns:minmax(0,1fr);grid-template-areas:'copy' 'signup' 'proof';gap:29px;padding:8px 0 35px}
+.aula-indica .event-meta{gap:17px;margin-bottom:27px}
+.aula-indica .date{font-size:28px}
+.aula-indica .date span{font-size:10px;margin-top:6px;letter-spacing:2.3px}
+.aula-indica .event-details{padding-left:17px;font-size:12px;gap:4px}
+.aula-indica .event-details strong{font-size:13px}
+.aula-indica h1{font-size:38px;line-height:1.1;letter-spacing:-1.6px;text-wrap:pretty}
+.aula-indica .signup{padding-top:0}
+.aula-indica .signup-panel{padding:26px 22px 25px;border-radius:5px 5px 10px 10px}
+.aula-indica .form-label{margin-bottom:22px}
+.aula-indica .field{margin-bottom:17px}
+.aula-indica .field label{font-size:13px}
+.aula-indica .field input{height:52px}
+.aula-indica .consent{font-size:11px;line-height:1.65;margin:19px 0 23px}
+.aula-indica .primary-button{font-size:12px;min-height:68px;padding:15px 10px;gap:8px}
+.aula-indica .primary-button svg{width:19px}
+.aula-indica .desktop-break{display:none}
+.aula-indica .contact-note{font-size:11px;max-width:250px}
+.aula-indica .proof{margin-top:3px;padding-top:24px;max-width:none}
+.aula-indica .proof-trigger{gap:15px}
+.aula-indica .proof-thumbnail{flex-basis:93px;width:93px;height:88px}
+.aula-indica .proof-thumbnail>img{top:-35px}
+.aula-indica .proof-copy{gap:6px}
+.aula-indica .proof-copy strong{font-size:13px;line-height:1.45}
+.aula-indica .eyebrow{font-size:8px;letter-spacing:1.2px}
+.aula-indica .watch-label{font-size:11px}
+.aula-indica .result-note{font-size:11px;margin-top:15px;line-height:1.65}
+.aula-indica .footer{min-height:114px;gap:14px;flex-wrap:wrap;align-content:center;padding:20px 0;font-size:9px}
+.aula-indica .footer>img{width:93px}
+.aula-indica .footer>p{margin-left:auto}
+.aula-indica .footer>div{flex-basis:100%;margin-left:0;gap:22px}
+.aula-indica .confirmation .confirmation-title{font-size:25px}
+}
+@media(max-width:375px){.aula-indica .page-shell{width:calc(100% - 40px)}
+.aula-indica h1{font-size:35px;letter-spacing:-1.4px}
+.aula-indica .signup-panel{padding-left:20px;padding-right:20px}
+.aula-indica .primary-button{font-size:12px}
+}
+@media(prefers-reduced-motion:reduce){.aula-indica{scroll-behavior:auto}
+.aula-indica *,.aula-indica *::before,.aula-indica *::after{animation:none!important;transition:none!important}
+}
+.aula-indica .mechanism-block{margin-top:30px}
+.aula-indica .mechanism-block h2{max-width:650px;font-size:27px;font-weight:700;line-height:1.3;letter-spacing:-.8px;text-wrap:balance}
+.aula-indica .mechanism-highlight{background:linear-gradient(transparent 62%,var(--yellow) 62%,var(--yellow) 95%,transparent 95%);box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.aula-indica .mechanism-flow{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;list-style:none;margin:24px 0 0;padding:0}
+.aula-indica .mechanism-flow::before{content:"";position:absolute;left:13px;right:23px;top:16px;height:1px;background:#bbc1bf}
+.aula-indica .mechanism-step{position:relative;min-width:0}
+.aula-indica .step-marker{position:relative;display:flex;align-items:center;gap:12px;width:77px;height:33px;padding-right:13px;background:var(--cream);color:var(--blue)}
+.aula-indica .step-number{display:grid;place-items:center;flex:0 0 26px;height:26px;border:1px solid #b8c0c0;border-radius:50%;font-size:10px;font-weight:700;letter-spacing:.3px}
+.aula-indica .step-marker svg{width:22px;height:22px;flex-shrink:0}
+.aula-indica .step-copy{margin-top:11px}
+.aula-indica .step-title{display:block;min-height:41px;font-size:14px;line-height:1.45;letter-spacing:-.2px;font-weight:700}
+.aula-indica .step-copy p{font-size:14px;line-height:1.6;color:#445462;margin-top:7px;text-wrap:pretty}
+.aula-indica .presenter-note{display:flex;align-items:baseline;gap:12px;font-size:13px;padding:0 2px;margin-bottom:17px}
+.aula-indica .presenter-note strong{font-size:20px;letter-spacing:-.6px}
+.aula-indica .presenter-note>span:last-child{border-left:1px solid #b8c0c0;padding-left:12px;font-size:10px;letter-spacing:1.3px;text-transform:uppercase;color:var(--muted)}
+@media(prefers-reduced-motion:no-preference){.aula-indica .mechanism-step.is-in-view{animation:ai-step-enter .55s cubic-bezier(.2,.65,.3,1) both}
+.aula-indica .mechanism-step:nth-child(2){animation-delay:.12s}
+.aula-indica .mechanism-step:nth-child(3){animation-delay:.24s}
+}
+@keyframes ai-step-enter{from{opacity:.5;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@media(min-width:761px) and (max-width:1100px){.aula-indica .mechanism-block h2{font-size:24px}
+.aula-indica .mechanism-flow{gap:16px}
+.aula-indica .step-title{font-size:13px;min-height:57px}
+.aula-indica .step-copy p{font-size:13px}
+}
+@media(max-width:760px){.aula-indica .mechanism-block{margin-top:26px}
+.aula-indica .mechanism-block h2{font-size:24px;line-height:1.3;letter-spacing:-.6px}
+.aula-indica .mechanism-flow{grid-template-columns:minmax(0,1fr);gap:20px;margin-top:23px}
+.aula-indica .mechanism-flow::before{left:13px;right:auto;top:14px;bottom:22px;width:1px;height:auto}
+.aula-indica .mechanism-step{display:grid;grid-template-columns:27px minmax(0,1fr);column-gap:16px}
+.aula-indica .step-marker{width:27px;height:33px;padding:3px 0;background:var(--cream)}
+.aula-indica .step-marker svg{display:none}
+.aula-indica .step-copy{margin-top:3px}
+.aula-indica .step-title{min-height:0;font-size:14px;line-height:1.45}
+.aula-indica .step-copy p{font-size:14px;line-height:1.55;margin-top:5px}
+.aula-indica .presenter-note{margin:0 0 14px;font-size:12px}
+.aula-indica .presenter-note strong{font-size:18px}
+}
+@media(max-width:375px){.aula-indica .mechanism-block h2{font-size:23px}
+.aula-indica .mechanism-flow{gap:18px}
+.aula-indica .step-copy p{font-size:13px;line-height:1.6}
+}
+
+/* ajustes de integração */
+.aula-indica{min-height:100vh;scroll-behavior:smooth}
+.aula-indica h1,.aula-indica h2,.aula-indica p{margin:0}
+.aula-indica ol{list-style:none}
