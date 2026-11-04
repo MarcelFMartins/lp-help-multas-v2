@@ -59,7 +59,7 @@
 
       if (path.startsWith('/oportunidade')) return;
 
-      const isPartner = path.startsWith('/indica') || path.startsWith('/sucesso');
+      const isPartner = path.startsWith('/indica') || path.startsWith('/aula-indica') || path.startsWith('/sucesso');
       const isChat = path.startsWith('/chat') || (path === '/obrigado' && params.get('origem') === 'chat');
       const isEvento = path.startsWith('/evento');
 
