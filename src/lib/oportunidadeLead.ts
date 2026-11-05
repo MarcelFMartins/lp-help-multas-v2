@@ -1,14 +1,11 @@
 /*
  * oportunidadeLead — envio de leads da LP /oportunidade
  *
- * Mesmas integrações da LP do root (n8n, CRM, CRM de teste, Marketing Hub e
- * Google Sheets), mas SEM nada da Meta (fbp/fbc/fbclid e Pixel) e SEM cidade/UF.
- * O lead é identificado por page_origin/origem "oportunidade" + UTMs.
+ * O lead vai SOMENTE para a Sults (Expansão), via /api/sults-lead.
+ * Sem n8n, CRM, CRM de teste, Marketing Hub, Google Sheets ou Meta.
+ * O formulário de origem e as UTMs vão na descrição do negócio.
  */
 
-import { sendToTestCrm } from "./testCrm";
-import { sendToMarketingHub } from "./marketingHubLeads";
-import { sendToGoogleSheets } from "./googleSheets";
 import { sendToSults } from "./sultsLead";
 import { logEvent } from "./logger";
 
@@ -52,113 +49,27 @@ export async function submitOportunidadeLead(data: OportunidadeFormData, origem:
 
   const capitalLabel = CAPITAL_OPTIONS.find((o) => o.value === data.capital)?.label || data.capital;
 
-  const utms = {
+  logEvent(origem, "action", "Formulário enviado", { nome, email });
+
+  /* Sults — única integração. Se falhar, o erro aparece no formulário e não redireciona. */
+  const ok = await sendToSults({
+    origem,
+    nome,
+    email,
+    whatsapp: data.whatsapp,
+    capital: data.capital,
+    capitalLabel,
     utm_source: tracking.utm_source || "",
     utm_medium: tracking.utm_medium || "",
     utm_campaign: tracking.utm_campaign || "",
     utm_content: tracking.utm_content || "",
     utm_term: tracking.utm_term || "",
     utm_id: tracking.utm_id || "",
-  };
-
-  logEvent(origem, "action", "Formulário enviado", { nome, email });
-
-  /* 1. N8N — notificação por e-mail (fire-and-forget) */
-  fetch("https://n8n.helpmultas.com/webhook/forms-email", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      origem: "Landing Page Franqueado (Oportunidade)",
-      nome,
-      email,
-      whatsapp: data.whatsapp,
-      capital: capitalLabel,
-    }),
-  }).catch(() => { });
-
-  /* 2. CRM de teste (fire-and-forget) */
-  sendToTestCrm({
-    name: nome,
-    email,
-    phone: data.whatsapp,
-    capital: data.capital,
-    capitalLabel,
-    ...utms,
   });
 
-  /* 3. Marketing Hub (aguardado antes do redirect) */
-  const hubPromise = sendToMarketingHub({
-    page_origin: "oportunidade",
-    name: nome,
-    email,
-    phone: data.whatsapp,
-    capital: data.capital,
-    capitalLabel,
-    ...utms,
-  });
-
-  /* 4. Google Sheets (fire-and-forget) */
-  sendToGoogleSheets({
-    origem,
-    nome,
-    email,
-    whatsapp: data.whatsapp,
-    capital: data.capital,
-    capitalLabel,
-    ...utms,
-  });
-
-  /* 4b. Sults — Expansão (aguardado junto com o Marketing Hub antes do redirect) */
-  const sultsPromise = sendToSults({
-    origem,
-    nome,
-    email,
-    whatsapp: data.whatsapp,
-    capital: data.capital,
-    capitalLabel,
-    ...utms,
-  });
-
-  /* 5. CRM principal — erro aqui interrompe o fluxo (igual à Hero do root) */
-  const crmResponse = await fetch("https://crm.helprecurso.com.br/leads/create-by-api-key", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "x-api-key": "93wkn371eaEbl6P41RlNWhM1xrFGSXdRVjDf3AGC",
-    },
-    body: JSON.stringify({
-      fullName: nome,
-      phone: data.whatsapp,
-      email,
-      capital: data.capital,
-      capitalLabel,
-      utmSource: utms.utm_source,
-      utmMedium: utms.utm_medium,
-      utmCampaign: utms.utm_campaign,
-      utmContent: utms.utm_content,
-      utmTerm: utms.utm_term,
-      utmId: utms.utm_id,
-    }),
-  });
-
-  let crmResult: any = null;
-  try { crmResult = await crmResponse.json(); } catch { crmResult = null; }
-
-  if (!crmResponse.ok) {
-    logEvent(origem, "crm_error", `Erro CRM: status ${crmResponse.status}`, {
-      status: crmResponse.status,
-      response: crmResult,
-    });
-    throw new Error(`Erro CRM: ${crmResult?.message || crmResult?.error || `Status ${crmResponse.status}`}`);
+  if (!ok) {
+    throw new Error("Não conseguimos enviar seus dados agora. Tente novamente em instantes.");
   }
 
-  logEvent(origem, "crm_success", "CRM respondeu com sucesso", {
-    status: crmResponse.status,
-    response: crmResult,
-  });
-
-  /* 6. Redirect — só depois do Marketing Hub concluir */
-  const [hubOk] = await Promise.all([hubPromise, sultsPromise]);
-  if (!hubOk) logEvent(origem, "error", "Marketing Hub não gravou o lead após retries", {});
   window.location.href = OPORTUNIDADE_THANKS;
 }
