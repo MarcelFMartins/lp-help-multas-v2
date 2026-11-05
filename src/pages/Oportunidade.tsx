@@ -17,7 +17,6 @@ import ModelSection from "@/components/ModelSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import NewsSection from "@/components/NewsSection";
 import Footer from "@/components/Footer";
-import StickyNav from "@/components/StickyNav";
 import FranchiseeMotivationSection from "@/components/FranchiseeMotivationSection";
 import HelpExperienceVideoSection from "@/components/HelpExperienceVideoSection";
 import TeamSection from "@/components/TeamSection";
@@ -31,7 +30,6 @@ import BlackBanner from "@/components/oportunidade/BlackBanner";
 export default function Oportunidade() {
   return (
     <div className="min-h-screen">
-      <StickyNav />
       <BlackBanner />
       <AnnouncementBar />
       <HeroSectionOp />
