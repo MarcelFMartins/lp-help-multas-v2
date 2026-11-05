@@ -9,6 +9,7 @@
 import { sendToTestCrm } from "./testCrm";
 import { sendToMarketingHub } from "./marketingHubLeads";
 import { sendToGoogleSheets } from "./googleSheets";
+import { sendToSults } from "./sultsLead";
 import { logEvent } from "./logger";
 
 export const OPORTUNIDADE_SLUG = "/oportunidade";
@@ -107,6 +108,17 @@ export async function submitOportunidadeLead(data: OportunidadeFormData, origem:
     ...utms,
   });
 
+  /* 4b. Sults — Expansão (aguardado junto com o Marketing Hub antes do redirect) */
+  const sultsPromise = sendToSults({
+    origem,
+    nome,
+    email,
+    whatsapp: data.whatsapp,
+    capital: data.capital,
+    capitalLabel,
+    ...utms,
+  });
+
   /* 5. CRM principal — erro aqui interrompe o fluxo (igual à Hero do root) */
   const crmResponse = await fetch("https://crm.helprecurso.com.br/leads/create-by-api-key", {
     method: "POST",
@@ -146,7 +158,7 @@ export async function submitOportunidadeLead(data: OportunidadeFormData, origem:
   });
 
   /* 6. Redirect — só depois do Marketing Hub concluir */
-  const hubOk = await hubPromise;
+  const [hubOk] = await Promise.all([hubPromise, sultsPromise]);
   if (!hubOk) logEvent(origem, "error", "Marketing Hub não gravou o lead após retries", {});
   window.location.href = OPORTUNIDADE_THANKS;
 }
