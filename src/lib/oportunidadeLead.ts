@@ -1,12 +1,13 @@
 /*
  * oportunidadeLead — envio de leads da LP /oportunidade
  *
- * O lead vai SOMENTE para a Sults (Expansão), via /api/sults-lead.
- * Sem n8n, CRM, CRM de teste, Marketing Hub, Google Sheets ou Meta.
+ * O lead vai para a Sults (Expansão, via /api/sults-lead) e para o Marketing Hub
+ * (ranking de anúncios por UTM). Sem n8n, CRM antigo, CRM de teste, Sheets ou Meta.
  * O formulário de origem e as UTMs vão na descrição do negócio.
  */
 
 import { sendToSults } from "./sultsLead";
+import { sendToMarketingHub } from "./marketingHubLeads";
 import { logEvent } from "./logger";
 
 export const OPORTUNIDADE_SLUG = "/oportunidade";
@@ -49,27 +50,45 @@ export async function submitOportunidadeLead(data: OportunidadeFormData, origem:
 
   const capitalLabel = CAPITAL_OPTIONS.find((o) => o.value === data.capital)?.label || data.capital;
 
-  logEvent(origem, "action", "Formulário enviado", { nome, email });
-
-  /* Sults — única integração. Se falhar, o erro aparece no formulário e não redireciona. */
-  const ok = await sendToSults({
-    origem,
-    nome,
-    email,
-    whatsapp: data.whatsapp,
-    capital: data.capital,
-    capitalLabel,
+  const utms = {
     utm_source: tracking.utm_source || "",
     utm_medium: tracking.utm_medium || "",
     utm_campaign: tracking.utm_campaign || "",
     utm_content: tracking.utm_content || "",
     utm_term: tracking.utm_term || "",
     utm_id: tracking.utm_id || "",
+  };
+
+  logEvent(origem, "action", "Formulário enviado", { nome, email });
+
+  /* 1. Marketing Hub — casa o lead com o anúncio (UTM). Em paralelo; nunca lança erro. */
+  const hubPromise = sendToMarketingHub({
+    page_origin: "oportunidade",
+    name: nome,
+    email,
+    phone: data.whatsapp,
+    capital: data.capital,
+    capitalLabel,
+    ...utms,
   });
 
-  if (!ok) {
+  /* 2. Sults — CRM. Se falhar, o erro aparece no formulário e não redireciona. */
+  const sultsOk = await sendToSults({
+    origem,
+    nome,
+    email,
+    whatsapp: data.whatsapp,
+    capital: data.capital,
+    capitalLabel,
+    ...utms,
+  });
+
+  if (!sultsOk) {
     throw new Error("Não conseguimos enviar seus dados agora. Tente novamente em instantes.");
   }
 
+  /* 3. Redirect — só depois do Marketing Hub concluir */
+  const hubOk = await hubPromise;
+  if (!hubOk) logEvent(origem, "error", "Marketing Hub não gravou o lead após retries", {});
   window.location.href = OPORTUNIDADE_THANKS;
 }
