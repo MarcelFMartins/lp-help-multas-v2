@@ -111,9 +111,9 @@ function Brand({ size }: { size: "lg" | "sm" }) {
   return (
     <div>
       <p className={`flex items-center gap-1.5 font-bold uppercase tracking-[0.18em] text-white/85 ${size === "lg" ? "text-[10px] mb-1" : "text-[9px]"}`}>
-        <span className="bb-live-dot" /> Ao vivo{size === "lg" && <span className="text-white/45">&nbsp;· Expansão 2026</span>}
+        <span className="bb-live-dot" /> Ao vivo{size === "lg" && <span className="hidden xl:inline text-white/45">&nbsp;· Expansão 2026</span>}
       </p>
-      <p className={`font-black italic uppercase leading-[0.95] whitespace-nowrap ${size === "lg" ? "text-[22px]" : "text-[15px]"}`}>
+      <p className={`font-black italic uppercase leading-[0.95] whitespace-nowrap ${size === "lg" ? "text-[20px] xl:text-[22px]" : "text-[15px]"}`}>
         <span className="bb-gold-text pr-1">Black</span> Help Multas
       </p>
     </div>
@@ -145,18 +145,18 @@ export default function BlackBanner() {
   return (
     <>
       <section ref={ref} className="bb" aria-label="Black Help Multas — oferta por tempo limitado">
-        {/* ───────── Desktop ───────── */}
-        <div className="hidden md:flex relative items-center justify-center px-6 py-3.5">
+        {/* ───────── Desktop (≥1024px) ───────── */}
+        <div className="hidden lg:flex relative items-center justify-center px-6 py-3.5">
           <div className="bb-tapes" aria-hidden>
             {tapes.map((t, i) => <TapeRow key={i} t={t} />)}
           </div>
 
-          <div className="bb-card w-full max-w-[1040px] flex items-center justify-between gap-5 lg:gap-7 pl-6 pr-7 py-3">
+          <div className="bb-card w-full max-w-[1040px] flex items-center justify-between gap-4 xl:gap-7 pl-5 pr-5 xl:pl-6 xl:pr-7 py-3">
             <div className="shrink-0">
               <Brand size="lg" />
             </div>
 
-            <div className="shrink-0 flex flex-col items-center pl-5 lg:pl-7 border-l border-white/10">
+            <div className="shrink-0 flex flex-col items-center pl-4 xl:pl-7 border-l border-white/10">
               <div className="flex items-start leading-none">
                 <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-white/70 mr-1.5 mt-1">{BLACK_DISCOUNT.prefix}</span>
                 <span className="bb-gold-text font-black text-[36px] tracking-tight">{BLACK_DISCOUNT.value}</span>
@@ -165,7 +165,7 @@ export default function BlackBanner() {
               <p className="mt-0.5 text-[10px] font-bold text-white whitespace-nowrap">{BLACK_DISCOUNT.target}</p>
             </div>
 
-            <div className="shrink-0 flex flex-col pl-5 lg:pl-7 border-l border-white/10">
+            <div className="shrink-0 flex flex-col pl-4 xl:pl-7 border-l border-white/10">
               <p className="mb-1 flex justify-between text-[9px] font-bold uppercase tracking-[0.18em] text-white/70 whitespace-nowrap">
                 A oferta acaba em <span className="text-[#f5c518] ml-2">30/11</span>
               </p>
@@ -176,7 +176,7 @@ export default function BlackBanner() {
               <a href="#formulario" onClick={scrollToForm} className="bb-cta h-[40px] text-[12px] px-5 whitespace-nowrap">
                 Garantir meu desconto
               </a>
-              <p className="hidden lg:block mt-1.5 text-center text-[10px] leading-[1.35] text-white/60">
+              <p className="hidden xl:block mt-1.5 text-center text-[10px] leading-[1.35] text-white/60">
                 Condição por região.<br />
                 <span className="text-white/80 font-semibold">Quando a sua fecha, sai da oferta.</span>
               </p>
@@ -184,10 +184,10 @@ export default function BlackBanner() {
           </div>
         </div>
 
-        {/* ───────── Mobile ───────── */}
-        <div className="md:hidden">
+        {/* ───────── Mobile e tablet (<1024px) ───────── */}
+        <div className="lg:hidden">
           <div className="bb-hazard" aria-hidden />
-          <div className="px-4 py-2.5">
+          <div className="px-4 py-2.5 mx-auto max-w-[640px]">
             <div className="flex items-center justify-between gap-3">
               <Brand size="sm" />
               <p className="flex items-end gap-1 shrink-0 leading-none">
