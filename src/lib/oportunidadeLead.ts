@@ -13,6 +13,14 @@ import { logEvent } from "./logger";
 export const OPORTUNIDADE_SLUG = "/oportunidade";
 export const OPORTUNIDADE_THANKS = `${OPORTUNIDADE_SLUG}/obrigado`;
 
+/**
+ * Marca (sessionStorage) de que o lead foi confirmado pela Sults.
+ * O index.html só carrega a Google Tag (conversão do Google Ads) na página de obrigado
+ * se essa marca existir — quem abre o link do obrigado direto não gera conversão.
+ * Se mudar o nome aqui, mude também no index.html.
+ */
+export const OPORTUNIDADE_LEAD_FLAG = "op_lead_ok";
+
 export const CAPITAL_OPTIONS = [
   { value: "30.000", label: "De R$ 0 a R$ 30 mil (não tenho condições de adquirir a franquia atualmente)" },
   { value: "50.000", label: "De R$ 30 mil a R$ 50 mil" },
@@ -90,5 +98,10 @@ export async function submitOportunidadeLead(data: OportunidadeFormData, origem:
   /* 3. Redirect — só depois do Marketing Hub concluir */
   const hubOk = await hubPromise;
   if (!hubOk) logEvent(origem, "error", "Marketing Hub não gravou o lead após retries", {});
+  try {
+    sessionStorage.setItem(OPORTUNIDADE_LEAD_FLAG, String(Date.now()));
+  } catch {
+    /* sessionStorage indisponível (ex.: modo restrito) — segue sem a marca */
+  }
   window.location.href = OPORTUNIDADE_THANKS;
 }

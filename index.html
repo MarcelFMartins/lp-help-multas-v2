@@ -30,19 +30,34 @@
   </script>
   <!-- End Microsoft Clarity -->
 
-  <!-- Google Tag (GTM-57ML3TRK) — somente na LP /oportunidade (inclui /oportunidade/obrigado) -->
+  <!-- Google Tag (GTM-57ML3TRK) — somente na LP /oportunidade.
+       Na /oportunidade/obrigado (conversão "Contato" do Google Ads) só carrega se o lead
+       acabou de ser confirmado pela Sults (marca "op_lead_ok" gravada em
+       src/lib/oportunidadeLead.ts). Quem abre o link do obrigado direto não gera conversão.
+       A marca vale 10 min e é apagada ao ser lida (recarregar o obrigado não conta de novo). -->
   <script>
-    if (window.location.pathname.startsWith('/oportunidade')) {
-      (function (d) {
-        var s = d.createElement('script');
-        s.async = true;
-        s.src = 'https://www.googletagmanager.com/gtm.js?id=GTM-57ML3TRK';
-        d.head.appendChild(s);
-      })(document);
+    (function () {
+      var path = window.location.pathname;
+      if (!path.startsWith('/oportunidade')) return;
+
+      if (path.startsWith('/oportunidade/obrigado')) {
+        var leadOk = false;
+        try {
+          var ts = Number(sessionStorage.getItem('op_lead_ok'));
+          leadOk = ts > 0 && Date.now() - ts < 10 * 60 * 1000;
+          sessionStorage.removeItem('op_lead_ok');
+        } catch (e) {}
+        if (!leadOk) return;
+      }
+
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtm.js?id=GTM-57ML3TRK';
+      document.head.appendChild(s);
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-    }
+      window.gtag = function () { window.dataLayer.push(arguments); };
+      window.gtag('js', new Date());
+    })();
   </script>
   <!-- End Google Tag -->
 
