@@ -30,7 +30,9 @@
   </script>
   <!-- End Microsoft Clarity -->
 
-  <!-- Google Tag (GTM-57ML3TRK) — somente na LP /oportunidade.
+  <!-- Google Tag (GTM-57ML3TRK) — na home (/) e na LP /oportunidade.
+       A home é necessária porque o Google Ads verifica a tag na raiz do domínio
+       (sem ela as campanhas ficam "Qualificada (configuração incorreta)").
        Na /oportunidade/obrigado (conversão "Contato" do Google Ads) só carrega se o lead
        acabou de ser confirmado pela Sults (marca "op_lead_ok" gravada em
        src/lib/oportunidadeLead.ts). Quem abre o link do obrigado direto não gera conversão.
@@ -38,7 +40,7 @@
   <script>
     (function () {
       var path = window.location.pathname;
-      if (!path.startsWith('/oportunidade')) return;
+      if (path !== '/' && !path.startsWith('/oportunidade')) return;
 
       if (path.startsWith('/oportunidade/obrigado')) {
         var leadOk = false;
