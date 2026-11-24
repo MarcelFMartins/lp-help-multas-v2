@@ -16,8 +16,8 @@ export const BLACK_DISCOUNT = {
   target: "na taxa de franquia",
 };
 
-/** Link do grupo VIP no WhatsApp — TODO: trocar pelo link oficial do grupo */
-export const BLACK_VIP_GROUP_URL = "https://chat.whatsapp.com/";
+/** Link do grupo VIP no WhatsApp */
+export const BLACK_VIP_GROUP_URL = "https://chat.whatsapp.com/JiBvPV1flcg5SXGq3CiRPo";
 
 /**
  * Vídeo do recado do CEO (YouTube, 16:9, ~1 min).
