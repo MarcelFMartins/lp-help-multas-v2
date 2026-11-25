@@ -66,8 +66,7 @@
   <!-- Meta Pixel Code -->
   <script>
     !function (f, b, e, v, n, t, s) {
-      // LP /oportunidade não usa Pixel da Meta (campanhas próprias)
-      if (f.fbq || f.location.pathname.startsWith('/oportunidade')) return;
+      if (f.fbq) return;
       n = f.fbq = function () {
         n.callMethod ?
           n.callMethod.apply(n, arguments) :
@@ -90,13 +89,15 @@
       const path = window.location.pathname;
       const params = new URLSearchParams(window.location.search);
 
-      if (path.startsWith('/oportunidade')) return;
-
+      const isOportunidade = path.startsWith('/oportunidade');
       const isPartner = path.startsWith('/indica') || path.startsWith('/aula-indica') || path.startsWith('/sucesso');
       const isChat = path.startsWith('/chat') || (path === '/obrigado' && params.get('origem') === 'chat');
       const isEvento = path.startsWith('/evento');
 
-      if (isEvento) {
+      if (isOportunidade) {
+        // PIXEL LP /OPORTUNIDADE (só ele; o Lead dispara em src/lib/oportunidadeLead.ts)
+        fbq('init', '2204005137155131');
+      } else if (isEvento) {
         // PIXEL LP EVENTO
         fbq('init', '1558928198671104');
       } else if (isPartner) {

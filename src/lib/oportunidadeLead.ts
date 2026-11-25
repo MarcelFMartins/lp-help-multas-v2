@@ -2,7 +2,8 @@
  * oportunidadeLead — envio de leads da LP /oportunidade
  *
  * O lead vai para a Sults (Expansão, via /api/sults-lead) e para o Marketing Hub
- * (ranking de anúncios por UTM). Sem n8n, CRM antigo, CRM de teste, Sheets ou Meta.
+ * (ranking de anúncios por UTM). Sem n8n, CRM antigo, CRM de teste ou Sheets.
+ * Lead confirmado dispara o evento Lead no Pixel da Meta próprio da página.
  * O formulário de origem e as UTMs vão na descrição do negócio.
  */
 
@@ -20,6 +21,9 @@ export const OPORTUNIDADE_THANKS = `${OPORTUNIDADE_SLUG}/obrigado`;
  * Se mudar o nome aqui, mude também no index.html.
  */
 export const OPORTUNIDADE_LEAD_FLAG = "op_lead_ok";
+
+/** Pixel da Meta exclusivo da /oportunidade (inicializado no index.html). */
+export const OPORTUNIDADE_META_PIXEL_ID = "2204005137155131";
 
 export const CAPITAL_OPTIONS = [
   { value: "30.000", label: "De R$ 0 a R$ 30 mil (não tenho condições de adquirir a franquia atualmente)" },
@@ -103,5 +107,18 @@ export async function submitOportunidadeLead(data: OportunidadeFormData, origem:
   } catch {
     /* sessionStorage indisponível (ex.: modo restrito) — segue sem a marca */
   }
+
+  /* 4. Meta Pixel — evento padrão Lead, só com lead confirmado pela Sults.
+        Espera um pouco antes do redirect para o hit não ser cancelado pela navegação. */
+  if (window.fbq) {
+    const eventID = `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+    window.fbq("trackSingle", OPORTUNIDADE_META_PIXEL_ID, "Lead", { content_name: origem }, { eventID });
+    logEvent(origem, "pixel_event", "fbq trackSingle Lead disparado", {
+      pixelId: OPORTUNIDADE_META_PIXEL_ID,
+      eventID,
+    });
+    await new Promise((r) => setTimeout(r, 400));
+  }
+
   window.location.href = OPORTUNIDADE_THANKS;
 }
